@@ -8,13 +8,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,17 +25,123 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.busymodernpeople.galapagos.ui.theme.GalapagosTheme
-import com.busymodernpeople.galapagos.ui.theme.PrimaryGreen
-import com.busymodernpeople.galapagos.ui.theme.Typography
+import com.busymodernpeople.galapagos.ui.theme.*
 
 @Composable
-private fun TabIndicator(
+private fun ScrollableTabIndicator(
     indicatorWidth: Dp,
     indicatorOffset: Dp,
     indicatorColor: Color
 ) {
-    Box(
+    Spacer(
+        modifier = Modifier
+            .width(indicatorWidth)
+            .height(3.dp)
+            .offset(indicatorOffset)
+            .background(
+                color = indicatorColor,
+                shape = RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp)
+            )
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun ScrollableTabItem(
+    modifier: Modifier = Modifier,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    text: String
+) {
+    val textColor: Color by animateColorAsState(
+        targetValue = if (isSelected) {
+            FontBlack
+        } else {
+            FontGray4
+        },
+        animationSpec = tween(easing = LinearEasing)
+    )
+
+    val fontWeight = if (isSelected) {
+        FontWeight.Bold
+    } else {
+        FontWeight.SemiBold
+    }
+
+    Surface(
+        modifier = modifier,
+        color = Color.Transparent,
+        onClick = { onClick() },
+        interactionSource = NoRippleInteractionSource()
+    ) {
+        Text(
+            modifier = Modifier.padding(vertical = 13.dp),
+            text = text,
+            style = Typography.body2,
+            fontWeight = fontWeight,
+            color = textColor
+        )
+    }
+}
+
+@Composable
+fun ScrollableTabRow(
+    modifier: Modifier = Modifier,
+    items: List<String>,
+    selectedItemIndex: Int,
+    indicatorColor: Color = Color.Black,
+    onClick: (index: Int) -> Unit
+) {
+    val density = LocalDensity.current
+    val sizeList = remember { mutableStateMapOf<Int, Dp>() }
+
+    val indicatorOffset: Dp by animateDpAsState(
+        targetValue = sizeList
+            .values
+            .take(selectedItemIndex)
+            .sumOf { it }
+                + 24.dp + 16.dp * selectedItemIndex,
+        animationSpec = tween(easing = LinearEasing)
+    )
+
+    Box(contentAlignment = Alignment.BottomStart) {
+        ScrollableTabIndicator(
+            indicatorWidth = sizeList[selectedItemIndex] ?: 0.dp,
+            indicatorOffset = indicatorOffset,
+            indicatorColor = indicatorColor
+        )
+
+        Row(
+            modifier = modifier
+                .background(color = Color.Transparent)
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items.forEachIndexed { index, text ->
+                val isSelected = index == selectedItemIndex
+
+                ScrollableTabItem(
+                    modifier = Modifier.onSizeChanged {
+                        sizeList[index] = with(density) { it.width.toDp() }
+                    },
+                    isSelected = isSelected,
+                    onClick = { onClick(index) },
+                    text = text
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun GlassmorphicTabIndicator(
+    indicatorWidth: Dp,
+    indicatorOffset: Dp,
+    indicatorColor: Color
+) {
+    Spacer(
         modifier = Modifier
             .fillMaxHeight()
             .width(indicatorWidth)
@@ -49,7 +153,7 @@ private fun TabIndicator(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun TabItem(
+private fun GlassmorphicTabItem(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
     onClick: () -> Unit,
@@ -128,7 +232,7 @@ fun GlassmorphicTab(
         )
 
         Box(modifier = modifier.padding(all = 8.dp)) {
-            TabIndicator(
+            GlassmorphicTabIndicator(
                 indicatorWidth = sizeList[selectedItemIndex] ?: 0.dp,
                 indicatorOffset = indicatorOffset,
                 indicatorColor = indicatorColor
@@ -142,7 +246,7 @@ fun GlassmorphicTab(
                 items.forEachIndexed { index, text ->
                     val isSelected = index == selectedItemIndex
 
-                    TabItem(
+                    GlassmorphicTabItem(
                         modifier = Modifier.onSizeChanged {
                             sizeList[index] = with(density) { it.width.toDp() }
                         },
@@ -164,14 +268,30 @@ inline fun <T> Iterable<T>.sumOf(selector: (T) -> Dp): Dp {
     return sum
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewScrollableTab() {
+    var selectedItemIndex by remember { mutableStateOf(0) }
+
+    GalapagosTheme {
+        ScrollableTabRow(
+            items = listOf("전체", "도마뱀", "거북이"),
+            selectedItemIndex = selectedItemIndex,
+            onClick = { selectedItemIndex = it }
+        )
+    }
+}
+
 @Preview
 @Composable
 fun PreviewTab() {
+    var selectedItemIndex by remember { mutableStateOf(0) }
+
     GalapagosTheme {
         GlassmorphicTab(
             items = listOf("리스트", "캘린더"),
-            selectedItemIndex = 0,
-            onClick = { }
+            selectedItemIndex = selectedItemIndex,
+            onClick = { selectedItemIndex = it }
         )
     }
 }
