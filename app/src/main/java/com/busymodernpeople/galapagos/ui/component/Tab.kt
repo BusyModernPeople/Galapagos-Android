@@ -10,14 +10,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -57,7 +56,7 @@ private fun ScrollableTabItem(
         targetValue = if (isSelected) {
             FontBlack
         } else {
-            FontGray4
+            FontGray2
         },
         animationSpec = tween(easing = LinearEasing)
     )
@@ -168,20 +167,21 @@ private fun GlassmorphicTabItem(
         animationSpec = tween(easing = LinearEasing)
     )
 
-    Surface(
-        modifier = modifier,
-        shape = CircleShape,
-        color = Color.Transparent,
-        onClick = { onClick() },
-        interactionSource = NoRippleInteractionSource()
-    ) {
-        Text(
-            modifier = Modifier.padding(horizontal = 15.dp, vertical = 7.dp),
-            style = Typography.body2,
-            fontWeight = FontWeight.Bold,
-            text = text,
-            color = textColor
-        )
+    CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+        Surface(
+            modifier = modifier,
+            color = Color.Transparent,
+            onClick = { onClick() },
+            interactionSource = NoRippleInteractionSource()
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 15.dp, vertical = 7.dp),
+                style = Typography.body2,
+                fontWeight = FontWeight.Bold,
+                text = text,
+                color = textColor
+            )
+        }
     }
 }
 
@@ -196,6 +196,9 @@ fun GlassmorphicTab(
     val density = LocalDensity.current
     val sizeList = remember { mutableStateMapOf<Int, Dp>() }
 
+    var width by remember { mutableStateOf(0.dp) }
+    var height by remember { mutableStateOf(0.dp) }
+
     val indicatorOffset: Dp by animateDpAsState(
         targetValue = sizeList
             .values
@@ -204,45 +207,45 @@ fun GlassmorphicTab(
         animationSpec = tween(easing = LinearEasing)
     )
 
-    Surface(
-        modifier = modifier
-            .height(intrinsicSize = IntrinsicSize.Min)
-            .border(
-                width = 1.dp,
-                color = Color(0x25FFFFFF),
-                shape = CircleShape
-            ),
-        shape = CircleShape,
-        color = Color.White.copy(alpha = 0.5f),
-        elevation = 12.dp
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .background(
-                    Brush.radialGradient(
-                        listOf(
-                            Color.White.copy(0.4f),
-                            Color.White.copy(0.1f),
-                        ),
-                        radius = 100f,
-                        center = Offset.Infinite
-                    )
+    Box {
+        Surface(
+            modifier = modifier
+                .width(width)
+                .height(height)
+                .border(
+                    width = 1.dp,
+                    color = BgGray5,
+                    shape = CircleShape
                 )
-        )
+                .blur(
+                    radius = 10.dp,
+                    edgeTreatment = BlurredEdgeTreatment(CircleShape)
+                ),
+            shape = CircleShape,
+            color = Color.White.copy(alpha = 0.4f),
+            elevation = 12.dp
+        ) {
+            Spacer(modifier = Modifier.fillMaxSize())
+        }
 
-        Box(modifier = modifier.padding(all = 8.dp)) {
+        Box(
+            modifier = modifier
+                .height(IntrinsicSize.Min)
+                .onSizeChanged {
+                    with(density) {
+                        width = it.width.toDp()
+                        height = it.height.toDp()
+                    }
+                }
+                .padding(8.dp)
+        ) {
             GlassmorphicTabIndicator(
                 indicatorWidth = sizeList[selectedItemIndex] ?: 0.dp,
                 indicatorOffset = indicatorOffset,
                 indicatorColor = indicatorColor
             )
 
-            Row(
-                modifier = Modifier.clip(CircleShape),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row {
                 items.forEachIndexed { index, text ->
                     val isSelected = index == selectedItemIndex
 
@@ -284,7 +287,7 @@ fun PreviewScrollableTab() {
 
 @Preview
 @Composable
-fun PreviewTab() {
+fun PreviewGlassmorphicTab() {
     var selectedItemIndex by remember { mutableStateOf(0) }
 
     GalapagosTheme {
