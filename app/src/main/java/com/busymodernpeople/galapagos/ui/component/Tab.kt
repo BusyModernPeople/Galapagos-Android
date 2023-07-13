@@ -67,19 +67,21 @@ private fun ScrollableTabItem(
         FontWeight.SemiBold
     }
 
-    Surface(
-        modifier = modifier,
-        color = Color.Transparent,
-        onClick = { onClick() },
-        interactionSource = NoRippleInteractionSource()
-    ) {
-        Text(
-            modifier = Modifier.padding(vertical = 13.dp),
-            text = text,
-            style = Typography.body2,
-            fontWeight = fontWeight,
-            color = textColor
-        )
+    CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+        Surface(
+            modifier = modifier,
+            color = Color.Transparent,
+            onClick = { onClick() },
+            interactionSource = NoRippleInteractionSource()
+        ) {
+            Text(
+                modifier = Modifier.padding(vertical = 13.dp),
+                text = text,
+                style = Typography.body2,
+                fontWeight = fontWeight,
+                color = textColor
+            )
+        }
     }
 }
 
@@ -263,6 +265,61 @@ fun GlassmorphicTab(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun ContentTabItem(
+    modifier: Modifier = Modifier,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    text: String
+) {
+    val textColor = if (isSelected) FontWhite else PrimaryGreen
+    val backgroundColor = if (isSelected) PrimaryGreen else Color(0xFFE8E8EF)
+
+    CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+        Surface(
+            modifier = modifier,
+            shape = CircleShape,
+            color = backgroundColor,
+            onClick = { onClick() },
+            interactionSource = NoRippleInteractionSource()
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+                text = text,
+                style = Typography.body2,
+                color = textColor
+            )
+        }
+    }
+}
+
+@Composable
+fun ContentTab(
+    modifier: Modifier = Modifier,
+    items: List<String>,
+    selectedItemIndex: Int,
+    onClick: (index: Int) -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items.forEachIndexed { index, text ->
+            val isSelected = index == selectedItemIndex
+
+            ContentTabItem(
+                isSelected = isSelected,
+                onClick = { onClick(index) },
+                text = text
+            )
+        }
+    }
+}
+
 inline fun <T> Iterable<T>.sumOf(selector: (T) -> Dp): Dp {
     var sum: Dp = 0.dp
     for (element in this) {
@@ -293,6 +350,20 @@ fun PreviewGlassmorphicTab() {
     GalapagosTheme {
         GlassmorphicTab(
             items = listOf("리스트", "캘린더"),
+            selectedItemIndex = selectedItemIndex,
+            onClick = { selectedItemIndex = it }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewContentTab() {
+    var selectedItemIndex by remember { mutableStateOf(0) }
+
+    GalapagosTheme {
+        ContentTab(
+            items = listOf("자유게시판", "물품거래", "동물분양"),
             selectedItemIndex = selectedItemIndex,
             onClick = { selectedItemIndex = it }
         )
