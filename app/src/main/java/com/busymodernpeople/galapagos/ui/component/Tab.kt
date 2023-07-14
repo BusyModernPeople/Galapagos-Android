@@ -104,10 +104,14 @@ fun ScrollableTabRow(
                 + 24.dp + 16.dp * selectedItemIndex,
         animationSpec = tween(easing = LinearEasing)
     )
+    val indicatorWidth: Dp by animateDpAsState(
+        targetValue = sizeList[selectedItemIndex] ?: 0.dp,
+        animationSpec = tween(easing = LinearEasing)
+    )
 
     Box(contentAlignment = Alignment.BottomStart) {
         ScrollableTabIndicator(
-            indicatorWidth = sizeList[selectedItemIndex] ?: 0.dp,
+            indicatorWidth = indicatorWidth,
             indicatorOffset = indicatorOffset,
             indicatorColor = indicatorColor
         )
@@ -208,6 +212,10 @@ fun GlassmorphicTab(
             .sumOf { it },
         animationSpec = tween(easing = LinearEasing)
     )
+    val indicatorWidth: Dp by animateDpAsState(
+        targetValue = sizeList[selectedItemIndex] ?: 0.dp,
+        animationSpec = tween(easing = LinearEasing)
+    )
 
     Box {
         Surface(
@@ -242,7 +250,7 @@ fun GlassmorphicTab(
                 .padding(8.dp)
         ) {
             GlassmorphicTabIndicator(
-                indicatorWidth = sizeList[selectedItemIndex] ?: 0.dp,
+                indicatorWidth = indicatorWidth,
                 indicatorOffset = indicatorOffset,
                 indicatorColor = indicatorColor
             )
