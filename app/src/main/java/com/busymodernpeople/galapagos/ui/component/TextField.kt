@@ -19,9 +19,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.busymodernpeople.galapagos.R
@@ -156,6 +158,10 @@ fun defaultTextField(
     val isFocused by rememberSaveable { mutableStateOf(false) }
     // X 버튼을 눌렀는지 확인하기 위함
     var isDeleted by rememberSaveable { mutableStateOf(false) }
+    var errorColor by rememberSaveable { mutableStateOf(isError) }
+
+    var borderColor = Color.White
+    borderColor = if (errorColor) FontRed else BgGray5
 
     // TextFieldValue에 rememberSaveable를 사용하기 위함
     var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
@@ -165,9 +171,11 @@ fun defaultTextField(
     else if (height == 56) verticalPadding = 11.dp
 
     ConstraintLayout(
-        modifier = Modifier.fillMaxWidth().border(width = 1.dp, color = BgGray5, shape = RoundedCornerShape(8.dp))
+        modifier = Modifier.fillMaxWidth().border(width = 1.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
     ) {
         val (textField, img) = createRefs()
+
+        Spacer(Modifier.height(verticalPadding))
 
         BasicTextField(
             value = textValue,
@@ -186,8 +194,6 @@ fun defaultTextField(
                 .constrainAs(textField) {
                     start.linkTo(parent.start, margin = 20.dp)
                     end.linkTo(img.start, margin = 20.dp)
-                    top.linkTo(parent.top, margin = verticalPadding)
-                    bottom.linkTo(parent.bottom, margin = verticalPadding)
                     width = Dimension.fillToConstraints
                 },
             enabled = enabled,
@@ -223,6 +229,119 @@ fun defaultTextField(
             focusManager.clearFocus()
             isDeleted = !isDeleted
         }.focusable(), painter = painterResource(id = R.drawable.ic_textfield_x), contentDescription = null)
+
+        Spacer(Modifier.height(verticalPadding))
+    }
+
+    if (isError) {
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = "!Error Message",
+            color = FontRed,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = Pretendard
+        )
+    }
+}
+
+
+@Composable
+fun defaultTextField2(
+    modifier: Modifier = Modifier,
+    hint: String = "",
+    height: Int = 56,
+    maxChar: Int = 10000,
+    isError: Boolean = false,
+    onValueChange: (String) -> Unit = { },
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    textStyle: TextStyle = Typography.title4,
+    singleLine: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+) {
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
+    // Focus를 확인하기 위함
+    val isFocused by rememberSaveable { mutableStateOf(false) }
+    // X 버튼을 눌렀는지 확인하기 위함
+    var isDeleted by rememberSaveable { mutableStateOf(false) }
+    var errorColor by rememberSaveable { mutableStateOf(isError) }
+
+    var borderColor = Color.White
+    borderColor = if (errorColor) FontRed else BgGray5
+
+    // TextFieldValue에 rememberSaveable를 사용하기 위함
+    var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
+    var verticalPadding: Dp = 0.dp
+
+    if (height == 68) verticalPadding = 20.dp
+    else if (height == 56) verticalPadding = 11.dp
+
+    Surface(Modifier.fillMaxWidth().border(width = 1.dp, color = BgGray5), shape = RoundedCornerShape(8.dp)) {
+        Column(Modifier.fillMaxWidth()) {
+            Spacer(Modifier.height(verticalPadding))
+
+            Row(Modifier.fillMaxWidth().background(color = Color.Yellow)) {
+                BasicTextField(
+                    value = textValue,
+                    onValueChange = {
+                        onValueChange(it.text)
+                        textValue = it
+                    },
+                    modifier = modifier.background(color = Color.Cyan).focusRequester(focusRequester).focusable()
+                        .onFocusChanged {
+                            if (it.isFocused) {
+                                Log.d(tag, "Focus Changed In")
+                            } else {
+                                Log.d(tag, "Focus Changed Out")
+                            }
+                        },
+                    enabled = enabled,
+                    readOnly = readOnly,
+                    textStyle = textStyle,
+                    singleLine = singleLine,
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                        }
+                    ),
+                    decorationBox = { innerTextField ->
+                        Row(
+                            modifier = Modifier,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (textValue.text.isEmpty() || isDeleted) {
+                                textValue = TextFieldValue()
+                                Text(hint, color = BgGray5)
+                                isDeleted = false
+                            }
+
+                            innerTextField()
+                        }
+                    }
+                )
+                Image(modifier = Modifier.clickable {
+                    focusManager.clearFocus()
+                    isDeleted = !isDeleted
+                }.focusable(), painter = painterResource(id = R.drawable.ic_textfield_x), contentDescription = null)
+            }
+
+            Spacer(Modifier.height(verticalPadding))
+    }
+
+        if (isError) {
+            Spacer(Modifier.height(6.dp))
+            Text(
+                text = "!Error Message",
+                color = FontRed,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = Pretendard
+            )
+        }
     }
 }
 

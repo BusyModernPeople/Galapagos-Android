@@ -15,10 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.busymodernpeople.galapagos.ui.component.defaultButton
-import com.busymodernpeople.galapagos.ui.component.defaultTextField
-import com.busymodernpeople.galapagos.ui.component.floatingButton
-import com.busymodernpeople.galapagos.ui.component.textFieldWithButton
+import com.busymodernpeople.galapagos.ui.component.*
 import com.busymodernpeople.galapagos.ui.theme.*
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GalapagosTheme {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.wrapContentSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
