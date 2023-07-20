@@ -1,17 +1,21 @@
 package com.busymodernpeople.galapagos
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.busymodernpeople.galapagos.ui.component.*
 import com.busymodernpeople.galapagos.ui.theme.*
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GalapagosTheme {
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.wrapContentSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
