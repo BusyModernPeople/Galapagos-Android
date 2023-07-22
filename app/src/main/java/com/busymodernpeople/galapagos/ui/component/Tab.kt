@@ -4,8 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -218,24 +217,22 @@ fun GlassmorphicTab(
     )
 
     Box {
-        Surface(
-            modifier = modifier
-                .width(width)
-                .height(height)
-                .border(
-                    width = 1.dp,
-                    color = BgGray5,
-                    shape = CircleShape
-                )
-                .blur(
-                    radius = 10.dp,
-                    edgeTreatment = BlurredEdgeTreatment(CircleShape)
-                ),
-            shape = CircleShape,
-            color = Color.White.copy(alpha = 0.4f),
-            elevation = 12.dp
-        ) {
-            Spacer(modifier = Modifier.fillMaxSize())
+        BlurredComposeView {
+            Surface(
+                modifier = modifier
+                    .width(width)
+                    .height(height)
+                    .border(
+                        width = 1.dp,
+                        color = BgGray5,
+                        shape = CircleShape
+                    ),
+                color = Color.Transparent,
+                shape = CircleShape,
+                elevation = 12.dp
+            ) {
+                Spacer(modifier = Modifier.fillMaxSize())
+            }
         }
 
         Box(
