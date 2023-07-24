@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -221,6 +221,9 @@ fun GlassmorphicTab(
         animationSpec = tween(easing = LinearEasing)
     )
 
+    var offsetX = 0f
+    var offsetY = 0f
+
     Box {
         Surface(
             modifier = modifier
@@ -233,15 +236,17 @@ fun GlassmorphicTab(
                 )
                 .blur(10.dp)
                 .clip(CircleShape)
+                .onGloballyPositioned {
+                    offsetX = it.positionInRoot().x
+                    offsetY = it.positionInRoot().y
+                }
                 .drawWithContent {
-                // Draw the background image with the blur effect
-                drawContent()
-                drawImage(backgroundBitmap, Offset(-width.toPx(), -height.toPx()))
-            },
+                    drawContent()
+                    drawImage(backgroundBitmap, Offset(-offsetX, -offsetY))
+                },
             shape = CircleShape,
             elevation = 12.dp
-        ) {
-        }
+        ) { }
 
         Box(
             modifier = modifier
@@ -366,12 +371,11 @@ fun PreviewGlassmorphicTab() {
     val scrollState = rememberScrollState()
     val isScrolling = scrollState.isScrollInProgress
 
-    captureController.capture()
-
     LaunchedEffect(isScrolling) {
+        captureController.capture()
         while (isScrolling) {
-            captureController.capture()
             delay(100)
+            captureController.capture()
         }
     }
 
@@ -391,9 +395,9 @@ fun PreviewGlassmorphicTab() {
                 val colors = listOf(Color.Black, Color.Blue, Color.White, Color.Cyan, Color.DarkGray)
 
                 Column(Modifier.verticalScroll(scrollState)) {
-                    repeat(20) { index ->
+                    repeat(30) { index ->
                         Box(
-                            Modifier.fillMaxWidth().height(200.dp)
+                            Modifier.fillMaxWidth().height(50.dp)
                                 .background(colors[index % colors.size])
                         )
                     }
