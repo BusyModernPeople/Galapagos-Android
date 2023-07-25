@@ -4,8 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,14 +16,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.geometry.*
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.busymodernpeople.galapagos.ui.component.capture.Capturable
+import com.busymodernpeople.galapagos.ui.component.capture.rememberCaptureController
 import com.busymodernpeople.galapagos.ui.theme.*
+import kotlinx.coroutines.delay
 
 @Composable
 private fun ScrollableTabIndicator(
@@ -195,6 +198,7 @@ private fun GlassmorphicTabItem(
 fun GlassmorphicTab(
     modifier: Modifier = Modifier,
     items: List<String>,
+    backgroundBitmap: ImageBitmap,
     selectedItemIndex: Int,
     indicatorColor: Color = PrimaryGreen,
     onClick: (index: Int) -> Unit
@@ -202,8 +206,8 @@ fun GlassmorphicTab(
     val density = LocalDensity.current
     val sizeList = remember { mutableStateMapOf<Int, Dp>() }
 
-    var width by remember { mutableStateOf(0.dp) }
-    var height by remember { mutableStateOf(0.dp) }
+    var width by remember { mutableStateOf(1.dp) }
+    var height by remember { mutableStateOf(1.dp) }
 
     val indicatorOffset: Dp by animateDpAsState(
         targetValue = sizeList
@@ -217,6 +221,9 @@ fun GlassmorphicTab(
         animationSpec = tween(easing = LinearEasing)
     )
 
+    var offsetX = 0f
+    var offsetY = 0f
+
     Box {
         Surface(
             modifier = modifier
@@ -227,16 +234,19 @@ fun GlassmorphicTab(
                     color = BgGray5,
                     shape = CircleShape
                 )
-                .blur(
-                    radius = 10.dp,
-                    edgeTreatment = BlurredEdgeTreatment(CircleShape)
-                ),
+                .blur(10.dp)
+                .clip(CircleShape)
+                .onGloballyPositioned {
+                    offsetX = it.positionInRoot().x
+                    offsetY = it.positionInRoot().y
+                }
+                .drawWithContent {
+                    drawContent()
+                    drawImage(backgroundBitmap, Offset(-offsetX, -offsetY))
+                },
             shape = CircleShape,
-            color = Color.White.copy(alpha = 0.4f),
             elevation = 12.dp
-        ) {
-            Spacer(modifier = Modifier.fillMaxSize())
-        }
+        ) { }
 
         Box(
             modifier = modifier
@@ -355,12 +365,52 @@ fun PreviewScrollableTab() {
 fun PreviewGlassmorphicTab() {
     var selectedItemIndex by remember { mutableStateOf(0) }
 
+    val captureController = rememberCaptureController()
+    var background: ImageBitmap by remember { mutableStateOf(ImageBitmap(1, 1)) }
+
+    val scrollState = rememberScrollState()
+    val isScrolling = scrollState.isScrollInProgress
+
+    LaunchedEffect(isScrolling) {
+        captureController.capture()
+        while (isScrolling) {
+            delay(100)
+            captureController.capture()
+        }
+    }
+
     GalapagosTheme {
-        GlassmorphicTab(
-            items = listOf("리스트", "캘린더"),
-            selectedItemIndex = selectedItemIndex,
-            onClick = { selectedItemIndex = it }
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Capturable(
+                controller = captureController,
+                onCaptured = { bitmap, _ ->
+                    bitmap?.let {
+                        background = it
+                    }
+                }
+            ) {
+                val colors = listOf(Color.Black, Color.Blue, Color.White, Color.Cyan, Color.DarkGray)
+
+                Column(Modifier.verticalScroll(scrollState)) {
+                    repeat(30) { index ->
+                        Box(
+                            Modifier.fillMaxWidth().height(50.dp)
+                                .background(colors[index % colors.size])
+                        )
+                    }
+                }
+            }
+
+            GlassmorphicTab(
+                backgroundBitmap = background,
+                items = listOf("리스트", "캘린더"),
+                selectedItemIndex = selectedItemIndex,
+                onClick = { selectedItemIndex = it }
+            )
+        }
     }
 }
 
