@@ -1,30 +1,44 @@
 package com.busymodernpeople.galapagos.ui.component
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ButtonElevation
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import com.busymodernpeople.galapagos.ui.theme.*
-import kotlin.text.Typography
+import com.busymodernpeople.galapagos.ui.theme.Pretendard
+import com.busymodernpeople.galapagos.ui.theme.PrimaryGreen
+
+sealed class Button {
+    object Height40 : Button()
+    object Height52 : Button()
+    object Height56 : Button()
+}
 
 @Composable
 fun DefaultButton(
     modifier: Modifier = Modifier,
-    height: Int,
+    button: Button = Button.Height40,
     shape: Shape = RoundedCornerShape(8.dp),
     content: String,
     icon_id: Int? = null,
@@ -42,18 +56,17 @@ fun DefaultButton(
     )
 ) {
     // 버튼 크기에 따른 Padding 설정
-    val horizontalPadding = when (height) {
-        56 -> 20.dp
-        52 -> 20.dp
-        40 -> 12.dp
-        else -> 0.dp
+    val (height, horizontalPadding) = when (button) {
+        Button.Height56 -> Pair(56.dp, 20.dp)
+        Button.Height52 -> Pair(52.dp, 20.dp)
+        Button.Height40 -> Pair(40.dp, 12.dp)
     }
 
-    val textSize = if (height == 56) 16.sp else 14.sp
-    val iconSpacer = if (height == 40) 10.dp else 18.dp
+    val textSize = if (button == Button.Height56) 16.sp else 14.sp
+    val iconSpacer = if (button == Button.Height40) 10.dp else 18.dp
 
     Button(
-        modifier = modifier.height(height.dp),
+        modifier = modifier.height(height),
         onClick = onClick,
         enabled = enabled,
         contentPadding = PaddingValues(horizontal = horizontalPadding),
