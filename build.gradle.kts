@@ -1,6 +1,8 @@
 plugins {
-    id("com.android.application") version "8.0.2" apply false
-    id("com.android.library") version "8.0.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-    id("com.google.dagger.hilt.android") version "2.44" apply false
+    with(Plugins) {
+        id(ANDORID_APPLICATION) version Versions.Plugins.AGP apply false
+        id(ANDROID_LIBRARY) version Versions.Plugins.AGP apply false
+        id(KOTLIN_ANDROID) version Versions.Plugins.KOTLIN_ANDROID apply false
+        id(DAGGER_HILT_ANDROID) version Versions.Plugins.DAGGER_HILT_ANDROID apply false
+    }
 }

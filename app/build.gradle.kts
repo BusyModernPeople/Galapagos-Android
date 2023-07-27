@@ -1,8 +1,10 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    with(Plugins) {
+        id(ANDORID_APPLICATION)
+        id(KOTLIN_ANDROID)
+        id(KOTLIN_KAPT)
+        id(DAGGER_HILT_ANDROID)
+    }
 }
 
 android {
@@ -51,39 +53,50 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.AndroidX.APPCOMPAT)
-    implementation(Dependencies.AndroidX.CORE_KTX)
-    implementation(Dependencies.AndroidX.LIFECYCLE_RUNTIME_KTX)
-    implementation(Dependencies.AndroidX.LIFECYCLE_RUNTIME_COMPOSE)
-    implementation(Dependencies.AndroidX.LIFECYCLE_VIEWMODEL_COMPOSE)
-    implementation(Dependencies.AndroidX.ACTIVITY_COMPOSE)
-    implementation(Dependencies.AndroidX.COMPOSE_UI)
-    implementation(Dependencies.AndroidX.COMPOSE_UI_TOOLING_PREVIEW)
-    implementation(Dependencies.AndroidX.COMPOSE_MATERIAL)
-    implementation(Dependencies.AndroidX.CONSTRAINT_LAYOUT_COMPOSE)
-    implementation(Dependencies.AndroidX.NAVIGATION_COMPOSE)
-    implementation(Dependencies.AndroidX.HILT_NAVIGATION_COMPOSE)
-    implementation(Dependencies.AndroidX.PAGING_RUNTIME)
-    implementation(Dependencies.AndroidX.PAGING_COMPOSE)
+    with(Dependencies.AndroidX) {
+        implementation(APPCOMPAT)
+        implementation(CORE_KTX)
+        implementation(LIFECYCLE_RUNTIME_KTX)
+        implementation(LIFECYCLE_RUNTIME_COMPOSE)
+        implementation(LIFECYCLE_VIEWMODEL_COMPOSE)
+        implementation(ACTIVITY_COMPOSE)
+        implementation(COMPOSE_UI)
+        implementation(COMPOSE_UI_TOOLING_PREVIEW)
+        implementation(COMPOSE_MATERIAL)
+        implementation(CONSTRAINT_LAYOUT_COMPOSE)
+        implementation(NAVIGATION_COMPOSE)
+        implementation(HILT_NAVIGATION_COMPOSE)
+        implementation(PAGING_RUNTIME)
+        implementation(PAGING_COMPOSE)
+        androidTestImplementation(EXT_JUNIT)
+        androidTestImplementation(ESPRESSO_CORE)
+        androidTestImplementation(UI_TEST_JUNIT4)
+        debugImplementation(UI_TOOLING)
+        debugImplementation(UI_TEST_MANIFEST)
+    }
 
-    implementation(Dependencies.Jetbrains.COROUNTES)
+    with(Dependencies.Jetbrains) {
+        implementation(COROUTINES)
+    }
 
-    implementation(Dependencies.Google.HILT_ANDROID)
-    implementation(Dependencies.Google.MATERIAL)
-    kapt(Dependencies.Google.HILT_ANDROID_COMPILER)
+    with(Dependencies.Google) {
+        implementation(HILT_ANDROID)
+        implementation(MATERIAL)
+        kapt(HILT_ANDROID_COMPILER)
+    }
 
-    implementation(Dependencies.SquareUp.RETROFIT)
-    implementation(Dependencies.SquareUp.CONVERTER_GSON)
+    with(Dependencies.SquareUp) {
+        implementation(RETROFIT)
+        implementation(CONVERTER_GSON)
+        implementation(OKHTTP)
+        implementation(LOGGING_INTERCEPTOR)
+    }
 
-    implementation(Dependencies.SquareUp.OKHTTP)
-    implementation(Dependencies.SquareUp.LOGGING_INTERCEPTOR)
+    with(Dependencies.Tools) {
+        coreLibraryDesugaring(DESUGAR_JDK_LIBS)
+    }
 
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
+    with(Dependencies.Junit) {
+        testImplementation(JUNIT)
+    }
 }
