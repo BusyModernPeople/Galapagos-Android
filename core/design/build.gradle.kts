@@ -53,6 +53,8 @@ dependencies {
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)
         androidTestImplementation(UI_TEST_JUNIT4)
+        debugImplementation(UI_TOOLING)
+        debugImplementation(UI_TEST_MANIFEST)
     }
 
     with(Dependencies.Tools) {

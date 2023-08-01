@@ -1,28 +1,38 @@
 package com.busymodernpeople.core.design.ui.component
 
-import android.util.Log
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Surface
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ButtonElevation
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,414 +40,355 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
-import com.busymodernpeople.core.design.ui.theme.Pretendard
+import com.busymodernpeople.core.design.ui.theme.LocalColors
+import com.busymodernpeople.core.design.ui.theme.LocalTypography
+import kotlinx.coroutines.delay
 
-val tag = "COMPONENT-TEST"
-
-/*
-@Composable
-fun defaultTextField(
-    modifier: Modifier = Modifier,
-    hint: String = "",
-    height: Int = 56,
-    maxChar: Int = 10000,
-    isError: Boolean = false,
-    onValueChange: (String) -> Unit = { },
-    enabled: Boolean = true,
-    readOnly: Boolean = false,
-    textStyle: TextStyle = Typography.title4,
-    singleLine: Boolean = true,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
-) {
-    val tag = "COMPONENT-TEST"
-
-    val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
-
-    // Focus를 확인하기 위함
-    val isFocused by rememberSaveable { mutableStateOf(false) }
-    // X 버튼을 눌렀는지 확인하기 위함
-    var isDeleted by rememberSaveable { mutableStateOf(false) }
-
-    // TextFieldValue에 rememberSaveable를 사용하기 위함
-    var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-
-    var testText by rememberSaveable { mutableStateOf("") }
-    var verticalPadding: Dp = 0.dp
-
-    if (height == 68) verticalPadding = 20.dp
-    else if (height == 56) verticalPadding = 11.dp
-
-    ConstraintLayout(
-        modifier = Modifier.fillMaxWidth().border(width = 1.dp, color = BgGray5, shape = RoundedCornerShape(8.dp))
-    ) {
-        val (textField, img) = createRefs()
-
-        BasicTextField(
-            value = textValue,
-            onValueChange = {
-                onValueChange(it.text)
-                textValue = it
-            },
-            modifier = modifier.background(color = Color.Cyan).focusRequester(focusRequester).focusable()
-                .onFocusChanged {
-                    if (it.isFocused) {
-                        Log.d(tag, "Focus Changed In")
-                    } else {
-                        Log.d(tag, "Focus Changed Out")
-                    }
-                }
-                .constrainAs(textField) {
-                    start.linkTo(parent.start, margin = 20.dp)
-                    end.linkTo(img.start, margin = 20.dp)
-                    top.linkTo(parent.top, margin = verticalPadding)
-                    bottom.linkTo(parent.bottom, margin = verticalPadding)
-                    width = Dimension.fillToConstraints
-                },
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = textStyle,
-            singleLine = singleLine,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
-                }
-            ),
-            decorationBox = { innerTextField ->
-                Row(
-                    modifier = Modifier.background(color = Color.Green),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (textValue.text.isEmpty() || isDeleted) {
-                        textValue = TextFieldValue()
-                        Text(hint, color = BgGray5)
-                        isDeleted = false
-                    }
-
-                    innerTextField()
-
-                    Image(modifier = Modifier.background(color = Color.Yellow).clickable {
-                        focusManager.clearFocus()
-                        isDeleted = !isDeleted
-                        Log.d(tag, "isDeleted = $isDeleted")
-                        Log.d(tag, "Click")
-                    }.focusable(), painter = painterResource(id = R.drawable.icon_24px), contentDescription = null)
-                }
-            }
-        )
-//        Image(modifier = Modifier.constrainAs(img) {
-//            end.linkTo(parent.end, margin = 20.dp)
-//            top.linkTo(textField.top)
-//            bottom.linkTo(textField.bottom)
-//        }.clickable {
-//            focusManager.clearFocus()
-//            isDeleted = !isDeleted
-//            Log.d(tag, "isDeleted = $isDeleted")
-//            Log.d(tag, "Click")
-//        }.focusable(), painter = painterResource(id = R.drawable.icon_24px), contentDescription = null)
-    }
+sealed class TextFieldSize {
+    object Height68 : TextFieldSize()
+    object Height56 : TextFieldSize()
 }
+
+/**
+ * @param leadingContent 텍스트 입력 값 앞에 컨텐츠가 있으면 사용
+ * @param trailingContent 텍스트 입력 값 뒤에 컨텐츠가 있으면 사용 (타이머, 버튼 등)
+ * @param isError 텍스트 입력 값 에러 여부
  */
-
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun defaultTextField(
+fun GTextField(
     modifier: Modifier = Modifier,
-    hint: String = "",
-    height: Int = 56,
-    maxChar: Int = 10000,
+    textFieldSize: TextFieldSize = TextFieldSize.Height68,
+    value: String,
+    onValueChange: (String) -> Unit,
+    leadingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
+    placeholderText: String = "",
     isError: Boolean = false,
-    onValueChange: (String) -> Unit = { },
     enabled: Boolean = true,
-    readOnly: Boolean = false,
-    textStyle: TextStyle = GalapagosTheme.typography.title4,
-    singleLine: Boolean = true,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions? = null,
+    keyboardActions: KeyboardActions? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    showLength: Boolean = false,
+    maxChar: Int = 6
 ) {
+    val localColors = LocalColors.current
+    val localTypography = LocalTypography.current
+    
     val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
+    var isFocused by remember { mutableStateOf(false) }
 
-    // Focus를 확인하기 위함
-    val isFocused by rememberSaveable { mutableStateOf(false) }
-    // X 버튼을 눌렀는지 확인하기 위함
-    var isDeleted by rememberSaveable { mutableStateOf(false) }
-    var errorColor by rememberSaveable { mutableStateOf(isError) }
-
-    var borderColor = Color.White
-    borderColor = if (errorColor) GalapagosTheme.colors.FontRed else GalapagosTheme.colors.BgGray5
-
-    // TextFieldValue에 rememberSaveable를 사용하기 위함
-    var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var verticalPadding: Dp = 0.dp
-
-    if (height == 68) verticalPadding = 20.dp
-    else if (height == 56) verticalPadding = 11.dp
-
-    ConstraintLayout(
-        modifier = Modifier.fillMaxWidth().border(width = 1.dp, color = borderColor, shape = RoundedCornerShape(8.dp))
-    ) {
-        val (textField, img) = createRefs()
-
-        Spacer(Modifier.height(verticalPadding))
-
-        BasicTextField(
-            value = textValue,
-            onValueChange = {
-                onValueChange(it.text)
-                textValue = it
-            },
-            modifier = modifier.background(color = Color.Cyan).focusRequester(focusRequester).focusable()
-                .onFocusChanged {
-                    if (it.isFocused) {
-                        Log.d(tag, "Focus Changed In")
-                    } else {
-                        Log.d(tag, "Focus Changed Out")
-                    }
-                }
-                .constrainAs(textField) {
-                    start.linkTo(parent.start, margin = 20.dp)
-                    end.linkTo(img.start, margin = 20.dp)
-                    width = Dimension.fillToConstraints
+    BasicTextField(
+        modifier = modifier
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                isFocused = it.isFocused
+            }
+            .border(
+                width = 1.dp,
+                color = if (isError) {
+                    localColors.FontRed
+                } else if (isFocused) {
+                    localColors.PrimaryGreen
+                } else {
+                    localColors.BgGray1
                 },
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = textStyle,
-            singleLine = singleLine,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
+                shape = when (textFieldSize) {
+                    is TextFieldSize.Height68 -> RoundedCornerShape(8.dp)
+                    is TextFieldSize.Height56 -> RoundedCornerShape(6.dp)
+                }
+            )
+            .background(
+                color = localColors.FontWhite,
+                shape = when (textFieldSize) {
+                    is TextFieldSize.Height68 -> RoundedCornerShape(8.dp)
+                    is TextFieldSize.Height56 -> RoundedCornerShape(6.dp)
                 }
             ),
-            decorationBox = { innerTextField ->
-                Row(
-                    modifier = Modifier,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (textValue.text.isEmpty() || isDeleted) {
-                        textValue = TextFieldValue()
-                        Text(hint, color = GalapagosTheme.colors.BgGray5)
-                        isDeleted = false
+        value = value,
+        onValueChange = {
+            if (it.length <= maxChar) onValueChange(it)
+        },
+        singleLine = true,
+        enabled = enabled,
+        textStyle = localTypography.title4.copy(color = localColors.FontGray1),
+        keyboardOptions = keyboardOptions ?: KeyboardOptions(),
+        keyboardActions = keyboardActions ?: KeyboardActions(),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier = when (textFieldSize) {
+                    is TextFieldSize.Height68 -> Modifier.padding(20.dp)
+                    is TextFieldSize.Height56 -> Modifier.padding(horizontal = 20.dp, vertical = 11.dp)
+                },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                leadingContent?.let { leadingContent() }
+                Box(modifier = Modifier.weight(1f)) {
+                    if (value.isEmpty()) {
+                        Text(
+                            modifier = Modifier.offset(y = 1.dp),
+                            text = placeholderText,
+                            style = GalapagosTheme.typography.body1.copy(
+                                color = localColors.BgGray1
+                            )
+                        )
                     }
-
                     innerTextField()
                 }
-            }
-        )
-        Image(modifier = Modifier.constrainAs(img) {
-            end.linkTo(parent.end, margin = 20.dp)
-            top.linkTo(textField.top)
-            bottom.linkTo(textField.bottom)
-        }.clickable {
-            focusManager.clearFocus()
-            isDeleted = !isDeleted
-        }.focusable(), painter = painterResource(id = R.drawable.ic_textfield_x), contentDescription = null)
-
-        Spacer(Modifier.height(verticalPadding))
-    }
-
-    if (isError) {
-        Spacer(Modifier.height(6.dp))
-        Text(
-            text = "!Error Message",
-            color = GalapagosTheme.colors.FontRed,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = Pretendard
-        )
-    }
-}
-
-
-@Composable
-fun defaultTextField2(
-    modifier: Modifier = Modifier,
-    hint: String = "",
-    height: Int = 56,
-    maxChar: Int = 10000,
-    isError: Boolean = false,
-    onValueChange: (String) -> Unit = { },
-    enabled: Boolean = true,
-    readOnly: Boolean = false,
-    textStyle: TextStyle = GalapagosTheme.typography.title4,
-    singleLine: Boolean = true,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
-) {
-    val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
-
-    // Focus를 확인하기 위함
-    val isFocused by rememberSaveable { mutableStateOf(false) }
-    // X 버튼을 눌렀는지 확인하기 위함
-    var isDeleted by rememberSaveable { mutableStateOf(false) }
-    var errorColor by rememberSaveable { mutableStateOf(isError) }
-
-    var borderColor = Color.White
-    borderColor = if (errorColor) GalapagosTheme.colors.FontRed else GalapagosTheme.colors.BgGray5
-
-    // TextFieldValue에 rememberSaveable를 사용하기 위함
-    var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var verticalPadding: Dp = 0.dp
-
-    if (height == 68) verticalPadding = 20.dp
-    else if (height == 56) verticalPadding = 11.dp
-
-    Surface(
-        Modifier
-            .fillMaxWidth()
-            .border(width = 1.dp, color = GalapagosTheme.colors.BgGray5), shape = RoundedCornerShape(8.dp)
-    ) {
-        Column(Modifier.fillMaxWidth()) {
-            Spacer(Modifier.height(verticalPadding))
-
-            Row(Modifier.fillMaxWidth().background(color = Color.Yellow)) {
-                BasicTextField(
-                    value = textValue,
-                    onValueChange = {
-                        onValueChange(it.text)
-                        textValue = it
-                    },
-                    modifier = modifier.background(color = Color.Cyan).focusRequester(focusRequester).focusable()
-                        .onFocusChanged {
-                            if (it.isFocused) {
-                                Log.d(tag, "Focus Changed In")
-                            } else {
-                                Log.d(tag, "Focus Changed Out")
-                            }
-                        },
-                    enabled = enabled,
-                    readOnly = readOnly,
-                    textStyle = textStyle,
-                    singleLine = singleLine,
-                    keyboardOptions = keyboardOptions,
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                        }
-                    ),
-                    decorationBox = { innerTextField ->
-                        Row(
-                            modifier = Modifier,
-                            verticalAlignment = Alignment.CenterVertically
+                if (trailingContent != null) {
+                    trailingContent()
+                } else {
+                    if (isFocused) {
+                        CompositionLocalProvider(
+                            LocalMinimumInteractiveComponentEnforcement provides false
                         ) {
-                            if (textValue.text.isEmpty() || isDeleted) {
-                                textValue = TextFieldValue()
-                                Text(hint, color = GalapagosTheme.colors.BgGray5)
-                                isDeleted = false
+                            if (showLength) {
+                                Text(
+                                    text = "${value.length}/${maxChar}",
+                                    style = LocalTextStyle.current.copy(
+                                        color = localColors.BgGray1
+                                    )
+                                )
+                                Spacer(Modifier.width(10.dp))
                             }
 
-                            innerTextField()
+                            IconButton(
+                                onClick = { onValueChange("") }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_textfield_x),
+                                    tint = Color.Unspecified,
+                                    contentDescription = null
+                                )
+                            }
                         }
                     }
-                )
-                Image(modifier = Modifier.clickable {
-                    focusManager.clearFocus()
-                    isDeleted = !isDeleted
-                }.focusable(), painter = painterResource(id = R.drawable.ic_textfield_x), contentDescription = null)
+                }
             }
+        },
+        visualTransformation = visualTransformation
+    )
+}
 
-            Spacer(Modifier.height(verticalPadding))
-    }
-
-        if (isError) {
-            Spacer(Modifier.height(6.dp))
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun TextFieldButton(
+    modifier: Modifier = Modifier,
+    content: String,
+    shape: Shape = RoundedCornerShape(8.dp),
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        backgroundColor = GalapagosTheme.colors.PrimaryGreen,
+        contentColor = GalapagosTheme.colors.BgGray4
+    ),
+    border: BorderStroke = BorderStroke(width = 0.dp, color = Color.Unspecified),
+    elevation: ButtonElevation = ButtonDefaults.elevation(
+        defaultElevation = 0.dp,
+        pressedElevation = 0.dp,
+        disabledElevation = 0.dp
+    )
+) {
+    CompositionLocalProvider(
+        LocalMinimumInteractiveComponentEnforcement provides false
+    ) {
+        Button(
+            modifier = modifier,
+            onClick = onClick,
+            enabled = enabled,
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            colors = colors,
+            shape = shape,
+            border = border,
+            elevation = elevation
+        ) {
             Text(
-                text = "!Error Message",
-                color = GalapagosTheme.colors.FontRed,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal,
-                fontFamily = Pretendard
+                text = content,
+                color = colors.contentColor(enabled = enabled).value,
+                style = GalapagosTheme.typography.body2.copy(fontWeight = FontWeight.SemiBold)
             )
         }
     }
 }
 
-@Composable
-fun textFieldWithButton(
-    modifier: Modifier = Modifier,
-    hint: String = "",
-    maxChar: Int = 10000,
-    isError: Boolean = false,
-    onValueChange: (String) -> Unit = { },
-    enabled: Boolean = true,
-    readOnly: Boolean = false,
-    textStyle: TextStyle = GalapagosTheme.typography.title4,
-    singleLine: Boolean = true,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
-) {
-    val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
+fun Int.toMinSec() : String {
+    val minute = this / 60
+    val second = this % 60
 
-    var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var timer by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("0")) }
-
-    BasicTextField(
-        value = textValue,
-        onValueChange = {
-            onValueChange(it.text)
-            textValue = it
-        },
-        modifier = modifier.focusRequester(focusRequester).focusable()
-            .onFocusChanged {
-                if (it.isFocused) {
-                    Log.d(tag, "Focus Changed In")
-                } else {
-                    Log.d(tag, "Focus Changed Out")
-                }
-            },
-        enabled = enabled,
-        readOnly = readOnly,
-        textStyle = textStyle,
-        singleLine = singleLine,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focusManager.clearFocus()
-            }
-        ),
-        decorationBox = { innerTextField ->
-            Column(modifier = Modifier.border(width = 1.dp, color = GalapagosTheme.colors.BgGray5, shape = RoundedCornerShape(8.dp))) {
-                Spacer(modifier = Modifier.height(20.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Surface(modifier = Modifier) {
-                        if (textValue.text.isEmpty()) {
-                            textValue = TextFieldValue()
-                            Text(hint, color = GalapagosTheme.colors.BgGray5)
-                        }
-
-                        innerTextField()
-                    }
-
-                    Text(
-                        modifier = Modifier.background(color = Color.Yellow),
-                        text = timer.text,
-                        color = GalapagosTheme.colors.PrimaryGreen,
-                        style = GalapagosTheme.typography.body1
-                    )
-                    timer = TextFieldValue((timer.text.toInt() - 1).toString())
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-            }
-        }
-    )
+    return String.format("%d:%02d", minute, second)
 }
 
-private fun timer(time: Int) {
-    var minute = time / 60
-    var second = time % 60
+@Preview(showBackground = true)
+@Composable
+fun PreviewGTextFieldHeight68() {
+    GalapagosTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                var value by remember { mutableStateOf("") }
+
+                // 기본 텍스트필드
+                GTextField(
+                    value = value,
+                    onValueChange = {
+                        value = it
+                    }
+                )
+
+                // 에러 여부 텍스트필드
+                GTextField(
+                    value = value,
+                    onValueChange = {
+                        value = it
+                    },
+                    isError = value.length < 6
+                )
+
+                // 에러 여부 && 글자 수 표시 텍스트필드
+                GTextField(
+                    value = value,
+                    onValueChange = {
+                        value = it
+                    },
+                    showLength = true
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewGTextFieldHeight56() {
+    GalapagosTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                var value by remember { mutableStateOf("") }
+
+                // 기본 텍스트필드
+                GTextField(
+                    textFieldSize = TextFieldSize.Height56,
+                    value = value,
+                    onValueChange = {
+                        value = it
+                    }
+                )
+
+                // 에러 여부 텍스트필드
+                GTextField(
+                    textFieldSize = TextFieldSize.Height56,
+                    value = value,
+                    onValueChange = {
+                        value = it
+                    },
+                    isError = value.length < 6
+                )
+
+                // 에러 여부 && 글자수 표시 텍스트필드
+                GTextField(
+                    textFieldSize = TextFieldSize.Height56,
+                    value = value,
+                    onValueChange = {
+                        value = it
+                    },
+                    showLength = true
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewGTextFieldWithTrailingContent() {
+    GalapagosTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            var isTimerRunning by remember {
+                mutableStateOf(true)
+            }
+            var remainingTime by remember {
+                mutableStateOf(180)
+            }
+
+            LaunchedEffect(isTimerRunning) {
+                while (isTimerRunning && remainingTime > 0) {
+                    delay(1000)
+                    remainingTime--
+                }
+                if (isTimerRunning) isTimerRunning = false
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                var value by remember { mutableStateOf("") }
+
+                // 버튼 텍스트 필드
+                GTextField(
+                    value = value,
+                    textFieldSize = TextFieldSize.Height56,
+                    onValueChange = {
+                        value = it
+                    },
+                    trailingContent = {
+                        TextFieldButton(
+                            content = "확인",
+                            onClick = { /*TODO*/ },
+                            enabled = value.length == 6
+                        )
+                    }
+                )
+
+                // 타이머 && 버튼 텍스트 필드
+                GTextField(
+                    value = value,
+                    placeholderText = "인증코드 6자리 입력",
+                    textFieldSize = TextFieldSize.Height56,
+                    onValueChange = {
+                        value = it
+                    },
+                    isError = value.length < 6,
+                    trailingContent = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Text(
+                                text = remainingTime.toMinSec(),
+                                style = GalapagosTheme.typography.body1.copy(
+                                    color = GalapagosTheme.colors.BgGray1
+                                )
+                            )
+
+                            TextFieldButton(
+                                content = "확인",
+                                onClick = { /*TODO*/ },
+                                enabled = value.length == 6
+                            )
+                        }
+                    }
+                )
+            }
+        }
+    }
 }
