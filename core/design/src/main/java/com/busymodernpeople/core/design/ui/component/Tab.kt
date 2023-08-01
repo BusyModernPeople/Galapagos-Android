@@ -26,13 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.design.ui.component.capture.Capturable
 import com.busymodernpeople.core.design.ui.component.capture.rememberCaptureController
-import com.busymodernpeople.core.design.ui.theme.BgGray5
-import com.busymodernpeople.core.design.ui.theme.FontBlack
-import com.busymodernpeople.core.design.ui.theme.FontGray2
-import com.busymodernpeople.core.design.ui.theme.FontWhite
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
-import com.busymodernpeople.core.design.ui.theme.PrimaryGreen
-import com.busymodernpeople.core.design.ui.theme.Typography
 import kotlinx.coroutines.delay
 
 @Composable
@@ -63,9 +57,9 @@ private fun ScrollableTabItem(
 ) {
     val textColor: Color by animateColorAsState(
         targetValue = if (isSelected) {
-            FontBlack
+            GalapagosTheme.colors.FontBlack
         } else {
-            FontGray2
+            GalapagosTheme.colors.FontGray2
         },
         animationSpec = tween(easing = LinearEasing)
     )
@@ -86,7 +80,7 @@ private fun ScrollableTabItem(
             Text(
                 modifier = Modifier.padding(vertical = 13.dp),
                 text = text,
-                style = Typography.body2,
+                style = GalapagosTheme.typography.body2,
                 fontWeight = fontWeight,
                 color = textColor
             )
@@ -191,7 +185,7 @@ private fun GlassmorphicTabItem(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 15.dp, vertical = 7.dp),
-                style = Typography.body2,
+                style = GalapagosTheme.typography.body2,
                 fontWeight = FontWeight.Bold,
                 text = text,
                 color = textColor
@@ -206,7 +200,7 @@ fun GlassmorphicTab(
     items: List<String>,
     backgroundBitmap: ImageBitmap,
     selectedItemIndex: Int,
-    indicatorColor: Color = PrimaryGreen,
+    indicatorColor: Color = GalapagosTheme.colors.PrimaryGreen,
     onClick: (index: Int) -> Unit
 ) {
     val density = LocalDensity.current
@@ -237,7 +231,7 @@ fun GlassmorphicTab(
                 .height(height)
                 .border(
                     width = 1.dp,
-                    color = BgGray5,
+                    color = GalapagosTheme.colors.BgGray5,
                     shape = CircleShape
                 )
                 .blur(10.dp)
@@ -297,8 +291,8 @@ private fun ContentTabItem(
     onClick: () -> Unit,
     text: String
 ) {
-    val textColor = if (isSelected) FontWhite else PrimaryGreen
-    val backgroundColor = if (isSelected) PrimaryGreen else Color(0xFFE8E8EF)
+    val textColor = if (isSelected) GalapagosTheme.colors.FontWhite else GalapagosTheme.colors.PrimaryGreen
+    val backgroundColor = if (isSelected) GalapagosTheme.colors.PrimaryGreen else Color(0xFFE8E8EF)
 
     CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
         Surface(
@@ -311,7 +305,7 @@ private fun ContentTabItem(
             Text(
                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
                 text = text,
-                style = Typography.body2,
+                style = GalapagosTheme.typography.body2,
                 color = textColor
             )
         }

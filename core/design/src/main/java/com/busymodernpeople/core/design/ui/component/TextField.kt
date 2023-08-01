@@ -41,12 +41,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.busymodernpeople.core.design.R
-import com.busymodernpeople.core.design.ui.theme.BgGray5
-import com.busymodernpeople.core.design.ui.theme.FontRed
+import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.core.design.ui.theme.Pretendard
-import com.busymodernpeople.core.design.ui.theme.PrimaryGreen
-import com.busymodernpeople.core.design.ui.theme.Typography
-import com.busymodernpeople.core.design.ui.theme.title4
 
 val tag = "COMPONENT-TEST"
 
@@ -166,7 +162,7 @@ fun defaultTextField(
     onValueChange: (String) -> Unit = { },
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    textStyle: TextStyle = Typography.title4,
+    textStyle: TextStyle = GalapagosTheme.typography.title4,
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
@@ -180,7 +176,7 @@ fun defaultTextField(
     var errorColor by rememberSaveable { mutableStateOf(isError) }
 
     var borderColor = Color.White
-    borderColor = if (errorColor) FontRed else BgGray5
+    borderColor = if (errorColor) GalapagosTheme.colors.FontRed else GalapagosTheme.colors.BgGray5
 
     // TextFieldValue에 rememberSaveable를 사용하기 위함
     var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
@@ -232,7 +228,7 @@ fun defaultTextField(
                 ) {
                     if (textValue.text.isEmpty() || isDeleted) {
                         textValue = TextFieldValue()
-                        Text(hint, color = BgGray5)
+                        Text(hint, color = GalapagosTheme.colors.BgGray5)
                         isDeleted = false
                     }
 
@@ -256,7 +252,7 @@ fun defaultTextField(
         Spacer(Modifier.height(6.dp))
         Text(
             text = "!Error Message",
-            color = FontRed,
+            color = GalapagosTheme.colors.FontRed,
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             fontFamily = Pretendard
@@ -275,7 +271,7 @@ fun defaultTextField2(
     onValueChange: (String) -> Unit = { },
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    textStyle: TextStyle = Typography.title4,
+    textStyle: TextStyle = GalapagosTheme.typography.title4,
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
@@ -289,7 +285,7 @@ fun defaultTextField2(
     var errorColor by rememberSaveable { mutableStateOf(isError) }
 
     var borderColor = Color.White
-    borderColor = if (errorColor) FontRed else BgGray5
+    borderColor = if (errorColor) GalapagosTheme.colors.FontRed else GalapagosTheme.colors.BgGray5
 
     // TextFieldValue에 rememberSaveable를 사용하기 위함
     var textValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
@@ -298,7 +294,11 @@ fun defaultTextField2(
     if (height == 68) verticalPadding = 20.dp
     else if (height == 56) verticalPadding = 11.dp
 
-    Surface(Modifier.fillMaxWidth().border(width = 1.dp, color = BgGray5), shape = RoundedCornerShape(8.dp)) {
+    Surface(
+        Modifier
+            .fillMaxWidth()
+            .border(width = 1.dp, color = GalapagosTheme.colors.BgGray5), shape = RoundedCornerShape(8.dp)
+    ) {
         Column(Modifier.fillMaxWidth()) {
             Spacer(Modifier.height(verticalPadding))
 
@@ -334,7 +334,7 @@ fun defaultTextField2(
                         ) {
                             if (textValue.text.isEmpty() || isDeleted) {
                                 textValue = TextFieldValue()
-                                Text(hint, color = BgGray5)
+                                Text(hint, color = GalapagosTheme.colors.BgGray5)
                                 isDeleted = false
                             }
 
@@ -355,7 +355,7 @@ fun defaultTextField2(
             Spacer(Modifier.height(6.dp))
             Text(
                 text = "!Error Message",
-                color = FontRed,
+                color = GalapagosTheme.colors.FontRed,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
                 fontFamily = Pretendard
@@ -373,7 +373,7 @@ fun textFieldWithButton(
     onValueChange: (String) -> Unit = { },
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    textStyle: TextStyle = Typography.title4,
+    textStyle: TextStyle = GalapagosTheme.typography.title4,
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
@@ -408,7 +408,7 @@ fun textFieldWithButton(
             }
         ),
         decorationBox = { innerTextField ->
-            Column(modifier = Modifier.border(width = 1.dp, color = BgGray5, shape = RoundedCornerShape(8.dp))) {
+            Column(modifier = Modifier.border(width = 1.dp, color = GalapagosTheme.colors.BgGray5, shape = RoundedCornerShape(8.dp))) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
@@ -417,13 +417,18 @@ fun textFieldWithButton(
                     Surface(modifier = Modifier) {
                         if (textValue.text.isEmpty()) {
                             textValue = TextFieldValue()
-                            Text(hint, color = BgGray5)
+                            Text(hint, color = GalapagosTheme.colors.BgGray5)
                         }
 
                         innerTextField()
                     }
 
-                    Text(modifier = Modifier.background(color = Color.Yellow), text = timer.text, color = PrimaryGreen, style = Typography.body1)
+                    Text(
+                        modifier = Modifier.background(color = Color.Yellow),
+                        text = timer.text,
+                        color = GalapagosTheme.colors.PrimaryGreen,
+                        style = GalapagosTheme.typography.body1
+                    )
                     timer = TextFieldValue((timer.text.toInt() - 1).toString())
                 }
                 Spacer(modifier = Modifier.height(20.dp))

@@ -24,11 +24,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.design.R
-import com.busymodernpeople.core.design.ui.theme.FontGray4
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
-import com.busymodernpeople.core.design.ui.theme.PrimaryGreen
-import com.busymodernpeople.core.design.ui.theme.Typography
-import com.busymodernpeople.core.design.ui.theme.body4
 
 sealed class Tabs(
     @StringRes val title: Int,
@@ -45,8 +41,8 @@ sealed class Tabs(
 fun NavBar(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.White,
-    selectedContentColor: Color = PrimaryGreen,
-    unselectedContentColor: Color = FontGray4,
+    selectedContentColor: Color = GalapagosTheme.colors.PrimaryGreen,
+    unselectedContentColor: Color = GalapagosTheme.colors.FontGray4,
     navController: NavController
 ) {
     val tabs = arrayOf(Tabs.Home, Tabs.Diary, Tabs.Community, Tabs.MyPage)
@@ -141,7 +137,7 @@ fun NavItem(
 
                 Text(
                     text = stringResource(id = label),
-                    style = Typography.body4,
+                    style = GalapagosTheme.typography.body4,
                     fontWeight = FontWeight.SemiBold,
                     color = contentColor
                 )
