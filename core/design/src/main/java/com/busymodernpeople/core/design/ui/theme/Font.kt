@@ -1,10 +1,10 @@
-package com.busymodernpeople.galapagos.ui.theme
+package com.busymodernpeople.core.design.ui.theme
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import com.busymodernpeople.galapagos.R
+import com.busymodernpeople.core.design.R
 
 val Pretendard = FontFamily(
     Font(R.font.pretendard_bold, FontWeight.Bold, FontStyle.Normal),

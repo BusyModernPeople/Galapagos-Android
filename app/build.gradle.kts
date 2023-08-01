@@ -31,8 +31,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -53,6 +51,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:design"))
+
     with(Dependencies.AndroidX) {
         implementation(APPCOMPAT)
         implementation(CORE_KTX)
@@ -90,10 +90,6 @@ dependencies {
         implementation(CONVERTER_GSON)
         implementation(OKHTTP)
         implementation(LOGGING_INTERCEPTOR)
-    }
-
-    with(Dependencies.Tools) {
-        coreLibraryDesugaring(DESUGAR_JDK_LIBS)
     }
 
     with(Dependencies.Junit) {

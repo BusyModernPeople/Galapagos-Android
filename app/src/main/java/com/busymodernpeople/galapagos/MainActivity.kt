@@ -12,14 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.busymodernpeople.galapagos.ui.theme.GalapagosTheme
-import com.busymodernpeople.galapagos.ui.theme.Typography
-import com.busymodernpeople.galapagos.ui.theme.body3
-import com.busymodernpeople.galapagos.ui.theme.body4
-import com.busymodernpeople.galapagos.ui.theme.title1
-import com.busymodernpeople.galapagos.ui.theme.title2
-import com.busymodernpeople.galapagos.ui.theme.title3
-import com.busymodernpeople.galapagos.ui.theme.title4
+import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.core.design.ui.theme.Typography
+import com.busymodernpeople.core.design.ui.theme.body3
+import com.busymodernpeople.core.design.ui.theme.body4
+import com.busymodernpeople.core.design.ui.theme.title1
+import com.busymodernpeople.core.design.ui.theme.title2
+import com.busymodernpeople.core.design.ui.theme.title3
+import com.busymodernpeople.core.design.ui.theme.title4
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

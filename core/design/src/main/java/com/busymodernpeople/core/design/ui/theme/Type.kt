@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.theme
+package com.busymodernpeople.core.design.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.PlatformTextStyle

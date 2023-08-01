@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.theme
+package com.busymodernpeople.core.design.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

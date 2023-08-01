@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.component
+package com.busymodernpeople.core.design.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.busymodernpeople.galapagos.ui.theme.Pretendard
-import com.busymodernpeople.galapagos.ui.theme.PrimaryGreen
+import com.busymodernpeople.core.design.ui.theme.Pretendard
+import com.busymodernpeople.core.design.ui.theme.PrimaryGreen
 
 sealed class Button {
     object Height40 : Button()

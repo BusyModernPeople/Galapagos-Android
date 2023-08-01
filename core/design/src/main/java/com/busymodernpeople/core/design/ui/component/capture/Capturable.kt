@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.component.capture
+package com.busymodernpeople.core.design.ui.component.capture
 
 import android.app.Activity
 import android.content.Context

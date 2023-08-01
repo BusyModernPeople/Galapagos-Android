@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.component
+package com.busymodernpeople.core.design.ui.component
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -23,8 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.busymodernpeople.galapagos.R
-import com.busymodernpeople.galapagos.ui.theme.*
+import com.busymodernpeople.core.design.R
+import com.busymodernpeople.core.design.ui.theme.FontGray4
+import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.core.design.ui.theme.PrimaryGreen
+import com.busymodernpeople.core.design.ui.theme.Typography
+import com.busymodernpeople.core.design.ui.theme.body4
 
 sealed class Tabs(
     @StringRes val title: Int,

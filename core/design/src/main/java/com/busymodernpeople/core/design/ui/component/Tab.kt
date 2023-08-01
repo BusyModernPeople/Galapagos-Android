@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.component
+package com.busymodernpeople.core.design.ui.component
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
@@ -24,9 +24,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.busymodernpeople.galapagos.ui.component.capture.Capturable
-import com.busymodernpeople.galapagos.ui.component.capture.rememberCaptureController
-import com.busymodernpeople.galapagos.ui.theme.*
+import com.busymodernpeople.core.design.ui.component.capture.Capturable
+import com.busymodernpeople.core.design.ui.component.capture.rememberCaptureController
+import com.busymodernpeople.core.design.ui.theme.BgGray5
+import com.busymodernpeople.core.design.ui.theme.FontBlack
+import com.busymodernpeople.core.design.ui.theme.FontGray2
+import com.busymodernpeople.core.design.ui.theme.FontWhite
+import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.core.design.ui.theme.PrimaryGreen
+import com.busymodernpeople.core.design.ui.theme.Typography
 import kotlinx.coroutines.delay
 
 @Composable
