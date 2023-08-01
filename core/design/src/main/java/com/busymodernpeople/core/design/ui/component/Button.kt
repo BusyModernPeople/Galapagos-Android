@@ -1,13 +1,16 @@
 package com.busymodernpeople.core.design.ui.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -23,25 +26,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.core.design.ui.theme.LocalTypography
 import com.busymodernpeople.core.design.ui.theme.Pretendard
 
-sealed class Button {
-    object Height40 : Button()
-    object Height52 : Button()
-    object Height56 : Button()
+sealed class ButtonSize {
+    object Height40 : ButtonSize()
+    object Height52 : ButtonSize()
+    object Height56 : ButtonSize()
 }
 
+/**
+ * @param icon 버튼 앞에 표시되는 아이콘
+ */
 @Composable
-fun DefaultButton(
+fun GButton(
     modifier: Modifier = Modifier,
-    button: Button = Button.Height40,
+    buttonSize: ButtonSize = ButtonSize.Height40,
     shape: Shape = RoundedCornerShape(8.dp),
     content: String,
-    icon_id: Int? = null,
+    @DrawableRes icon: Int? = null,
     onClick: () -> Unit,
     enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(
@@ -55,15 +62,22 @@ fun DefaultButton(
         disabledElevation = 0.dp
     )
 ) {
+    val localTypography = LocalTypography.current
+
     // 버튼 크기에 따른 Padding 설정
-    val (height, horizontalPadding) = when (button) {
-        Button.Height56 -> Pair(56.dp, 20.dp)
-        Button.Height52 -> Pair(52.dp, 20.dp)
-        Button.Height40 -> Pair(40.dp, 12.dp)
+    val (height, horizontalPadding) = when (buttonSize) {
+        ButtonSize.Height56 -> Pair(56.dp, 20.dp)
+        ButtonSize.Height52 -> Pair(52.dp, 20.dp)
+        ButtonSize.Height40 -> Pair(40.dp, 12.dp)
     }
 
-    val textSize = if (button == Button.Height56) 16.sp else 14.sp
-    val iconSpacer = if (button == Button.Height40) 10.dp else 18.dp
+    val textStyle =
+        if (buttonSize == ButtonSize.Height56) {
+            localTypography.body1
+        } else {
+            localTypography.body2
+        }
+    val iconSpacer = if (buttonSize == ButtonSize.Height40) 10.dp else 18.dp
 
     Button(
         modifier = modifier.height(height),
@@ -86,14 +100,12 @@ fun DefaultButton(
                 Text(
                     text = content,
                     color = colors.contentColor(enabled = enabled).value,
-                    fontSize = textSize,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = Pretendard
+                    style = textStyle.copy(fontWeight = FontWeight.SemiBold)
                 )
-                if (icon_id != null) {
+                icon?.let {
                     Spacer(modifier = Modifier.width(iconSpacer))
                     Icon(
-                        painter = painterResource(id = icon_id),
+                        painter = painterResource(id = icon),
                         contentDescription = null,
                         tint = colors.contentColor(enabled = enabled).value
                     )
@@ -103,11 +115,14 @@ fun DefaultButton(
     }
 }
 
+/**
+ * @param icon 버튼 앞에 표시되는 아이콘
+ */
 @Composable
-fun FloatingButton(
+fun GFloatingButton(
     modifier: Modifier = Modifier,
     content: String? = null,
-    icon_id: Int? = null,
+    @DrawableRes icon: Int? = null,
     onClick: () -> Unit,
     enabled: Boolean = true,
     horizontalPadding: Dp = 25.dp,
@@ -123,6 +138,8 @@ fun FloatingButton(
         disabledElevation = 0.dp
     )
 ) {
+    val localTypography = LocalTypography.current
+
     Button(
         modifier = modifier,
         onClick = onClick,
@@ -139,9 +156,9 @@ fun FloatingButton(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (icon_id != null) {
+                icon?.let {
                     Icon(
-                        painter = painterResource(id = icon_id),
+                        painter = painterResource(id = icon),
                         contentDescription = null,
                         tint = colors.contentColor(enabled = enabled).value
                     )
@@ -149,15 +166,51 @@ fun FloatingButton(
                     Spacer(modifier = Modifier.width(4.dp))
                 }
 
-                if (content != null) {
+                content?.let {
                     Text(
                         text = content,
                         color = colors.contentColor(enabled = enabled).value,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = localTypography.body1.copy(fontWeight = FontWeight.SemiBold),
                         fontFamily = Pretendard
                     )
                 }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewGButton() {
+    GalapagosTheme {
+        Box(
+            modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                GButton(
+                    content = "확인",
+                    onClick = { /*TODO*/ }
+                )
+
+                GButton(
+                    content = "확인",
+                    enabled = false,
+                    onClick = { /*TODO*/ }
+                )
+
+                GButton(
+                    content = "확인",
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = GalapagosTheme.colors.FontWhite,
+                        contentColor = GalapagosTheme.colors.FontGray3
+                    ),
+                    border = BorderStroke(
+                        width = 1.dp,
+                        color = GalapagosTheme.colors.BgGray1
+                    ),
+                    onClick = { /*TODO*/ }
+                )
             }
         }
     }
