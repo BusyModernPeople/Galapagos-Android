@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.component
+package com.busymodernpeople.core.design.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,8 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.busymodernpeople.galapagos.R
-import com.busymodernpeople.galapagos.ui.theme.*
+import com.busymodernpeople.core.design.R
+import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.core.design.ui.theme.Pretendard
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -58,7 +59,7 @@ private fun MonthSelector(
                     fontFamily = Pretendard,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
-                    color = FontBlack,
+                    color = GalapagosTheme.colors.FontBlack,
                     lineHeight = 1.5.em,
                     platformStyle = PlatformTextStyle(
                         includeFontPadding = false
@@ -101,9 +102,9 @@ private fun WeekHeader(modifier: Modifier = Modifier) {
             ) {
                 Text(
                     text = day,
-                    style = Typography.body2,
+                    style = GalapagosTheme.typography.body2,
                     fontWeight = FontWeight.SemiBold,
-                    color = FontGray2
+                    color = GalapagosTheme.colors.FontGray2
                 )
             }
         }
@@ -164,7 +165,7 @@ private fun Day(
                 .size(42.dp)
                 .background(
                     shape = CircleShape,
-                    color = if (selected) PrimaryGreen else Color.Transparent
+                    color = if (selected) GalapagosTheme.colors.PrimaryGreen else Color.Transparent
                 )
                 .clickable(
                     interactionSource = NoRippleInteractionSource(),
@@ -182,7 +183,7 @@ private fun Day(
                         modifier = Modifier
                             .size(6.dp)
                             .background(
-                                color = PrimaryGreen,
+                                color = GalapagosTheme.colors.PrimaryGreen,
                                 shape = CircleShape
                             )
                     )
@@ -191,13 +192,13 @@ private fun Day(
 
             Text(
                 text = "${day.dayOfMonth}",
-                style = Typography.body2,
+                style = GalapagosTheme.typography.body2,
                 color = if (selected) {
                     Color.White
                 } else if (!todayIsSelected && isToday) {
-                    PrimaryGreen
+                    GalapagosTheme.colors.PrimaryGreen
                 } else {
-                    FontGray1
+                    GalapagosTheme.colors.FontGray1
                 },
                 fontWeight = if (todayIsSelected && isToday) {
                     FontWeight.SemiBold

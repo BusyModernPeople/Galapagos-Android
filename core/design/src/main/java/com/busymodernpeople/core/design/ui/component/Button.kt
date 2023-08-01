@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.component
+package com.busymodernpeople.core.design.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.busymodernpeople.galapagos.ui.theme.Pretendard
-import com.busymodernpeople.galapagos.ui.theme.PrimaryGreen
+import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.core.design.ui.theme.Pretendard
 
 sealed class Button {
     object Height40 : Button()
@@ -45,7 +45,7 @@ fun DefaultButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = PrimaryGreen,
+        backgroundColor = GalapagosTheme.colors.PrimaryGreen,
         contentColor = Color.White
     ),
     border: BorderStroke = BorderStroke(width = 0.dp, color = Color.Unspecified),
@@ -113,7 +113,7 @@ fun FloatingButton(
     horizontalPadding: Dp = 25.dp,
     verticalPadding: Dp = 15.dp,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = PrimaryGreen,
+        backgroundColor = GalapagosTheme.colors.PrimaryGreen,
         contentColor = Color.White,
     ),
     border: BorderStroke = BorderStroke(width = 0.dp, color = Color.Unspecified),

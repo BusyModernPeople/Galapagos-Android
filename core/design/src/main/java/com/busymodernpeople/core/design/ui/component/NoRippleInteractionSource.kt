@@ -1,4 +1,4 @@
-package com.busymodernpeople.galapagos.ui.component
+package com.busymodernpeople.core.design.ui.component
 
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
