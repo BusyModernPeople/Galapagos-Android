@@ -1,6 +1,6 @@
 plugins {
     with(Plugins) {
-        id(ANDORID_APPLICATION)
+        id(ANDROID_APPLICATION)
         id(KOTLIN_ANDROID)
         id(KOTLIN_KAPT)
         id(DAGGER_HILT_ANDROID)

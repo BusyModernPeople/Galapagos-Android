@@ -15,3 +15,9 @@ dependencyResolutionManagement {
 rootProject.name = "Galapagos"
 include(":app")
 include(":core:design")
+include(":feature:login")
+include(":feature:join")
+include(":feature:home")
+include(":feature:diary")
+include(":feature:community")
+include(":feature:mypage")
