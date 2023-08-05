@@ -40,8 +40,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
-import com.busymodernpeople.core.design.ui.component.join.JoinProgressBar
-import com.busymodernpeople.core.design.ui.component.join.JoinTopBar
+import com.busymodernpeople.core.design.ui.join.JoinProgressBar
+import com.busymodernpeople.core.design.ui.join.JoinTopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
 @Preview(

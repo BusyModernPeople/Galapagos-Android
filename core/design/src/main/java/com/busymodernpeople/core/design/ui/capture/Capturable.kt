@@ -1,4 +1,4 @@
-package com.busymodernpeople.core.design.ui.component.capture
+package com.busymodernpeople.core.design.ui.capture
 
 import android.app.Activity
 import android.content.Context

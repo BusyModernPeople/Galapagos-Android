@@ -1,4 +1,4 @@
-package com.busymodernpeople.core.design.ui.component.join
+package com.busymodernpeople.core.design.ui.join
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row

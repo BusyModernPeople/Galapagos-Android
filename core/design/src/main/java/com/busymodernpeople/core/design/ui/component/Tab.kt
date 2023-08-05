@@ -24,8 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.busymodernpeople.core.design.ui.component.capture.Capturable
-import com.busymodernpeople.core.design.ui.component.capture.rememberCaptureController
+import com.busymodernpeople.core.design.ui.capture.Capturable
+import com.busymodernpeople.core.design.ui.capture.rememberCaptureController
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import kotlinx.coroutines.delay
 
