@@ -31,7 +31,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    backgroundColor = 0xFFFFFFFF
+)
 @Composable
 fun LoginScreen(
     onKakaoLogin: () -> Unit = {},
@@ -60,13 +64,13 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(134.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
             SocialLoginButton(icon = R.drawable.ic_kakao_login) {
-
+                onKakaoLogin()
             }
             SocialLoginButton(icon = R.drawable.ic_naver_login) {
-                
+                onNaverLogin()
             }
             SocialLoginButton(icon = R.drawable.ic_google_login) {
-                
+                onGoogleLogin()
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
@@ -75,7 +79,7 @@ fun LoginScreen(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(
-                text = "이메일 회원가입",
+                text = stringResource(id = R.string.login_email_signup),
                 color = GalapagosTheme.colors.FontBlack,
                 textDecoration = TextDecoration.Underline
             )
@@ -86,7 +90,7 @@ fun LoginScreen(
                 color = GalapagosTheme.colors.BgGray1
             )
             Text(
-                text = "이메일 로그인",
+                text = stringResource(id = R.string.login_email_login),
                 color = GalapagosTheme.colors.FontBlack,
                 textDecoration = TextDecoration.Underline
             )
