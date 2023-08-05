@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 class GalapagosColors(
     fontBlack: Color = Color(0xFF161616),
     fontGray1: Color = Color(0xFF333333),
-    fontGray2: Color = Color(0xFF79747E),
+    fontGray2: Color = Color(0xFF70747E),
     fontGray3: Color = Color(0xFF96979B),
     fontGray4: Color = Color(0xFFC4C4C4),
     fontGray5: Color = Color(0xFFD3D3D3),

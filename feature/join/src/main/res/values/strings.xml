@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="join_terms_agree">약관동의</string>
+    <string name="join_terms_agree_intro">서비스 이용 약관에 동의해주세요</string>
+    <string name="join_required">(필수)</string>
+    <string name="join_optional">(선택)</string>
+    <string name="join_agree_all">전체 동의하기</string>
+    <string name="join_terms_of_use">이용약관</string>
+    <string name="join_privacy_policy">개인정보 취급방침</string>
+    <string name="join_ad_info_agree">이벤트 및 마케팅 정보 이메일 수신 동의</string>
+    <string name="join_next">다음</string>
+</resources>
