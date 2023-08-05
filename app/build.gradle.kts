@@ -52,6 +52,12 @@ android {
 
 dependencies {
     implementation(project(":core:design"))
+    implementation(project(":feature:login"))
+    implementation(project(":feature:join"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:diary"))
+    implementation(project(":feature:community"))
+    implementation(project(":feature:mypage"))
 
     with(Dependencies.AndroidX) {
         implementation(APPCOMPAT)
