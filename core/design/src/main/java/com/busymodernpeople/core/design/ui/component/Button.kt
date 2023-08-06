@@ -40,7 +40,8 @@ sealed class ButtonSize {
 }
 
 /**
- * @param icon 버튼 앞에 표시되는 아이콘
+ * @param leadingIcon 버튼 앞에 표시되는 아이콘
+ * @param trailingIcon 버튼 뒤에 표시되는 아이콘
  */
 @Composable
 fun GButton(
@@ -48,7 +49,9 @@ fun GButton(
     buttonSize: ButtonSize = ButtonSize.Height40,
     shape: Shape = RoundedCornerShape(8.dp),
     content: String,
-    @DrawableRes icon: Int? = null,
+    @DrawableRes leadingIcon: Int? = null,
+    @DrawableRes trailingIcon: Int? = null,
+    iconSpacer: Int = 10,
     onClick: () -> Unit,
     enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(
@@ -77,7 +80,6 @@ fun GButton(
         } else {
             localTypography.body2
         }
-    val iconSpacer = if (buttonSize == ButtonSize.Height40) 10.dp else 18.dp
 
     Button(
         modifier = modifier.height(height),
@@ -95,17 +97,24 @@ fun GButton(
             verticalArrangement = Arrangement.Center,
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(iconSpacer.dp)
             ) {
+                leadingIcon?.let {
+                    Icon(
+                        painter = painterResource(id = leadingIcon),
+                        contentDescription = null,
+                        tint = colors.contentColor(enabled = enabled).value
+                    )
+                }
                 Text(
                     text = content,
                     color = colors.contentColor(enabled = enabled).value,
                     style = textStyle.copy(fontWeight = FontWeight.SemiBold)
                 )
-                icon?.let {
-                    Spacer(modifier = Modifier.width(iconSpacer))
+                trailingIcon?.let {
                     Icon(
-                        painter = painterResource(id = icon),
+                        painter = painterResource(id = trailingIcon),
                         contentDescription = null,
                         tint = colors.contentColor(enabled = enabled).value
                     )
