@@ -233,12 +233,12 @@ private fun CheckBox(
                 )
         )
         Icon(
-            painter = painterResource(id = R.drawable.ic_join_check),
+            painter = painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_check),
             contentDescription = null,
             tint = if (checked) {
                 GalapagosTheme.colors.FontWhite
             } else {
-                Color.Unspecified
+                GalapagosTheme.colors.FontGray4
             }
         )
     }

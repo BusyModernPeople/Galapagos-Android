@@ -36,6 +36,7 @@ import com.busymodernpeople.core.design.ui.component.GTextField
 import com.busymodernpeople.core.design.ui.component.TextFieldButton
 import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.toMinSec
+import com.busymodernpeople.core.design.ui.join.JoinConditionItem
 import com.busymodernpeople.core.design.ui.join.JoinProgressBar
 import com.busymodernpeople.core.design.ui.join.JoinTopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
@@ -180,21 +181,10 @@ fun JoinEmailScreen(
                     }
                 } else {
                     Spacer(modifier = Modifier.height(6.dp))
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_join_check),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                        Text(
-                            text = stringResource(id = R.string.join_authenticated_message),
-                            style = GalapagosTheme.typography.body2,
-                            color = GalapagosTheme.colors.PrimaryGreen
-                        )
-                    }
+                    JoinConditionItem(
+                        isSatisfied = true,
+                        content = R.string.join_authenticated_message
+                    )
                 }
             }
 
