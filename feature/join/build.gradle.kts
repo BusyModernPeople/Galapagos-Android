@@ -48,6 +48,7 @@ dependencies {
         implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_UI)
         implementation(COMPOSE_UI_TOOLING_PREVIEW)
+        implementation(NAVIGATION_COMPOSE)
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)
         androidTestImplementation(UI_TEST_JUNIT4)

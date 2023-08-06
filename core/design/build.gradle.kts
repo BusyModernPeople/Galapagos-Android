@@ -1,15 +1,16 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    with(Plugins) {
+        id(ANDROID_LIBRARY)
+        id(KOTLIN_ANDROID)
+    }
 }
 
 android {
     namespace = "com.busymodernpeople.core.design"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
