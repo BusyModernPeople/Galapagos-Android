@@ -20,4 +20,21 @@
     <string name="join_wrong_authentication_number_message">! 잘못된 인증번호입니다.</string>
     <string name="join_expired_authentication_number_message">! 인증코드가 만료되었습니다.</string>
     <string name="join_authenticated_message">이메일 인증 완료!</string>
+    <string name="join_input_password">비밀번호를\n입력해주세요</string>
+    <string name="join_password_textfield_placeholder">비밀번호를 입력해주세요.</string>
+    <string name="join_confirm_password_textfield_placeholder">비밀번호를 재입력해주세요.</string>
+    <string name="join_password_condition_english">영문포함</string>
+    <string name="join_password_condition_number">숫자포함</string>
+    <string name="join_password_condition_symbol">특수문자포함</string>
+    <string name="join_password_condition_length">8자~20자</string>
+    <string name="join_password_condition_match">비밀번호 일치</string>
+    <string name="join_input_nickname">닉네임을\n입력해주세요</string>
+    <string name="join_nickname_textfield_placeholder">2~6자리로 입력해주세요</string>
+    <string name="join_nickname_condition_satisfied_message">너무 재미있고 독특한 이름이네요!</string>
+    <string name="join_complete">가입완료</string>
+
+    <string name="join_complete_welcome_message">반가워요!\n</string>
+    <string name="join_request_pet_registration">먼저 반려동물을 등록해볼까요?</string>
+    <string name="join_register_pet">반려동물 등록하기</string>
+    <string name="join_guest_mode">먼저 앱 둘러보기</string>
 </resources>
