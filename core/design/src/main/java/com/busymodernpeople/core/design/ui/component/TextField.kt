@@ -78,7 +78,7 @@ fun GTextField(
     keyboardActions: KeyboardActions? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     showLength: Boolean = false,
-    maxChar: Int = 6
+    maxChar: Int = 20
 ) {
     val localColors = LocalColors.current
     val localTypography = LocalTypography.current
@@ -180,7 +180,7 @@ fun GTextField(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun TextFieldButton(
+fun TextFieldButton(
     modifier: Modifier = Modifier,
     content: String,
     shape: Shape = RoundedCornerShape(8.dp),

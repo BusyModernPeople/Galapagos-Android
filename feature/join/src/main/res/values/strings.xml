@@ -9,4 +9,15 @@
     <string name="join_privacy_policy">개인정보 취급방침</string>
     <string name="join_ad_info_agree">이벤트 및 마케팅 정보 이메일 수신 동의</string>
     <string name="join_next">다음</string>
+    <string name="join_confirm">확인</string>
+    <string name="join_input_email">이메일을\n입력해주세요</string>
+    <string name="join_email_textfield_placeholder">이메일을 입력해주세요</string>
+    <string name="join_authenticate_email">이메일 인증하기</string>
+    <string name="join_input_authenticate_number">이메일로 전송된 인증코드를 입력해주세요.</string>
+    <string name="join_authentication_number_textfield_placeholder">인증코드 6자리 입력</string>
+    <string name="join_not_received_authentication_number">인증코드를 받지 못하셨나요?</string>
+    <string name="join_resend_authentication_number">인증코드 재전송하기</string>
+    <string name="join_wrong_authentication_number_message">! 잘못된 인증번호입니다.</string>
+    <string name="join_expired_authentication_number_message">! 인증코드가 만료되었습니다.</string>
+    <string name="join_authenticated_message">이메일 인증 완료!</string>
 </resources>

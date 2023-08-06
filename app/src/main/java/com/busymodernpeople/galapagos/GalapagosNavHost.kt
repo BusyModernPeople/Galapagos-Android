@@ -6,11 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.design.ui.component.EnterAnimation
 import com.busymodernpeople.feature.join.JoinAgreeScreen
+import com.busymodernpeople.feature.join.JoinEmailScreen
 import com.busymodernpeople.feature.login.LoginScreen
 
 object GalapagosDestinations {
     const val LOGIN = "login"
     const val JOIN_AGREE = "joinAgree"
+    const val JOIN_EMAIL = "joinEmail"
 }
 
 @Composable
@@ -31,7 +33,16 @@ fun GalapagosNavHost() {
         composable(route = GalapagosDestinations.JOIN_AGREE) {
             EnterAnimation {
                 JoinAgreeScreen(
-                    onBack = { navController.navigateUp() }
+                    onBack = { navController.navigateUp() },
+                    onConfirm = { navController.navigate(GalapagosDestinations.JOIN_EMAIL) }
+                )
+            }
+        }
+        composable(route = GalapagosDestinations.JOIN_EMAIL) {
+            EnterAnimation {
+                JoinEmailScreen(
+                    onBack = { navController.navigateUp() },
+                    onConfirm = { }
                 )
             }
         }
