@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.join.JoinProgressBar
 import com.busymodernpeople.core.design.ui.join.JoinTopBar
@@ -95,13 +96,16 @@ fun JoinCompleteScreen(
 
             GButton(
                 trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_arrow_right,
+                buttonSize = ButtonSize.Height56,
                 iconSpacer = 4,
                 content = stringResource(id = R.string.join_register_pet),
                 onClick = { onRegisterPet() }
             )
             Spacer(modifier = Modifier.height(10.dp))
             GButton(
+                modifier = Modifier.padding(bottom = 50.dp),
                 trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_arrow_right,
+                buttonSize = ButtonSize.Height56,
                 iconSpacer = 4,
                 content = stringResource(id = R.string.join_guest_mode),
                 colors = ButtonDefaults.buttonColors(
@@ -114,7 +118,6 @@ fun JoinCompleteScreen(
                 ),
                 onClick = { onGuestMode() }
             )
-            Spacer(modifier = Modifier.height(50.dp))
         }
     }
 }

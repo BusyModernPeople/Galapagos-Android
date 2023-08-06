@@ -190,12 +190,12 @@ fun JoinEmailScreen(
 
             Spacer(modifier = Modifier.weight(1f))
             GButton(
+                modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
                 enabled = isSentAuthenticatioNumber && isAuthenticated,
                 content = stringResource(id = R.string.join_next),
                 onClick = { onConfirm() }
             )
-            Spacer(modifier = Modifier.height(40.dp))
         }
     }
 }

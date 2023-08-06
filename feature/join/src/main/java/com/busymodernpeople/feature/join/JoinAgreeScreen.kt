@@ -180,12 +180,12 @@ fun JoinAgreeScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             GButton(
+                modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
                 enabled = termsOfUseChecked && privacyPolicyChecked,
                 content = stringResource(id = R.string.join_next),
                 onClick = { onConfirm() }
             )
-            Spacer(modifier = Modifier.height(50.dp))
         }
     }
 }

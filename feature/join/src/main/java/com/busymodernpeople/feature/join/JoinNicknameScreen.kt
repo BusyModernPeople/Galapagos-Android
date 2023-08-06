@@ -86,12 +86,12 @@ fun JoinNicknameScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             GButton(
+                modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
                 enabled = nickname.length in 2..6,
                 content = stringResource(id = R.string.join_next),
                 onClick = { onConfirm() }
             )
-            Spacer(modifier = Modifier.height(50.dp))
         }
     }
 }
