@@ -1,5 +1,7 @@
-package com.busymodernpeople.core.network
+package com.busymodernpeople.core.network.di
 
+import com.busymodernpeople.core.network.BuildConfig
+import com.busymodernpeople.core.network.exception.ResultCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,6 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
     @Provides
     @Singleton
     fun providesOkHttpClient(): OkHttpClient =
@@ -34,5 +37,7 @@ object NetworkModule {
             .client(okHttpClient)
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(ResultCallAdapterFactory())
             .build()
+
 }
