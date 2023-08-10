@@ -9,56 +9,28 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
-sealed class Tabs(
-    @StringRes val title: Int,
-    @DrawableRes val icon: Int,
-    val route: String
-) {
-    object Home : Tabs(R.string.tab_home, R.drawable.ic_home, "/home")
-    object Diary : Tabs(R.string.tab_diary, R.drawable.ic_diary, "/diary")
-    object Community : Tabs(R.string.tab_community, R.drawable.ic_community, "/community")
-    object MyPage : Tabs(R.string.tab_my_page, R.drawable.ic_my_page, "/mypage")
-}
-
 @Composable
-fun NavBar(
+fun BottomNavigationBar(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.White,
-    selectedContentColor: Color = GalapagosTheme.colors.PrimaryGreen,
-    unselectedContentColor: Color = GalapagosTheme.colors.FontGray4,
-    navController: NavController
+    content: @Composable RowScope.() -> Unit
 ) {
-    val tabs = arrayOf(Tabs.Home, Tabs.Diary, Tabs.Community, Tabs.MyPage)
-
     Surface(
-        modifier = modifier.shadow(
-            elevation = 10.dp,
-            spotColor = Color(0x1A000000),
-            ambientColor = Color(0x1A000000)
-        ),
+        modifier = modifier,
+        elevation = 10.dp,
         color = backgroundColor,
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -71,31 +43,12 @@ fun NavBar(
                     .fillMaxWidth()
                     .selectableGroup(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 33.dp,
+                    alignment = Alignment.CenterHorizontally
+                ),
             ) {
-                tabs.forEachIndexed { index, tab ->
-                    val selected = currentRoute == tab.route
-
-                    NavItem(
-                        icon = tab.icon,
-                        label = tab.title,
-                        selected = selected,
-                        selectedContentColor = selectedContentColor,
-                        unselectedContentColor = unselectedContentColor,
-                        onClick = {
-                            navController.navigate(tab.route) {
-                                navController.graph.startDestinationRoute?.let {
-                                    popUpTo(it)
-                                }
-                                launchSingleTop = true
-                            }
-                        }
-                    )
-
-                    if (index < tabs.size - 1) {
-                        Spacer(modifier = Modifier.width(33.dp))
-                    }
-                }
+                content()
             }
         }
     }
@@ -103,7 +56,7 @@ fun NavBar(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NavItem(
+fun BottomNavigationItem(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int,
     @StringRes label: Int,
@@ -143,13 +96,5 @@ fun NavItem(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewNavBar() {
-    GalapagosTheme {
-        NavBar(navController = rememberNavController())
     }
 }
