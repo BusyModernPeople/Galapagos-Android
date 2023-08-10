@@ -38,7 +38,7 @@ dependencies {
     with(Dependencies.AndroidX) {
         implementation(CORE_KTX)
         implementation(COMPOSE_UI)
-        implementation(NAVIGATION_COMPOSE)
+        implementation(LIFECYCLE_VIEWMODEL_COMPOSE)
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)
         androidTestImplementation(UI_TEST_JUNIT4)

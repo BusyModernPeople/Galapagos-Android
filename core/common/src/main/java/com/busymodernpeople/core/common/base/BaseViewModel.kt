@@ -10,6 +10,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+interface UiState
+interface UiEvent
+interface UiEffect
+
 /**
  * MVI 패턴을 따르기 위한 ViewModel 추상 클래스
  * UI State, event, side effect를 표준화된 패턴에 따라 관리
@@ -19,7 +23,7 @@ import kotlinx.coroutines.launch
  * @param Effect 비동기 작업 및 UI 이벤트 외의 작업 (스낵 바, 화면 전환, 데이터베이스 작업 등)
  * @property initialState UI의 초기 상태
  */
-abstract class BaseViewModel<State, Event, Effect>(
+abstract class BaseViewModel<State: UiState, Event: UiEvent, Effect: UiEffect>(
     initialState: State
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
