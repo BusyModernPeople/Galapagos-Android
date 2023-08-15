@@ -38,6 +38,7 @@ dependencies {
     with(Dependencies.AndroidX) {
         implementation(CORE_KTX)
         implementation(COMPOSE_UI)
+        implementation(COMPOSE_FOUNDATION_LAYOUT)
         implementation(LIFECYCLE_VIEWMODEL_COMPOSE)
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)

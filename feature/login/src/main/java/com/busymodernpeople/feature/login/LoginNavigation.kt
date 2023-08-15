@@ -15,7 +15,8 @@ fun NavController.navigateToLoginGraph(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.loginGraph(
-    navigateToJoinGraph: () -> Unit = { }
+    navigateToJoinGraph: () -> Unit = { },
+    navigateToHome: () -> Unit = { }
 ) {
     navigation(
         route = LOGIN_GRAPH,
@@ -25,7 +26,7 @@ fun NavGraphBuilder.loginGraph(
             LoginScreen(
                 onKakaoLogin = { navigateToJoinGraph() },
                 onNaverLogin = { navigateToJoinGraph() },
-                onGoogleLogin = { navigateToJoinGraph() }
+                onGoogleLogin = { navigateToHome() }
             )
         }
     }

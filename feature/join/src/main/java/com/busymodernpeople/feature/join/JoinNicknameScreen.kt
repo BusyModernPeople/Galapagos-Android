@@ -18,7 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.design.ui.component.ButtonSize
@@ -69,7 +68,6 @@ fun JoinNicknameScreen(
             GTextField(
                 textFieldSize = TextFieldSize.Height68,
                 value = nickname,
-                visualTransformation = PasswordVisualTransformation(),
                 placeholderText = stringResource(id = R.string.join_nickname_textfield_placeholder),
                 showLength = true,
                 maxChar = 6,

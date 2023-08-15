@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -98,8 +97,11 @@ fun JoinPasswordScreen(
                 }
             )
             Spacer(modifier = Modifier.height(6.dp))
+            FlowRow() {
+
+            }
             FlowRow(
-                verticalAlignment = Alignment.CenterVertically,
+                verticalArrangement = Arrangement.Center,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 JoinConditionItem(

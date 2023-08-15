@@ -7,6 +7,7 @@ object Dependencies {
         const val LIFECYCLE_RUNTIME_COMPOSE = "androidx.lifecycle:lifecycle-runtime-compose:${Versions.AndroidX.LIFECYCLE}"
         const val LIFECYCLE_VIEWMODEL_COMPOSE = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.AndroidX.LIFECYCLE}"
         const val ACTIVITY_COMPOSE = "androidx.activity:activity-compose:${Versions.AndroidX.ACTIVITY_COMPOSE}"
+        const val COMPOSE_FOUNDATION_LAYOUT = "androidx.compose.foundation:foundation-layout-android:${Versions.AndroidX.FOUNDATION_LAYOUT}"
         const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.AndroidX.COMPOSE_UI}"
         const val COMPOSE_UI_TOOLING_PREVIEW = "androidx.compose.ui:ui-tooling-preview:${Versions.AndroidX.COMPOSE_UI}"
         const val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.AndroidX.COMPOSE_UI}"
