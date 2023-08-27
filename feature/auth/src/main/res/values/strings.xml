@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_title">갈라파고스</string>
+    <string name="login_intro1">동물들의 지상낙원,\n</string>
+    <string name="login_intro2">에 오신 것을 환영해요!</string>
+    <string name="login_email_signup">이메일 회원가입</string>
+    <string name="login_email_login">이메일 로그인</string>
+
+    <string name="join_terms_agree">약관동의</string>
+    <string name="join_terms_agree_intro">서비스 이용 약관에 동의해주세요</string>
+    <string name="join_required">(필수)</string>
+    <string name="join_optional">(선택)</string>
+    <string name="join_agree_all">전체 동의하기</string>
+    <string name="join_terms_of_use">이용약관</string>
+    <string name="join_privacy_policy">개인정보 취급방침</string>
+    <string name="join_ad_info_agree">이벤트 및 마케팅 정보 이메일 수신 동의</string>
+    <string name="join_next">다음</string>
+    <string name="join_confirm">확인</string>
+    <string name="join_input_email">이메일을\n입력해주세요</string>
+    <string name="join_email_textfield_placeholder">이메일을 입력해주세요</string>
+    <string name="join_authenticate_email">이메일 인증하기</string>
+    <string name="join_input_authenticate_number">이메일로 전송된 인증코드를 입력해주세요.</string>
+    <string name="join_authentication_number_textfield_placeholder">인증코드 6자리 입력</string>
+    <string name="join_not_received_authentication_number">인증코드를 받지 못하셨나요?</string>
+    <string name="join_resend_authentication_number">인증코드 재전송하기</string>
+    <string name="join_wrong_authentication_number_message">! 잘못된 인증번호입니다.</string>
+    <string name="join_expired_authentication_number_message">! 인증코드가 만료되었습니다.</string>
+    <string name="join_authenticated_message">이메일 인증 완료!</string>
+    <string name="join_input_password">비밀번호를\n입력해주세요</string>
+    <string name="join_password_textfield_placeholder">비밀번호를 입력해주세요.</string>
+    <string name="join_confirm_password_textfield_placeholder">비밀번호를 재입력해주세요.</string>
+    <string name="join_password_condition_english">영문포함</string>
+    <string name="join_password_condition_number">숫자포함</string>
+    <string name="join_password_condition_symbol">특수문자포함</string>
+    <string name="join_password_condition_length">8자~20자</string>
+    <string name="join_password_condition_match">비밀번호 일치</string>
+    <string name="join_input_nickname">닉네임을\n입력해주세요</string>
+    <string name="join_nickname_textfield_placeholder">2~6자리로 입력해주세요</string>
+    <string name="join_nickname_condition_satisfied_message">너무 재미있고 독특한 이름이네요!</string>
+    <string name="join_complete">가입완료</string>
+
+    <string name="join_complete_welcome_message">반가워요!\n</string>
+    <string name="join_request_pet_registration">먼저 반려동물을 등록해볼까요?</string>
+    <string name="join_register_pet">반려동물 등록하기</string>
+    <string name="join_guest_mode">먼저 앱 둘러보기</string>
+</resources>

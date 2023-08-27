@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="login_title">갈라파고스</string>
-    <string name="login_intro1">동물들의 지상낙원,\n</string>
-    <string name="login_intro2">에 오신 것을 환영해요!</string>
-    <string name="login_email_signup">이메일 회원가입</string>
-    <string name="login_email_login">이메일 로그인</string>
-</resources>

@@ -23,11 +23,11 @@ import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.design.ui.component.BottomNavigationBar
 import com.busymodernpeople.core.design.ui.component.BottomNavigationItem
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.feature.auth.join.joinGraph
+import com.busymodernpeople.feature.auth.join.navigateToJoinGraph
+import com.busymodernpeople.feature.auth.login.LOGIN_GRAPH
+import com.busymodernpeople.feature.auth.login.loginGraph
 import com.busymodernpeople.feature.home.HomeScreen
-import com.busymodernpeople.feature.join.joinGraph
-import com.busymodernpeople.feature.join.navigateToJoinGraph
-import com.busymodernpeople.feature.login.LOGIN_GRAPH
-import com.busymodernpeople.feature.login.loginGraph
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
