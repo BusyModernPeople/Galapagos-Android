@@ -1,7 +1,8 @@
 package com.busymodernpeople.core.network.di
 
 import com.busymodernpeople.core.network.BuildConfig
-import com.busymodernpeople.core.network.exception.ResultCallAdapterFactory
+import com.busymodernpeople.core.network.adapter.ApiResultCallAdapterFactory
+import com.busymodernpeople.core.network.converter.EnumConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,7 +38,8 @@ object NetworkModule {
             .client(okHttpClient)
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(ResultCallAdapterFactory())
+            .addConverterFactory(EnumConverterFactory())
+            .addCallAdapterFactory(ApiResultCallAdapterFactory())
             .build()
 
 }
