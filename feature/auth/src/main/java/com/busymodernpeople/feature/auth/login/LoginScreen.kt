@@ -1,5 +1,7 @@
 package com.busymodernpeople.feature.auth.login
 
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,8 +31,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
+import com.google.android.gms.common.api.ApiException
 
 @Preview(
     showBackground = true,
@@ -42,7 +46,24 @@ fun LoginScreen(
     onKakaoLogin: () -> Unit = {},
     onNaverLogin: () -> Unit = {},
     onGoogleLogin: () -> Unit = {},
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+
+    val googleLoginResultLauncher =
+        rememberLauncherForActivityResult(contract = GoogleApiContract()) { task ->
+            try {
+                val gsa = task?.getResult(ApiException::class.java)
+                if (gsa != null) {
+                    viewModel.fetchGoogleAccessToken(
+                        code = gsa.serverAuthCode.toString(),
+                        idToken = gsa.idToken.toString()
+                    )
+                }
+            } catch (e: ApiException) {
+                Log.d("googleLoginError", e.toString())
+            }
+        }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -72,6 +93,7 @@ fun LoginScreen(
             }
             SocialLoginButton(icon = R.drawable.ic_google_login) {
                 onGoogleLogin()
+                googleLoginResultLauncher.launch(1)
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
