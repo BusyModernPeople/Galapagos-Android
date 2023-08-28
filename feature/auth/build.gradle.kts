@@ -1,8 +1,15 @@
+import java.util.Properties
+
 plugins {
     with(Plugins) {
         id(ANDROID_LIBRARY)
         id(KOTLIN_ANDROID)
+        id(KOTLIN_KAPT)
     }
+}
+
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -14,6 +21,17 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField(
+            "String",
+            "GOOGLE_OAUTH_CLIENT_ID",
+            properties["GOOGLE_OAUTH_CLIENT_ID"] as String
+        )
+        buildConfigField(
+            "String",
+            "GOOGLE_OAUTH_CLIENT_SECRET",
+            properties["GOOGLE_OAUTH_CLIENT_SECRET"] as String
+        )
     }
 
     buildTypes {
@@ -26,14 +44,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "${JavaVersion.VERSION_17}"
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -43,6 +62,7 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:design"))
+    implementation(project(":data"))
 
     with(Dependencies.AndroidX) {
         implementation(CORE_KTX)
@@ -59,6 +79,7 @@ dependencies {
     }
 
     with(Dependencies.Google) {
+        kapt(HILT_ANDROID_COMPILER)
         implementation(HILT_ANDROID)
     }
 

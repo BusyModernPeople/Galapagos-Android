@@ -1,10 +1,10 @@
 package com.busymodernpeople.data.repository
 
-import com.busymodernpeople.core.network.adapter.ApiResult
-import com.busymodernpeople.core.network.model.response.ConfirmEmailResponse
-import com.busymodernpeople.core.network.model.response.GoogleAccessTokenResponse
-import com.busymodernpeople.core.network.model.response.SendEmailResponse
-import com.busymodernpeople.core.network.model.response.SocialLoginResponse
+import com.busymodernpeople.data.network.adapter.ApiResult
+import com.busymodernpeople.data.network.model.response.ConfirmEmailResponse
+import com.busymodernpeople.data.network.model.response.GoogleAccessTokenResponse
+import com.busymodernpeople.data.network.model.response.SendEmailResponse
+import com.busymodernpeople.data.network.model.response.SocialLoginResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -18,11 +18,9 @@ interface AuthRepository {
         email: String
     ): Flow<ApiResult<SendEmailResponse>>
 
-    fun getGoogleAccessToken(
-        grantType: String,
+    fun fetchGoogleAccessToken(
         clientId: String,
         clientSecret: String,
-        redirectUri: String,
         code: String,
         idToken: String
     ): Flow<ApiResult<GoogleAccessTokenResponse>>

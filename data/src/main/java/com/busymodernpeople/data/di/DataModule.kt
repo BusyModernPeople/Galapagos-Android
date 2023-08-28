@@ -1,8 +1,8 @@
 package com.busymodernpeople.data.di
 
-import com.busymodernpeople.core.network.service.AuthService
 import com.busymodernpeople.data.datasource.AuthDataSource
 import com.busymodernpeople.data.datasource.AuthDataSourceImpl
+import com.busymodernpeople.data.network.service.AuthService
 import com.busymodernpeople.data.repository.AuthRepository
 import com.busymodernpeople.data.repository.AuthRepositoryImpl
 import dagger.Module

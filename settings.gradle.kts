@@ -15,11 +15,10 @@ dependencyResolutionManagement {
 rootProject.name = "Galapagos"
 include(":app")
 include(":core:design")
-include(":core:network")
+include(":core:common")
 include(":feature:auth")
 include(":feature:home")
 include(":feature:diary")
 include(":feature:community")
 include(":feature:mypage")
-include(":core:common")
 include(":data")

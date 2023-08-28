@@ -1,10 +1,10 @@
 package com.busymodernpeople.data.repository
 
-import com.busymodernpeople.core.network.model.request.ConfirmEmailRequest
-import com.busymodernpeople.core.network.model.request.GoogleAccessTokenRequest
-import com.busymodernpeople.core.network.model.request.SendEmailRequest
-import com.busymodernpeople.core.network.model.request.SocialLoginRequest
 import com.busymodernpeople.data.datasource.AuthDataSource
+import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
+import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
+import com.busymodernpeople.data.network.model.request.SendEmailRequest
+import com.busymodernpeople.data.network.model.request.SocialLoginRequest
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -27,19 +27,17 @@ class AuthRepositoryImpl @Inject constructor(
         SendEmailRequest(email = email)
     )
 
-    override fun getGoogleAccessToken(
-        grantType: String,
+    override fun fetchGoogleAccessToken(
         clientId: String,
         clientSecret: String,
-        redirectUri: String,
         code: String,
         idToken: String
-    ) = authDataSource.getGoogleAccessToken(
+    ) = authDataSource.fetchGoogleAccessToken(
         GoogleAccessTokenRequest(
-            grantType = grantType,
+            grantType = "authorization_code",
             clientId = clientId,
             clientSecret = clientSecret,
-            redirectUri = redirectUri,
+            redirectUri = "",
             code = code,
             idToken = idToken
         )

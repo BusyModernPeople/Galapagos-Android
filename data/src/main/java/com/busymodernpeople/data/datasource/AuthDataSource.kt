@@ -1,14 +1,14 @@
 package com.busymodernpeople.data.datasource
 
-import com.busymodernpeople.core.network.adapter.ApiResult
-import com.busymodernpeople.core.network.model.request.ConfirmEmailRequest
-import com.busymodernpeople.core.network.model.request.GoogleAccessTokenRequest
-import com.busymodernpeople.core.network.model.request.SendEmailRequest
-import com.busymodernpeople.core.network.model.request.SocialLoginRequest
-import com.busymodernpeople.core.network.model.response.ConfirmEmailResponse
-import com.busymodernpeople.core.network.model.response.GoogleAccessTokenResponse
-import com.busymodernpeople.core.network.model.response.SendEmailResponse
-import com.busymodernpeople.core.network.model.response.SocialLoginResponse
+import com.busymodernpeople.data.network.adapter.ApiResult
+import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
+import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
+import com.busymodernpeople.data.network.model.request.SendEmailRequest
+import com.busymodernpeople.data.network.model.request.SocialLoginRequest
+import com.busymodernpeople.data.network.model.response.ConfirmEmailResponse
+import com.busymodernpeople.data.network.model.response.GoogleAccessTokenResponse
+import com.busymodernpeople.data.network.model.response.SendEmailResponse
+import com.busymodernpeople.data.network.model.response.SocialLoginResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AuthDataSource {
@@ -21,7 +21,7 @@ interface AuthDataSource {
         sendEmailRequest: SendEmailRequest
     ): Flow<ApiResult<SendEmailResponse>>
 
-    fun getGoogleAccessToken(
+    fun fetchGoogleAccessToken(
         googleAccessTokenRequest: GoogleAccessTokenRequest
     ): Flow<ApiResult<GoogleAccessTokenResponse>>
 

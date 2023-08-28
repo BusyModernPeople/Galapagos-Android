@@ -1,10 +1,10 @@
 package com.busymodernpeople.data.datasource
 
-import com.busymodernpeople.core.network.model.request.ConfirmEmailRequest
-import com.busymodernpeople.core.network.model.request.GoogleAccessTokenRequest
-import com.busymodernpeople.core.network.model.request.SendEmailRequest
-import com.busymodernpeople.core.network.model.request.SocialLoginRequest
-import com.busymodernpeople.core.network.service.AuthService
+import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
+import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
+import com.busymodernpeople.data.network.model.request.SendEmailRequest
+import com.busymodernpeople.data.network.model.request.SocialLoginRequest
+import com.busymodernpeople.data.network.service.AuthService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -28,10 +28,10 @@ class AuthDataSourceImpl @Inject constructor(
         emit(authService.sendEmail(sendEmailRequest))
     }.flowOn(ioDispatcher)
 
-    override fun getGoogleAccessToken(
+    override fun fetchGoogleAccessToken(
         googleAccessTokenRequest: GoogleAccessTokenRequest
     ) = flow {
-        emit(authService.getGoogleAccessToken(googleAccessTokenRequest = googleAccessTokenRequest))
+        emit(authService.fetchGoogleAccessToken(googleAccessTokenRequest = googleAccessTokenRequest))
     }.flowOn(ioDispatcher)
 
     override fun loginByGoogle(

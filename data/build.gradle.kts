@@ -1,9 +1,15 @@
+import java.util.Properties
+
 plugins {
     with(Plugins) {
         id(ANDROID_LIBRARY)
         id(KOTLIN_ANDROID)
         id(KOTLIN_KAPT)
     }
+}
+
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -15,6 +21,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            properties["base.url"] as String
+        )
     }
 
     buildTypes {
@@ -27,18 +39,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "${JavaVersion.VERSION_17}"
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
 dependencies {
     implementation(project(":core:common"))
-    implementation(project(":core:network"))
-    
+
     with(Dependencies.AndroidX) {
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)
