@@ -2,8 +2,10 @@ package com.busymodernpeople.feature.auth.login
 
 import androidx.lifecycle.viewModelScope
 import com.busymodernpeople.core.common.base.BaseViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+
 
 @HiltViewModel
 class LoginViewModel : BaseViewModel<LoginContract.State, LoginContract.Event, LoginContract.Effect>(
@@ -12,7 +14,7 @@ class LoginViewModel : BaseViewModel<LoginContract.State, LoginContract.Event, L
     override fun reduceState(event: LoginContract.Event) {
         when (event) {
             is LoginContract.Event.KaKaoLoginButtonClicked -> {
-                kakaoLogin()
+                loginByKakao()
             }
             is LoginContract.Event.NaverLoginButtonClicked -> {
                 updateState(currentState.copy(error = "미구현"))
@@ -23,7 +25,16 @@ class LoginViewModel : BaseViewModel<LoginContract.State, LoginContract.Event, L
         }
     }
 
-    fun kakaoLogin() {
+    fun loginByGoogle() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("server_client_id")
+            .requestEmail()
+            .build()
+
+
+    }
+
+    fun loginByKakao() {
         viewModelScope.launch {
              postEffect(LoginContract.Effect.NavigateToHome)
         }
