@@ -36,6 +36,8 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.google.android.gms.common.api.ApiException
 
+const val GOOGLE_LOGIN_REQUEST = 1
+
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -49,11 +51,15 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
 
+
     val googleLoginResultLauncher =
         rememberLauncherForActivityResult(contract = GoogleApiContract()) { task ->
             try {
                 val gsa = task?.getResult(ApiException::class.java)
                 if (gsa != null) {
+                    Log.d("code", gsa.serverAuthCode.toString())
+                    Log.d("idToken", gsa.idToken.toString())
+
                     viewModel.fetchGoogleAccessToken(
                         code = gsa.serverAuthCode.toString(),
                         idToken = gsa.idToken.toString()
@@ -92,8 +98,7 @@ fun LoginScreen(
                 onNaverLogin()
             }
             SocialLoginButton(icon = R.drawable.ic_google_login) {
-                onGoogleLogin()
-                googleLoginResultLauncher.launch(1)
+                googleLoginResultLauncher.launch(GOOGLE_LOGIN_REQUEST)
             }
         }
         Spacer(modifier = Modifier.height(20.dp))

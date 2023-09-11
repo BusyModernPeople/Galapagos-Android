@@ -25,7 +25,7 @@ fun NavGraphBuilder.loginGraph(
         composable(route = LOGIN) {
             LoginScreen(
                 onKakaoLogin = { navigateToJoinGraph() },
-                onNaverLogin = { navigateToJoinGraph() },
+                onNaverLogin = { navigateToHome() },
                 onGoogleLogin = { navigateToHome() }
             )
         }
