@@ -1,5 +1,6 @@
 package com.busymodernpeople.feature.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,8 +18,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
@@ -26,10 +31,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.common.base.SheetContent
@@ -57,14 +66,15 @@ fun HomeScreen(
             .imePadding()
     ) {
         HomeTopBar()
-        MainAnimalContent()
+        MainAnimalContent(name = "도랭이", day = 111)
+        // NoAnimalContent()
         CommunityContent()
     }
 }
 
 @Preview
 @Composable
-fun HomeTopBar() {
+private fun HomeTopBar() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,7 +103,7 @@ fun HomeTopBar() {
 
 @Preview
 @Composable
-fun MainAnimalContent() {
+private fun NoAnimalContent() {
     Spacer(modifier = Modifier.height(16.dp))
 
     Surface(
@@ -110,7 +120,13 @@ fun MainAnimalContent() {
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = stringResource(id = R.string.no_main_animal_message),
+                    text = buildAnnotatedString {
+                        append("아직 등록된 대표 동물이 없어요.\n")
+                        withStyle(style = SpanStyle(color = GalapagosTheme.colors.PrimaryGreen)) {
+                            append("동물을 추가하고 대표 동물을 설정")
+                        }
+                        append("해보세요!")
+                    },
                     style = GalapagosTheme.typography.body2.copy(
                         fontWeight = FontWeight.SemiBold,
                         color = GalapagosTheme.colors.FontGray1
@@ -132,9 +148,118 @@ fun MainAnimalContent() {
     }
 }
 
+@Composable
+private fun MainAnimalContent(
+    name: String,
+    day: Int
+) {
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = GalapagosTheme.colors.PrimaryGreen)) {
+                    append(name)
+                }
+                append("와 함께한지")
+            },
+            style = GalapagosTheme.typography.title3.copy(fontWeight = FontWeight.SemiBold)
+        )
+
+        DayCounter(day = day)
+    }
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1.45f)
+            .padding(horizontal = 24.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Box {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(id = com.busymodernpeople.core.design.R.drawable.img_dummy_animal),
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+
+            AddDiaryButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 14.dp, bottom = 14.dp),
+                onClick = { }
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
-fun CommunityContent() {
+fun AddDiaryButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { }
+) {
+    Button(
+        modifier = modifier.size(56.dp),
+        onClick = { },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = GalapagosTheme.colors.PrimaryGreen,
+            contentColor = GalapagosTheme.colors.FontWhite
+        ),
+        shape = CircleShape,
+        elevation = ButtonDefaults.elevation(
+            defaultElevation = 4.dp
+        )
+    ) {
+        Icon(
+            painter = painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_diary),
+            contentDescription = null
+        )
+    }
+}
+
+@Composable
+private fun DayCounter(day: Int) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        for (num in day.toString()) {
+            Surface(
+                modifier = Modifier.size(40.dp),
+                elevation = 4.dp,
+                shape = RoundedCornerShape(5.dp)
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "$num",
+                        style = GalapagosTheme.typography.title3.copy(fontWeight = FontWeight.ExtraBold)
+                    )
+                }
+            }
+        }
+
+        Text(
+            modifier = Modifier.padding(start = 2.dp),
+            text = "일째",
+            style = GalapagosTheme.typography.title3.copy(fontWeight = FontWeight.ExtraBold)
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CommunityContent() {
     Spacer(modifier = Modifier.height(40.dp))
 
     Column(
@@ -147,7 +272,7 @@ fun CommunityContent() {
             style = GalapagosTheme.typography.title2.copy(fontWeight = FontWeight.Bold)
         )
 
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         ContentTab(
             items = listOf(
@@ -159,12 +284,13 @@ fun CommunityContent() {
             onClick = { /*TODO*/ }
         )
 
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             repeat(5) {
                 CommunityItem()
             }
+            ShowMoreButton()
         }
 
         Spacer(modifier = Modifier.height(36.dp))
@@ -174,7 +300,7 @@ fun CommunityContent() {
 
 @Preview
 @Composable
-fun CommunityItem(
+private fun CommunityItem(
     title: String = "눈 오는 날 산책 다녀왔어요.",
     content: String = "이런저런 이야기",
     likeCount: Int = 36,
@@ -184,7 +310,7 @@ fun CommunityItem(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
-        elevation = 10.dp
+        elevation = 4.dp
     ) {
         Row(
             modifier = Modifier
@@ -266,6 +392,43 @@ fun CommunityItem(
                         color = GalapagosTheme.colors.BgGray3,
                         shape = RoundedCornerShape(8.dp)
                     )
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Preview
+@Composable
+private fun ShowMoreButton(
+    onClick: () -> Unit = { }
+) {
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(5.dp),
+        elevation = 4.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(
+                space = 5.dp,
+                alignment = Alignment.CenterHorizontally
+            )
+        ) {
+            Text(
+                text = "더보기",
+                style = GalapagosTheme.typography.body2.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    color = GalapagosTheme.colors.FontGray2
+                )
+            )
+
+            Icon(
+                painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_show_more),
+                contentDescription = null
             )
         }
     }

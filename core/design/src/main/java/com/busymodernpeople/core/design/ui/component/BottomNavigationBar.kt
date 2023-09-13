@@ -11,7 +11,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -69,7 +68,6 @@ fun BottomNavigationItem(
 
     Surface(
         modifier = modifier
-            .clip(RoundedCornerShape(percent = 50))
             .background(color = Color.Transparent)
             .padding(start = 6.dp, end = 6.dp)
             .clickable(onClick = onClick),

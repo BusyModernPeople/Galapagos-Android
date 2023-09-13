@@ -292,7 +292,7 @@ private fun ContentTabItem(
     text: String
 ) {
     val textColor = if (isSelected) GalapagosTheme.colors.FontWhite else GalapagosTheme.colors.PrimaryGreen
-    val backgroundColor = if (isSelected) GalapagosTheme.colors.PrimaryGreen else Color(0xFFE8E8EF)
+    val backgroundColor = if (isSelected) GalapagosTheme.colors.PrimaryGreen else Color(0xFFE8F8EF)
 
     CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
         Surface(
