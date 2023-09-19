@@ -35,12 +35,12 @@ import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
 import com.busymodernpeople.core.design.ui.component.TextFieldButton
 import com.busymodernpeople.core.design.ui.component.TextFieldSize
+import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.component.toMinSec
-import com.busymodernpeople.core.design.ui.join.JoinConditionItem
-import com.busymodernpeople.core.design.ui.join.JoinProgressBar
-import com.busymodernpeople.core.design.ui.join.JoinTopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
+import com.busymodernpeople.feature.auth.join.component.JoinConditionItem
+import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 import kotlinx.coroutines.delay
 
 @Preview(
@@ -64,9 +64,9 @@ fun JoinEmailScreen(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        JoinTopBar {
-            onBack()
-        }
+        TopBar(
+            leadingIconOnClick = { onBack() }
+        )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(10.dp))
             JoinProgressBar(

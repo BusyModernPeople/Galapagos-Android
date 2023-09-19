@@ -11,6 +11,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 
+const val GOOGLE_LOGIN_REQUEST = 1
+
 class GoogleApiContract : ActivityResultContract<Int, Task<GoogleSignInAccount>?>() {
 
     private fun getGoogleSignInClient(context: Context): GoogleSignInClient {

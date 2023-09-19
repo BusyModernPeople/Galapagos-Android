@@ -137,6 +137,7 @@ private fun NoAnimalContent() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 GButton(
+                    modifier = Modifier.width(145.dp),
                     buttonSize = ButtonSize.Height52,
                     shape = RoundedCornerShape(100.dp),
                     leadingIcon = com.busymodernpeople.core.design.R.drawable.ic_plus,

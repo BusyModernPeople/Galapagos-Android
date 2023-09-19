@@ -16,6 +16,8 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginContract.State, LoginContract.Event, LoginContract.Effect>(
     initialState = LoginContract.State()
 ) {
+
+
     override fun reduceState(event: LoginContract.Event) {
         when (event) {
             is LoginContract.Event.KaKaoLoginButtonClicked -> {

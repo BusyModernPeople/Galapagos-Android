@@ -1,4 +1,4 @@
-package com.busymodernpeople.core.design.ui.join
+package com.busymodernpeople.feature.auth.join.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement

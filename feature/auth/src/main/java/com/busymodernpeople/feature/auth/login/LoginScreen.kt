@@ -36,8 +36,6 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.google.android.gms.common.api.ApiException
 
-const val GOOGLE_LOGIN_REQUEST = 1
-
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -50,7 +48,6 @@ fun LoginScreen(
     onGoogleLogin: () -> Unit = {},
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-
 
     val googleLoginResultLauncher =
         rememberLauncherForActivityResult(contract = GoogleApiContract()) { task ->
