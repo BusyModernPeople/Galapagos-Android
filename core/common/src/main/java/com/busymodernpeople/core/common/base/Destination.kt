@@ -11,6 +11,13 @@ object AuthDestinations {
         const val EMAIL_LOGIN = "emailLogin"
     }
 
+    object FindPassword {
+        const val ROUTE = "findPasswordRoute"
+        const val EMAIL = "findPasswordEmail"
+        const val RESET_PASSWORD = "findPasswordResetPassword"
+        const val COMPLETE = "findPasswordComplete"
+    }
+
     object Join {
         const val ROUTE = "joinRoute"
 

@@ -1,12 +1,9 @@
-package com.busymodernpeople.feature.auth.join
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -44,16 +41,15 @@ import com.busymodernpeople.core.design.ui.component.toMinSec
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.busymodernpeople.feature.auth.component.ConditionItem
-import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 import kotlinx.coroutines.delay
 
 @Preview
 @Composable
-fun JoinEmailScreen(
+fun FindPasswordEmailScreen(
     navController: NavController = rememberNavController()
 ) {
     var email by remember { mutableStateOf("") }
-    var isSentAuthenticationNumber by remember { mutableStateOf(false) }
+    var isSentAuthenticationCode by remember { mutableStateOf(false) }
     var isAuthenticated by remember { mutableStateOf(false) }
 
     Column(
@@ -68,42 +64,48 @@ fun JoinEmailScreen(
             leadingIconOnClick = { navController.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            Spacer(modifier = Modifier.height(10.dp))
-            JoinProgressBar(
-                modifier = Modifier.fillMaxWidth(),
-                progress = 0.25f
+            Spacer(modifier = Modifier.height(40.dp))
+            Text(
+                text = stringResource(id = R.string.find_password_email_title),
+                style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold),
+                color = GalapagosTheme.colors.FontBlack
             )
             Spacer(modifier = Modifier.height(40.dp))
-            if (!isSentAuthenticationNumber) {
+
+            if (!isAuthenticated) {
                 Text(
-                    text = stringResource(id = R.string.join_input_email),
-                    style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold),
-                    color = GalapagosTheme.colors.FontBlack
+                    text = stringResource(id = R.string.find_password_input_registered_email),
+                    style = GalapagosTheme.typography.body2.copy(fontWeight = FontWeight.Normal),
+                    color = GalapagosTheme.colors.FontGray1
                 )
+                Spacer(modifier = Modifier.height(10.dp))
             }
-            Spacer(modifier = Modifier.height(40.dp))
+
             GTextField(
                 textFieldSize = TextFieldSize.Height68,
-                enabled = !isSentAuthenticationNumber,
+                enabled = !isSentAuthenticationCode,
                 value = email,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                placeholderText = stringResource(id = R.string.join_email_textfield_placeholder),
+                placeholderText = stringResource(id = R.string.find_password_email_textfield_placeholder),
                 onValueChange = {
                     email = it
                 }
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            GButton(
-                buttonSize = ButtonSize.Height56,
-                enabled = email.isNotEmpty(),
-                content = stringResource(id = R.string.join_authenticate_email),
-                onClick = { isSentAuthenticationNumber = true }
-            )
 
-            if (isSentAuthenticationNumber) {
+            if (!isAuthenticated) {
+                Spacer(modifier = Modifier.height(10.dp))
+                GButton(
+                    buttonSize = ButtonSize.Height56,
+                    enabled = email.isNotEmpty(),
+                    content = stringResource(id = R.string.find_password_send_authentication_code),
+                    onClick = { isSentAuthenticationCode = true }
+                )
+            }
+
+            if (isSentAuthenticationCode && !isAuthenticated) {
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(
-                    text = stringResource(id = R.string.join_input_authenticate_number),
+                    text = stringResource(id = R.string.find_password_input_authentication_code),
                     style = GalapagosTheme.typography.body2,
                     color = GalapagosTheme.colors.FontBlack
                 )
@@ -115,7 +117,7 @@ fun JoinEmailScreen(
                     textFieldSize = TextFieldSize.Height68,
                     value = authenticationNumber,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                    placeholderText = stringResource(id = R.string.join_authentication_number_textfield_placeholder),
+                    placeholderText = stringResource(id = R.string.find_password_authentication_code_textfield_placeholder),
                     maxChar = 6,
                     onValueChange = {
                         authenticationNumber = it.filter { symbol ->
@@ -150,53 +152,57 @@ fun JoinEmailScreen(
                             )
 
                             TextFieldButton(
-                                content = stringResource(id = R.string.join_confirm),
+                                content = stringResource(id = com.busymodernpeople.core.design.R.string.confirm),
                                 onClick = { isAuthenticated = true },
                                 enabled = authenticationNumber.length == 6
                             )
                         }
                     }
                 )
-                if (!isAuthenticated) {
-                    Spacer(modifier = Modifier.height(7.5.dp))
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_join_info),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                        Text(
-                            text = stringResource(id = R.string.join_not_received_authentication_number),
-                            style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
-                            color = GalapagosTheme.colors.FontGray2
-                        )
-                        Text(
-                            text = stringResource(id = R.string.join_resend_authentication_number),
-                            style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
-                            color = GalapagosTheme.colors.FontGray2,
-                            textDecoration = TextDecoration.Underline
-                        )
-                    }
-                } else {
-                    Spacer(modifier = Modifier.height(6.dp))
-                    ConditionItem(
-                        isSatisfied = true,
-                        content = R.string.join_authenticated_message
+            }
+
+            if (!isAuthenticated) {
+                Spacer(modifier = Modifier.height(7.5.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_join_info),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                    Text(
+                        text = stringResource(id = R.string.join_not_received_authentication_number),
+                        style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
+                        color = GalapagosTheme.colors.FontGray2
+                    )
+                    Text(
+                        text = stringResource(id = R.string.join_resend_authentication_number),
+                        style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
+                        color = GalapagosTheme.colors.FontGray2,
+                        textDecoration = TextDecoration.Underline
                     )
                 }
+            } else {
+                Spacer(modifier = Modifier.height(6.dp))
+                ConditionItem(
+                    isSatisfied = true,
+                    content = R.string.join_authenticated_message
+                )
             }
 
             Spacer(modifier = Modifier.weight(1f))
-            GButton(
-                modifier = Modifier.padding(bottom = 50.dp),
-                buttonSize = ButtonSize.Height56,
-                enabled = isSentAuthenticationNumber && isAuthenticated,
-                content = stringResource(id = R.string.join_next),
-                onClick = { navController.navigate(AuthDestinations.Join.PASSWORD) }
-            )
+            if (isSentAuthenticationCode && isAuthenticated) {
+                GButton(
+                    modifier = Modifier.padding(bottom = 50.dp),
+                    buttonSize = ButtonSize.Height56,
+                    enabled = isSentAuthenticationCode && isAuthenticated,
+                    content = stringResource(id = com.busymodernpeople.core.design.R.string.next),
+                    onClick = { navController.navigate(AuthDestinations.FindPassword.RESET_PASSWORD) }
+                )
+            }
         }
     }
 }
+

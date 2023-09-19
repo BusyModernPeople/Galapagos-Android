@@ -1,6 +1,7 @@
 package com.busymodernpeople.feature.auth.login
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
@@ -65,7 +67,7 @@ fun EmailLoginScreen(
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = stringResource(id = R.string.email_login_input_email_and_password),
+                text = stringResource(id = R.string.email_login_title),
                 style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold),
                 color = GalapagosTheme.colors.FontBlack
             )
@@ -99,6 +101,9 @@ fun EmailLoginScreen(
                 )
             ) {
                 Text(
+                    modifier = Modifier.clickable {
+                        navController.navigate(AuthDestinations.FindPassword.ROUTE)
+                    },
                     text = stringResource(id = R.string.email_login_find_password),
                     style = GalapagosTheme.typography.body4.copy(
                         fontWeight = FontWeight.Normal,

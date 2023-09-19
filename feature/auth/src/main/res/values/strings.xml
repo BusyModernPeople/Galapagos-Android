@@ -8,9 +8,24 @@
     <string name="login_email_signup">이메일 회원가입</string>
     <string name="login_email_login">이메일 로그인</string>
 
-    <string name="email_login_input_email_and_password">이메일과 비밀번호를\n입력해주세요</string>
+    <string name="email_login_title">이메일과 비밀번호를\n입력해주세요</string>
     <string name="email_login_find_password">비밀번호 찾기</string>
     <string name="email_login_signup">회원가입</string>
+
+    <string name="find_password_email_title">비밀번호 재설정</string>
+    <string name="find_password_input_registered_email">가입한 이메일 주소를 입력해주세요.</string>
+    <string name="find_password_email_textfield_placeholder">이메일을 입력해주세요</string>
+    <string name="find_password_send_authentication_code">이메일로 인증코드 받기</string>
+    <string name="find_password_input_authentication_code">이메일로 전송된 인증코드를 입력해주세요.</string>
+    <string name="find_password_authentication_code_textfield_placeholder">인증코드 6자리 입력</string>
+    <string name="find_password_not_received_authentication_code">이메일을 받지 못하셨나요?</string>
+    <string name="find_password_resend_authentication_code">이메일 재전송하기</string>
+    <string name="find_password_reset_title">비밀번호 변경</string>
+    <string name="find_password_password_textfield_placeholder">변경할 비밀번호를 입력해주세요.</string>
+    <string name="find_password_confirm_password_textfield_placeholder">변경할 비밀번호를 확인해주세요.</string>
+    <string name="find_password_email_authentication_complete">이메일 인증완료!</string>
+    <string name="find_password_reset_password_complete">비밀번호가 변경되었습니다.</string>
+    <string name="find_password_re_login">변경된 비밀번호로 다시 로그인 해주세요</string>
 
     <string name="join_terms_agree">약관동의</string>
     <string name="join_terms_agree_intro">서비스 이용 약관에 동의해주세요</string>

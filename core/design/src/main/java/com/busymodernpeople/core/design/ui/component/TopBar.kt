@@ -3,6 +3,7 @@ package com.busymodernpeople.core.design.ui.component
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,21 +31,36 @@ fun TopBar(
     leadingIconOnClick: () -> Unit,
     trailingIconOnClick: () -> Unit = {},
 ) {
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .padding(horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .height(68.dp),
+        contentAlignment = Alignment.Center
     ) {
-        if (leadingIcon != null) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_app_bar_prev),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.size(24.dp).clip(CircleShape).clickable { leadingIconOnClick() }
-            )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            if (leadingIcon != null) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_app_bar_prev),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(24.dp).clip(CircleShape)
+                        .clickable { leadingIconOnClick() }
+                )
+            }
+
+            if (trailingIcon != null) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_app_bar_prev),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.clip(CircleShape).clickable { trailingIconOnClick() }
+                )
+            }
         }
 
         Text(
@@ -54,14 +70,5 @@ fun TopBar(
                 color = GalapagosTheme.colors.FontBlack
             )
         )
-
-        if (trailingIcon != null) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_app_bar_prev),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.clip(CircleShape).clickable { trailingIconOnClick() }
-            )
-        }
     }
 }

@@ -32,7 +32,7 @@ import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
-import com.busymodernpeople.feature.auth.join.component.JoinConditionItem
+import com.busymodernpeople.feature.auth.component.ConditionItem
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 
 @Preview
@@ -79,7 +79,7 @@ fun JoinNicknameScreen(
             )
             if (nickname.length in 2..6) {
                 Spacer(modifier = Modifier.height(6.dp))
-                JoinConditionItem(
+                ConditionItem(
                     isSatisfied = true,
                     content = R.string.join_nickname_condition_satisfied_message
                 )
