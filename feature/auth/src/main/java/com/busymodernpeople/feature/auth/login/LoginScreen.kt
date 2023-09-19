@@ -114,7 +114,7 @@ fun LoginScreen(
             )
             Text(
                 modifier = Modifier.clickable {
-
+                    navController.navigate(AuthDestinations.Login.EMAIL_LOGIN)
                 },
                 text = stringResource(id = R.string.login_email_login),
                 color = GalapagosTheme.colors.FontBlack,
