@@ -38,6 +38,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.TopBar
@@ -45,25 +48,21 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFFFFFFFF
-)
+@Preview
 @Composable
 fun JoinAgreeScreen(
-    onBack: () -> Unit = { },
-    onConfirm: () -> Unit = { }
+    navController: NavController = rememberNavController()
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .systemBarsPadding()
             .navigationBarsPadding()
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { onBack() }
+            leadingIconOnClick = { navController.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(10.dp))
@@ -185,7 +184,7 @@ fun JoinAgreeScreen(
                 buttonSize = ButtonSize.Height56,
                 enabled = termsOfUseChecked && privacyPolicyChecked,
                 content = stringResource(id = R.string.join_next),
-                onClick = { onConfirm() }
+                onClick = { navController.navigate(AuthDestinations.Join.EMAIL) }
             )
         }
     }

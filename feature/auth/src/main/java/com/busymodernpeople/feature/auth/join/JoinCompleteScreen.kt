@@ -19,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -27,6 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.TopBar
@@ -34,26 +38,21 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFFFFFFFF
-)
+@Preview
 @Composable
 fun JoinCompleteScreen(
-    onBack: () -> Unit = { },
-    onRegisterPet: () -> Unit = { },
-    onGuestMode: () -> Unit = { }
+    navController: NavController = rememberNavController()
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .systemBarsPadding()
             .navigationBarsPadding()
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { onBack() }
+            leadingIconOnClick = { navController.navigateUp() }
         )
         Column(
             modifier = Modifier.padding(horizontal = 24.dp),
@@ -100,7 +99,7 @@ fun JoinCompleteScreen(
                 buttonSize = ButtonSize.Height56,
                 iconSpacer = 4,
                 content = stringResource(id = R.string.join_register_pet),
-                onClick = { onRegisterPet() }
+                onClick = { navController.navigate(HomeDestinations.ROUTE) }
             )
             Spacer(modifier = Modifier.height(10.dp))
             GButton(
@@ -117,7 +116,7 @@ fun JoinCompleteScreen(
                     width = 1.dp,
                     color = GalapagosTheme.colors.BgGray1
                 ),
-                onClick = { onGuestMode() }
+                onClick = { navController.navigate(HomeDestinations.ROUTE) }
             )
         }
     }

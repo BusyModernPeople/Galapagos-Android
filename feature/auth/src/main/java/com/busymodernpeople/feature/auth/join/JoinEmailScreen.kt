@@ -1,5 +1,6 @@
 package com.busymodernpeople.feature.auth.join
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
@@ -43,29 +47,25 @@ import com.busymodernpeople.feature.auth.join.component.JoinConditionItem
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 import kotlinx.coroutines.delay
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFFFFFFFF
-)
+@Preview
 @Composable
 fun JoinEmailScreen(
-    onBack: () -> Unit = { },
-    onConfirm: () -> Unit = { }
+    navController: NavController = rememberNavController()
 ) {
     var email by remember { mutableStateOf("") }
-    var isSentAuthenticatioNumber by remember { mutableStateOf(false) }
+    var isSentAuthenticationNumber by remember { mutableStateOf(false) }
     var isAuthenticated by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .systemBarsPadding()
             .navigationBarsPadding()
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { onBack() }
+            leadingIconOnClick = { navController.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(10.dp))
@@ -74,7 +74,7 @@ fun JoinEmailScreen(
                 progress = 0.25f
             )
             Spacer(modifier = Modifier.height(40.dp))
-            if (!isSentAuthenticatioNumber) {
+            if (!isSentAuthenticationNumber) {
                 Text(
                     text = stringResource(id = R.string.join_input_email),
                     style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold),
@@ -84,7 +84,7 @@ fun JoinEmailScreen(
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
                 textFieldSize = TextFieldSize.Height68,
-                enabled = !isSentAuthenticatioNumber,
+                enabled = !isSentAuthenticationNumber,
                 value = email,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 placeholderText = stringResource(id = R.string.join_email_textfield_placeholder),
@@ -97,10 +97,10 @@ fun JoinEmailScreen(
                 buttonSize = ButtonSize.Height56,
                 enabled = email.isNotEmpty(),
                 content = stringResource(id = R.string.join_authenticate_email),
-                onClick = { isSentAuthenticatioNumber = true }
+                onClick = { isSentAuthenticationNumber = true }
             )
 
-            if (isSentAuthenticatioNumber) {
+            if (isSentAuthenticationNumber) {
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(
                     text = stringResource(id = R.string.join_input_authenticate_number),
@@ -193,9 +193,9 @@ fun JoinEmailScreen(
             GButton(
                 modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
-                enabled = isSentAuthenticatioNumber && isAuthenticated,
+                enabled = isSentAuthenticationNumber && isAuthenticated,
                 content = stringResource(id = R.string.join_next),
-                onClick = { onConfirm() }
+                onClick = { navController.navigate(AuthDestinations.Join.PASSWORD) }
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.busymodernpeople.feature.auth.join
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -20,12 +21,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
@@ -37,15 +42,10 @@ import com.busymodernpeople.feature.auth.join.component.JoinConditionItem
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 
 @OptIn(ExperimentalLayoutApi::class)
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFFFFFFFF
-)
+@Preview
 @Composable
 fun JoinPasswordScreen(
-    onBack: () -> Unit = { },
-    onConfirm: () -> Unit = { }
+    navController: NavController = rememberNavController()
 ) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -66,12 +66,13 @@ fun JoinPasswordScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .systemBarsPadding()
             .navigationBarsPadding()
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { onBack() }
+            leadingIconOnClick = { navController.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(10.dp))
@@ -144,7 +145,7 @@ fun JoinPasswordScreen(
                 buttonSize = ButtonSize.Height56,
                 enabled = allSatisfied && password == confirmPassword,
                 content = stringResource(id = R.string.join_next),
-                onClick = { onConfirm() }
+                onClick = { navController.navigate(AuthDestinations.Join.NICKNAME) }
             )
         }
     }

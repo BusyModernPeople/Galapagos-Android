@@ -5,8 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -32,7 +33,7 @@ fun TopBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .width(50.dp)
+            .height(50.dp)
             .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -42,7 +43,7 @@ fun TopBar(
                 painter = painterResource(id = R.drawable.ic_app_bar_prev),
                 contentDescription = null,
                 tint = Color.Unspecified,
-                modifier = Modifier.clip(CircleShape).clickable { leadingIconOnClick() }
+                modifier = Modifier.size(24.dp).clip(CircleShape).clickable { leadingIconOnClick() }
             )
         }
 

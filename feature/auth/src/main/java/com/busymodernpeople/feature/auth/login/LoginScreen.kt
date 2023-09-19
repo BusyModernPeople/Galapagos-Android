@@ -32,20 +32,18 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.google.android.gms.common.api.ApiException
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFFFFFFFF
-)
+@Preview
 @Composable
 fun LoginScreen(
-    onKakaoLogin: () -> Unit = {},
-    onNaverLogin: () -> Unit = {},
-    onGoogleLogin: () -> Unit = {},
+    navController: NavController = rememberNavController(),
     viewModel: LoginViewModel = hiltViewModel()
 ) {
 
@@ -89,10 +87,10 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(134.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
             SocialLoginButton(icon = R.drawable.ic_kakao_login) {
-                onKakaoLogin()
+                navController.navigate(HomeDestinations.ROUTE)
             }
             SocialLoginButton(icon = R.drawable.ic_naver_login) {
-                onNaverLogin()
+                navController.navigate(AuthDestinations.Join.ROUTE)
             }
             SocialLoginButton(icon = R.drawable.ic_google_login) {
                 googleLoginResultLauncher.launch(GOOGLE_LOGIN_REQUEST)
@@ -115,6 +113,9 @@ fun LoginScreen(
                 color = GalapagosTheme.colors.BgGray1
             )
             Text(
+                modifier = Modifier.clickable {
+
+                },
                 text = stringResource(id = R.string.login_email_login),
                 color = GalapagosTheme.colors.FontBlack,
                 textDecoration = TextDecoration.Underline
