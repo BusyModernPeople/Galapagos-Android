@@ -23,10 +23,12 @@ fun NavGraphBuilder.loginGraph(
                 navController = navController,
                 graph = AuthDestinations.Login.ROUTE
             )
+            val viewModel: LoginViewModel = hiltViewModel(backStackEntry)
 
             LoginScreen(
                 navController = navController,
-                viewModel = hiltViewModel(backStackEntry)
+                effectFlow = viewModel.effect,
+                viewModel = viewModel
             )
         }
 

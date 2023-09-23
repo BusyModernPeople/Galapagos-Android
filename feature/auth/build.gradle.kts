@@ -25,12 +25,12 @@ android {
         buildConfigField(
             "String",
             "GOOGLE_OAUTH_CLIENT_ID",
-            properties["GOOGLE_OAUTH_CLIENT_ID"] as String
+            properties["google.oauth.client.id"] as String
         )
         buildConfigField(
             "String",
             "GOOGLE_OAUTH_CLIENT_SECRET",
-            properties["GOOGLE_OAUTH_CLIENT_SECRET"] as String
+            properties["google.oauth.client.sercret"] as String
         )
     }
 
@@ -87,5 +87,7 @@ dependencies {
         testImplementation(JUNIT)
     }
 
-    implementation("com.google.android.gms:play-services-auth:20.6.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.kakao.sdk:v2-user:2.15.0")
+    implementation("com.navercorp.nid:oauth:5.7.0")
 }

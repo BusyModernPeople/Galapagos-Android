@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     with(Plugins) {
         id(ANDROID_APPLICATION)
@@ -5,6 +7,10 @@ plugins {
         id(KOTLIN_KAPT)
         id(DAGGER_HILT_ANDROID)
     }
+}
+
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -17,6 +23,27 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_APP_KEY",
+            properties["kakao.native.app.key"] as String
+        )
+        resValue(
+            "string",
+            "KAKAO_NATIVE_APP_KEY_FULL",
+            properties["kakao.native.app.key.full"] as String
+        )
+        buildConfigField(
+            "String",
+            "NAVER_CLIENT_ID",
+            properties["naver.client.id"] as String
+        )
+        buildConfigField(
+            "String",
+            "NAVER_CLIENT_SECRET",
+            properties["naver.client.secret"] as String
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -39,6 +66,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -101,4 +129,7 @@ dependencies {
     with(Dependencies.Junit) {
         testImplementation(JUNIT)
     }
+
+    implementation("com.kakao.sdk:v2-user:2.15.0")
+    implementation("com.navercorp.nid:oauth:5.7.0")
 }

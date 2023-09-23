@@ -17,10 +17,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -35,25 +37,28 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.AuthDestinations
-import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.google.android.gms.common.api.ApiException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 
 @Preview
 @Composable
 fun LoginScreen(
     navController: NavController = rememberNavController(),
+    effectFlow: Flow<LoginContract.Effect> = flow { },
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
 
     val googleLoginResultLauncher =
-        rememberLauncherForActivityResult(contract = GoogleApiContract()) { task ->
+        rememberLauncherForActivityResult(contract = GoogleLoginContract()) { task ->
             try {
                 val gsa = task?.getResult(ApiException::class.java)
                 if (gsa != null) {
-                    Log.d("code", gsa.serverAuthCode.toString())
-                    Log.d("idToken", gsa.idToken.toString())
+                    Log.d("google_token", gsa.idToken.toString())
 
                     viewModel.fetchGoogleAccessToken(
                         code = gsa.serverAuthCode.toString(),
@@ -64,6 +69,24 @@ fun LoginScreen(
                 Log.d("googleLoginError", e.toString())
             }
         }
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is LoginContract.Effect.NavigateTo -> {
+                    navController.navigate(effect.destination, effect.navOptions)
+                }
+
+                is LoginContract.Effect.ShowSnackBar -> {
+                    // TODO : 구현예정
+                }
+
+                is LoginContract.Effect.LaunchGoogleLogin -> {
+                    googleLoginResultLauncher.launch(GOOGLE_LOGIN_REQUEST)
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -87,13 +110,13 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(134.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
             SocialLoginButton(icon = R.drawable.ic_kakao_login) {
-                navController.navigate(HomeDestinations.ROUTE)
+                viewModel.processEvent(LoginContract.Event.KaKaoLoginButtonClicked(context))
             }
             SocialLoginButton(icon = R.drawable.ic_naver_login) {
-                navController.navigate(AuthDestinations.Join.ROUTE)
+                viewModel.processEvent(LoginContract.Event.NaverLoginButtonClicked(context))
             }
             SocialLoginButton(icon = R.drawable.ic_google_login) {
-                googleLoginResultLauncher.launch(GOOGLE_LOGIN_REQUEST)
+                viewModel.processEvent(LoginContract.Event.GoogleLoginButtonClicked)
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
