@@ -24,6 +24,7 @@ import com.busymodernpeople.core.design.ui.component.BottomNavigationBar
 import com.busymodernpeople.core.design.ui.component.BottomNavigationItem
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.authGraph
+import com.busymodernpeople.feature.community.communityGraph
 import com.busymodernpeople.feature.home.homeGraph
 import kotlinx.coroutines.launch
 
@@ -80,6 +81,11 @@ fun GalapagosNavHost() {
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet
                 )
+//                communityGraph(
+//                    navController = navController,
+//                    showBottomSheet = showBottomSheet,
+//                    hideBottomSheet = hideBottomSheet
+//                )
             }
         }
     }

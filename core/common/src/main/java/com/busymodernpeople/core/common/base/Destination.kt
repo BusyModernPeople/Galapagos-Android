@@ -34,3 +34,9 @@ object HomeDestinations {
 
     const val HOME = "home"
 }
+
+object CommunityDestinations {
+    const val ROUTE = "communityRoute"
+
+    const val COMMUNITY = "community"
+}
