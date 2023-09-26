@@ -16,11 +16,14 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +52,12 @@ fun JoinPasswordScreen(
 ) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+
+    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+
+    LaunchedEffect(true) {
+        focusRequester.requestFocus()
+    }
 
     // TODO: 후에 패스워드 확인 과정 ViewModel 단으로 넘김
     val regExp = listOf(
@@ -89,6 +98,7 @@ fun JoinPasswordScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
+                modifier = Modifier.focusRequester(focusRequester),
                 textFieldSize = TextFieldSize.Height68,
                 value = password,
                 visualTransformation = PasswordVisualTransformation(),
@@ -142,7 +152,7 @@ fun JoinPasswordScreen(
                 buttonSize = ButtonSize.Height56,
                 enabled = allSatisfied && password == confirmPassword,
                 content = stringResource(id = R.string.join_next),
-                onClick = { navController.navigate(AuthDestinations.FindPassword.COMPLETE) }
+                onClick = { navController.navigate(AuthDestinations.Join.NICKNAME) }
             )
         }
     }

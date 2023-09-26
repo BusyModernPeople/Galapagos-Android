@@ -23,6 +23,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -56,6 +58,12 @@ fun JoinEmailScreen(
     var isSentAuthenticationNumber by remember { mutableStateOf(false) }
     var isAuthenticated by remember { mutableStateOf(false) }
 
+    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+
+    LaunchedEffect(true) {
+        focusRequester.requestFocus()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,6 +91,7 @@ fun JoinEmailScreen(
             }
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
+                modifier = Modifier.focusRequester(focusRequester),
                 textFieldSize = TextFieldSize.Height68,
                 enabled = !isSentAuthenticationNumber,
                 value = email,

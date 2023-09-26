@@ -27,7 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -125,6 +124,9 @@ fun LoginScreen(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(
+                modifier = Modifier.clickable {
+                    navController.navigate(AuthDestinations.Join.ROUTE)
+                },
                 text = stringResource(id = R.string.login_email_signup),
                 color = GalapagosTheme.colors.FontBlack,
                 textDecoration = TextDecoration.Underline
@@ -153,11 +155,10 @@ private fun GalapagosTitle() {
         painter = painterResource(R.drawable.ic_app_logo),
         contentDescription = null
     )
-    Spacer(modifier = Modifier.height(8.dp))
-    Text(
-        text = stringResource(id = R.string.login_title),
-        style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold),
-        color = GalapagosTheme.colors.PrimaryGreen
+    Spacer(modifier = Modifier.height(24.dp))
+    Image(
+        painter = painterResource(R.drawable.ic_app_name),
+        contentDescription = null
     )
 }
 

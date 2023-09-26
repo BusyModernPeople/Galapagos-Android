@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:name=".GalapagosApp"
         android:supportsRtl="true"
-        android:windowSoftInputMode="adjustPan"
+        android:windowSoftInputMode="adjustResize"
         android:theme="@style/Theme.Galapagos"
         tools:targetApi="31">
         <activity

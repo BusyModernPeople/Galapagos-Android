@@ -15,12 +15,15 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +54,12 @@ fun EmailLoginScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+
+    LaunchedEffect(true) {
+        focusRequester.requestFocus()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,6 +82,7 @@ fun EmailLoginScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
+                modifier = Modifier.focusRequester(focusRequester),
                 textFieldSize = TextFieldSize.Height68,
                 value = email,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
