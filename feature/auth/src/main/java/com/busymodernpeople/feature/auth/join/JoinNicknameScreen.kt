@@ -1,5 +1,6 @@
 package com.busymodernpeople.feature.auth.join
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,47 +12,56 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
 import com.busymodernpeople.core.design.ui.component.TextFieldSize
-import com.busymodernpeople.core.design.ui.join.JoinConditionItem
-import com.busymodernpeople.core.design.ui.join.JoinProgressBar
-import com.busymodernpeople.core.design.ui.join.JoinTopBar
+import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
+import com.busymodernpeople.feature.auth.component.ConditionItem
+import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFFFFFFFF
-)
+@Preview
 @Composable
 fun JoinNicknameScreen(
-    onBack: () -> Unit = { },
-    onConfirm: () -> Unit = { }
+    navController: NavController = rememberNavController()
 ) {
     var nickname by remember { mutableStateOf("") }
+
+    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+
+    LaunchedEffect(true) {
+        focusRequester.requestFocus()
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .systemBarsPadding()
             .navigationBarsPadding()
             .imePadding()
     ) {
-        JoinTopBar {
-            onBack()
-        }
+        TopBar(
+            leadingIconOnClick = { navController.navigateUp() }
+        )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(10.dp))
             JoinProgressBar(
@@ -67,6 +77,7 @@ fun JoinNicknameScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
+                modifier = Modifier.focusRequester(focusRequester),
                 textFieldSize = TextFieldSize.Height68,
                 value = nickname,
                 placeholderText = stringResource(id = R.string.join_nickname_textfield_placeholder),
@@ -78,7 +89,7 @@ fun JoinNicknameScreen(
             )
             if (nickname.length in 2..6) {
                 Spacer(modifier = Modifier.height(6.dp))
-                JoinConditionItem(
+                ConditionItem(
                     isSatisfied = true,
                     content = R.string.join_nickname_condition_satisfied_message
                 )
@@ -89,7 +100,7 @@ fun JoinNicknameScreen(
                 buttonSize = ButtonSize.Height56,
                 enabled = nickname.length in 2..6,
                 content = stringResource(id = R.string.join_next),
-                onClick = { onConfirm() }
+                onClick = { navController.navigate(AuthDestinations.Join.COMPLETE) }
             )
         }
     }

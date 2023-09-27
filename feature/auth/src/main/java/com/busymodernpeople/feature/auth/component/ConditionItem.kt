@@ -1,4 +1,4 @@
-package com.busymodernpeople.core.design.ui.join
+package com.busymodernpeople.feature.auth.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +15,7 @@ import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
 @Composable
-fun JoinConditionItem(
+fun ConditionItem(
     modifier: Modifier = Modifier,
     isSatisfied: Boolean,
     @StringRes content: Int

@@ -1,33 +1,57 @@
 package com.busymodernpeople.feature.auth.login
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-
-const val LOGIN_GRAPH = "loginGraph"
-
-const val LOGIN = "login"
-
-fun NavController.navigateToLoginGraph(navOptions: NavOptions? = null) {
-    this.navigate(LOGIN_GRAPH, navOptions)
-}
+import com.busymodernpeople.core.common.base.AuthDestinations
 
 fun NavGraphBuilder.loginGraph(
-    navigateToJoinGraph: () -> Unit = { },
-    navigateToHome: () -> Unit = { }
+    navController: NavController
 ) {
     navigation(
-        route = LOGIN_GRAPH,
-        startDestination = LOGIN
+        route = AuthDestinations.Login.ROUTE,
+        startDestination = AuthDestinations.Login.LOGIN
     ) {
-        composable(route = LOGIN) {
+        composable(route = AuthDestinations.Login.LOGIN) { entry ->
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = entry,
+                navController = navController,
+                graph = AuthDestinations.Login.ROUTE
+            )
+            val viewModel: LoginViewModel = hiltViewModel(backStackEntry)
+
             LoginScreen(
-                onKakaoLogin = { navigateToJoinGraph() },
-                onNaverLogin = { navigateToHome() },
-                onGoogleLogin = { navigateToHome() }
+                navController = navController,
+                effectFlow = viewModel.effect,
+                viewModel = viewModel
+            )
+        }
+
+        composable(route = AuthDestinations.Login.EMAIL_LOGIN) { entry ->
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = entry,
+                navController = navController,
+                graph = AuthDestinations.Login.ROUTE
+            )
+
+            EmailLoginScreen(
+                navController = navController,
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
     }
+}
+
+@Composable
+fun rememberNavControllerBackStackEntry(
+    entry: NavBackStackEntry,
+    navController: NavController,
+    graph: String,
+) = remember(entry) {
+    navController.getBackStackEntry(graph)
 }

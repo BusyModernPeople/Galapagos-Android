@@ -1,4 +1,4 @@
-package com.busymodernpeople.feature.auth.join
+package com.busymodernpeople.feature.auth.findpassword
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -42,12 +41,11 @@ import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.busymodernpeople.feature.auth.component.ConditionItem
-import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 
 @OptIn(ExperimentalLayoutApi::class)
 @Preview
 @Composable
-fun JoinPasswordScreen(
+fun FindPasswordResetScreen(
     navController: NavController = rememberNavController()
 ) {
     var password by remember { mutableStateOf("") }
@@ -84,15 +82,9 @@ fun JoinPasswordScreen(
             leadingIconOnClick = { navController.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            Spacer(modifier = Modifier.height(10.dp))
-            JoinProgressBar(
-                modifier = Modifier.fillMaxWidth(),
-                initialProgress = 0.25f,
-                progress = 0.5f
-            )
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = stringResource(id = R.string.join_input_password),
+                text = stringResource(id = R.string.find_password_reset_title),
                 style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold),
                 color = GalapagosTheme.colors.FontBlack
             )
@@ -103,7 +95,7 @@ fun JoinPasswordScreen(
                 value = password,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                placeholderText = stringResource(id = R.string.join_password_textfield_placeholder),
+                placeholderText = stringResource(id = R.string.find_password_password_textfield_placeholder),
                 onValueChange = {
                     password = it
                 }
@@ -136,7 +128,7 @@ fun JoinPasswordScreen(
                 value = confirmPassword,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                placeholderText = stringResource(id = R.string.join_confirm_password_textfield_placeholder),
+                placeholderText = stringResource(id = R.string.find_password_confirm_password_textfield_placeholder),
                 onValueChange = {
                     confirmPassword = it
                 }
@@ -152,7 +144,7 @@ fun JoinPasswordScreen(
                 buttonSize = ButtonSize.Height56,
                 enabled = allSatisfied && password == confirmPassword,
                 content = stringResource(id = R.string.join_next),
-                onClick = { navController.navigate(AuthDestinations.Join.NICKNAME) }
+                onClick = { navController.navigate(AuthDestinations.FindPassword.COMPLETE) }
             )
         }
     }

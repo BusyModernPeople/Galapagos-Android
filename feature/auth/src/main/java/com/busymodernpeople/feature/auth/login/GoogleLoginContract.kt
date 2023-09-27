@@ -11,11 +11,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 
-class GoogleApiContract : ActivityResultContract<Int, Task<GoogleSignInAccount>?>() {
+const val GOOGLE_LOGIN_REQUEST = 1
+
+class GoogleLoginContract : ActivityResultContract<Int, Task<GoogleSignInAccount>?>() {
 
     private fun getGoogleSignInClient(context: Context): GoogleSignInClient {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(BuildConfig.GOOGLE_OAUTH_CLIENT_ID)
+            .requestServerAuthCode(BuildConfig.GOOGLE_OAUTH_CLIENT_ID)
             .requestEmail()
             .build()
 

@@ -1,68 +1,51 @@
 package com.busymodernpeople.feature.auth.join
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.design.ui.component.EnterAnimation
 
-const val JOIN_GRAPH = "joinGraph"
-
-const val JOIN_AGREE = "joinAgree"
-const val JOIN_EMAIL = "joinEmail"
-const val JOIN_PASSWORD = "joinPassword"
-const val JOIN_NICKNAME = "joinNickname"
-const val JOIN_COMPLETE = "joinComplete"
-
-fun NavController.navigateToJoinGraph(navOptions: NavOptions? = null) {
-    this.navigate(JOIN_GRAPH, navOptions)
-}
-
-fun NavGraphBuilder.joinGraph(navController: NavHostController) {
+fun NavGraphBuilder.joinGraph(
+    navController: NavHostController
+) {
     navigation(
-        route = JOIN_GRAPH,
-        startDestination = JOIN_AGREE
+        route = AuthDestinations.Join.ROUTE,
+        startDestination = AuthDestinations.Join.AGREE
     ) {
-        composable(route = JOIN_AGREE) {
+        composable(route = AuthDestinations.Join.AGREE) {
             EnterAnimation {
                 JoinAgreeScreen(
-                    onBack = { navController.navigateUp() },
-                    onConfirm = { navController.navigate(JOIN_EMAIL) }
+                    navController = navController
                 )
             }
         }
-        composable(route = JOIN_EMAIL) {
+        composable(route = AuthDestinations.Join.EMAIL) {
             EnterAnimation {
                 JoinEmailScreen(
-                    onBack = { navController.navigateUp() },
-                    onConfirm = { navController.navigate(JOIN_PASSWORD) }
+                    navController = navController
                 )
             }
         }
-        composable(route = JOIN_PASSWORD) {
+        composable(route = AuthDestinations.Join.PASSWORD) {
             EnterAnimation {
                 JoinPasswordScreen(
-                    onBack = { navController.navigateUp() },
-                    onConfirm = { navController.navigate(JOIN_NICKNAME) }
+                    navController = navController
                 )
             }
         }
-        composable(route = JOIN_NICKNAME) {
+        composable(route = AuthDestinations.Join.NICKNAME) {
             EnterAnimation {
                 JoinNicknameScreen(
-                    onBack = { navController.navigateUp() },
-                    onConfirm = { navController.navigate(JOIN_COMPLETE)}
+                    navController = navController
                 )
             }
         }
-        composable(route = JOIN_COMPLETE) {
+        composable(route = AuthDestinations.Join.COMPLETE) {
             EnterAnimation {
                 JoinCompleteScreen(
-                    onBack = { navController.navigateUp() },
-                    onRegisterPet = { },
-                    onGuestMode = { }
+                    navController = navController
                 )
             }
         }

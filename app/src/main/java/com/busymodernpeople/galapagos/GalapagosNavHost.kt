@@ -18,16 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.design.ui.component.BottomNavigationBar
 import com.busymodernpeople.core.design.ui.component.BottomNavigationItem
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
-import com.busymodernpeople.feature.auth.join.joinGraph
-import com.busymodernpeople.feature.auth.join.navigateToJoinGraph
-import com.busymodernpeople.feature.auth.login.LOGIN_GRAPH
-import com.busymodernpeople.feature.auth.login.loginGraph
-import com.busymodernpeople.feature.home.HomeScreen
+import com.busymodernpeople.feature.auth.authGraph
+import com.busymodernpeople.feature.home.homeGraph
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -73,21 +70,16 @@ fun GalapagosNavHost() {
             NavHost(
                 modifier = Modifier.padding(padding),
                 navController = navController,
-                startDestination = LOGIN_GRAPH
+                startDestination = AuthDestinations.ROUTE
             ) {
-                loginGraph(
-                    navigateToJoinGraph = { navController.navigateToJoinGraph() },
-                    navigateToHome = { navController.navigate("homeGraph")}
-                )
-                joinGraph(
+                authGraph(
                     navController = navController
                 )
-                composable("homeGraph") {
-                    HomeScreen(
-                        showBottomSheet = showBottomSheet,
-                        hideBottomSheet = hideBottomSheet
-                    )
-                }
+                homeGraph(
+                    navController = navController,
+                    showBottomSheet = showBottomSheet,
+                    hideBottomSheet = hideBottomSheet
+                )
             }
         }
     }

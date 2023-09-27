@@ -41,19 +41,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.ContentTab
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFFFFFFFF
-)
+@Preview
 @Composable
 fun HomeScreen(
+    navController: NavController = rememberNavController(),
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { }
 ) {
@@ -137,6 +136,7 @@ private fun NoAnimalContent() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 GButton(
+                    modifier = Modifier.width(145.dp),
                     buttonSize = ButtonSize.Height52,
                     shape = RoundedCornerShape(100.dp),
                     leadingIcon = com.busymodernpeople.core.design.R.drawable.ic_plus,

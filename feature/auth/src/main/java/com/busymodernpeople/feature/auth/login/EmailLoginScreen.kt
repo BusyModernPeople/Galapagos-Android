@@ -1,13 +1,12 @@
-package com.busymodernpeople.feature.auth.join
+package com.busymodernpeople.feature.auth.login
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -21,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -29,11 +29,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
@@ -41,36 +44,21 @@ import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
-import com.busymodernpeople.feature.auth.component.ConditionItem
-import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
 
-@OptIn(ExperimentalLayoutApi::class)
 @Preview
 @Composable
-fun JoinPasswordScreen(
-    navController: NavController = rememberNavController()
+fun EmailLoginScreen(
+    navController: NavController = rememberNavController(),
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
 
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
 
     LaunchedEffect(true) {
         focusRequester.requestFocus()
     }
-
-    // TODO: 후에 패스워드 확인 과정 ViewModel 단으로 넘김
-    val regExp = listOf(
-        "^(?=.*[a-zA-Z]).+",
-        "^(?=.*[0-9]).+",
-        """^(?=.*[-+_!@#\$%^&*., ?]).+""",
-        "^.{8,20}$"
-    )
-    val conditions = mutableListOf(false, false, false, false)
-    for (i: Int in conditions.indices) {
-        conditions[i] = password.matches(regExp[i].toRegex())
-    }
-    val allSatisfied = conditions.count { it } == 4
 
     Column(
         modifier = Modifier
@@ -81,24 +69,30 @@ fun JoinPasswordScreen(
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { navController.navigateUp() }
+            leadingIconOnClick = {
+                navController.navigateUp()
+            }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            Spacer(modifier = Modifier.height(10.dp))
-            JoinProgressBar(
-                modifier = Modifier.fillMaxWidth(),
-                initialProgress = 0.25f,
-                progress = 0.5f
-            )
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = stringResource(id = R.string.join_input_password),
+                text = stringResource(id = R.string.email_login_title),
                 style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold),
                 color = GalapagosTheme.colors.FontBlack
             )
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
                 modifier = Modifier.focusRequester(focusRequester),
+                textFieldSize = TextFieldSize.Height68,
+                value = email,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                placeholderText = stringResource(id = R.string.join_email_textfield_placeholder),
+                onValueChange = {
+                    email = it
+                }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            GTextField(
                 textFieldSize = TextFieldSize.Height68,
                 value = password,
                 visualTransformation = PasswordVisualTransformation(),
@@ -108,51 +102,41 @@ fun JoinPasswordScreen(
                     password = it
                 }
             )
-            Spacer(modifier = Modifier.height(6.dp))
-            FlowRow(
-                verticalArrangement = Arrangement.Center,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.align(Alignment.End),
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 16.dp,
+                    alignment = Alignment.End
+                )
             ) {
-                ConditionItem(
-                    isSatisfied = conditions[0],
-                    content = R.string.join_password_condition_english
+                Text(
+                    modifier = Modifier.clickable {
+                        navController.navigate(AuthDestinations.FindPassword.ROUTE)
+                    },
+                    text = stringResource(id = R.string.email_login_find_password),
+                    style = GalapagosTheme.typography.body4.copy(
+                        fontWeight = FontWeight.Normal,
+                        color = GalapagosTheme.colors.FontGray2
+                    ),
+                    textDecoration = TextDecoration.Underline
                 )
-                ConditionItem(
-                    isSatisfied = conditions[1],
-                    content = R.string.join_password_condition_number
-                )
-                ConditionItem(
-                    isSatisfied = conditions[2],
-                    content = R.string.join_password_condition_symbol
-                )
-                ConditionItem(
-                    isSatisfied = conditions[3],
-                    content = R.string.join_password_condition_length
+                Text(
+                    text = stringResource(id = R.string.email_login_signup),
+                    style = GalapagosTheme.typography.body4.copy(
+                        fontWeight = FontWeight.Normal,
+                        color = GalapagosTheme.colors.FontGray2
+                    ),
+                    textDecoration = TextDecoration.Underline
                 )
             }
-            Spacer(modifier = Modifier.height(30.dp))
-            GTextField(
-                textFieldSize = TextFieldSize.Height68,
-                value = confirmPassword,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                placeholderText = stringResource(id = R.string.join_confirm_password_textfield_placeholder),
-                onValueChange = {
-                    confirmPassword = it
-                }
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            ConditionItem(
-                isSatisfied = allSatisfied && password == confirmPassword,
-                content = R.string.join_password_condition_match
-            )
             Spacer(modifier = Modifier.weight(1f))
             GButton(
                 modifier = Modifier.padding(bottom = 50.dp),
+                enabled = email.isNotEmpty() && password.isNotEmpty(),
                 buttonSize = ButtonSize.Height56,
-                enabled = allSatisfied && password == confirmPassword,
-                content = stringResource(id = R.string.join_next),
-                onClick = { navController.navigate(AuthDestinations.Join.NICKNAME) }
+                content = stringResource(id = R.string.login),
+                onClick = { navController.navigate(HomeDestinations.ROUTE) }
             )
         }
     }

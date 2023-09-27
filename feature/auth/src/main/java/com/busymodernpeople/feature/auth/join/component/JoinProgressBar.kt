@@ -1,4 +1,4 @@
-package com.busymodernpeople.core.design.ui.join
+package com.busymodernpeople.feature.auth.join.component
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
