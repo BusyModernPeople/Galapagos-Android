@@ -1,6 +1,5 @@
 package com.busymodernpeople.feature.community
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -60,7 +59,7 @@ fun CommunityFreeDetailScreen(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        TopBar(content = "자유게시판", trailingIcon = R.drawable.ic_animal_category, leadingIconOnClick = { /*TODO*/ })
+        TopBar()
         CommunityFreeDetailContent()
     }
 }
@@ -87,7 +86,8 @@ private fun TopBar() {
                     .clickable { /* TODO */ }
             )
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_share),
@@ -96,7 +96,7 @@ private fun TopBar() {
                     modifier = Modifier.clip(CircleShape).clickable { /* TODO */ }
                 )
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_dot_menu),
+                    painter = painterResource(id = R.drawable.ic_dot_menu_vertical),
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier.clip(CircleShape).clickable { /* TODO */ }
@@ -141,7 +141,7 @@ private fun CommunityFreeDetailContent() {
                     .width(28.dp)
                     .height(28.dp)
                     .clip(RoundedCornerShape(10.dp)),
-                painter = painterResource(R.drawable.ic_home),
+                painter = painterResource(R.drawable.ic_profile_empty),
                 contentDescription = null
             )
             Spacer(modifier = Modifier.width(10.dp))
@@ -163,7 +163,7 @@ private fun CommunityFreeDetailContent() {
             style = GalapagosTheme.typography.body1.copy(lineHeight = 28.sp),
             color = GalapagosTheme.colors.FontGray1
         )
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
