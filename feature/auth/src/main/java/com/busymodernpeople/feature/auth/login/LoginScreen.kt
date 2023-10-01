@@ -57,8 +57,6 @@ fun LoginScreen(
             try {
                 val gsa = task?.getResult(ApiException::class.java)
                 if (gsa != null) {
-                    Log.d("google_token", gsa.idToken.toString())
-
                     viewModel.fetchGoogleAccessToken(
                         code = gsa.serverAuthCode.toString(),
                         idToken = gsa.idToken.toString()

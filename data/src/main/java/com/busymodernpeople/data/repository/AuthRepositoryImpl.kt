@@ -8,7 +8,8 @@ import com.busymodernpeople.data.network.model.request.SocialLoginRequest
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authDataSource: AuthDataSource
+    private val authDataSource: AuthDataSource,
+
 ) : AuthRepository {
 
     override fun confirmEmail(

@@ -5,6 +5,7 @@ object Versions {
         const val LIFECYCLE = "2.6.1"
         const val ACTIVITY_COMPOSE = "1.7.2"
         const val COMPOSE_UI = "1.4.3"
+        const val DATASTORE = "1.0.0"
         const val FOUNDATION_LAYOUT = "1.5.0"
         const val CONSTRAINT_LAYOUT_COMPOSE = "1.0.1"
         const val NAVIGATION_COMPOSE = "2.6.0"

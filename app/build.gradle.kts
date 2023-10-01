@@ -82,6 +82,7 @@ android {
 dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:common"))
+    implementation(project(":data"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
     implementation(project(":feature:diary"))

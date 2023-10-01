@@ -125,7 +125,22 @@ class LoginViewModel @Inject constructor(
                 clientSecret = clientSecret,
                 code = code,
                 idToken = idToken
-            )
+            ).onStart {
+                updateState(currentState.copy(isLoading = true))
+            }.collect { result ->
+                updateState(currentState.copy(isLoading = false))
+                when (result) {
+                    is ApiResult.Success -> {
+                        Log.d("google_token", result.data.accessToken)
+                    }
+                    is ApiResult.NetworkError -> {
+
+                    }
+                    is ApiResult.ApiError -> {
+
+                    }
+                }
+            }
         }
     }
 

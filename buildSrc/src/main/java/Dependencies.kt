@@ -12,6 +12,7 @@ object Dependencies {
         const val COMPOSE_UI_TOOLING_PREVIEW = "androidx.compose.ui:ui-tooling-preview:${Versions.AndroidX.COMPOSE_UI}"
         const val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.AndroidX.COMPOSE_UI}"
         const val CONSTRAINT_LAYOUT_COMPOSE = "androidx.constraintlayout:constraintlayout-compose:${Versions.AndroidX.CONSTRAINT_LAYOUT_COMPOSE}"
+        const val DATASTORE = "androidx.datastore:datastore-preferences:${Versions.AndroidX.DATASTORE}"
         const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:${Versions.AndroidX.NAVIGATION_COMPOSE}"
         const val HILT_NAVIGATION_COMPOSE = "androidx.hilt:hilt-navigation-compose:${Versions.AndroidX.HILT_NAVIGATION_COMPOSE}"
         const val PAGING_RUNTIME = "androidx.paging:paging-runtime:${Versions.AndroidX.PAGING_RUNTIME}"
