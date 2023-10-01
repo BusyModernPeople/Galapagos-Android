@@ -4,14 +4,20 @@ import com.busymodernpeople.data.network.adapter.ApiResult
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
-import com.busymodernpeople.data.network.model.request.SocialLoginRequest
 import com.busymodernpeople.data.network.model.response.ConfirmEmailResponse
 import com.busymodernpeople.data.network.model.response.GoogleAccessTokenResponse
 import com.busymodernpeople.data.network.model.response.SendEmailResponse
 import com.busymodernpeople.data.network.model.response.SocialLoginResponse
 import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Url
+
+enum class SocialType {
+    kakao, google, naver
+}
 
 interface AuthService {
 
@@ -31,14 +37,12 @@ interface AuthService {
         @Body googleAccessTokenRequest: GoogleAccessTokenRequest
     ): ApiResult<GoogleAccessTokenResponse>
 
-    @POST("/users/auth/google/login")
-    suspend fun loginByGoogle(
-        @Body socialLoginRequest: SocialLoginRequest
-    ): ApiResult<SocialLoginResponse>
-
-    @POST("/users/auth/kakao/login")
-    suspend fun loginByKakao(
-        @Body socialLoginRequest: SocialLoginRequest
+    @FormUrlEncoded
+    @POST("/users/auth/{socialType}/login")
+    suspend fun socialLogin(
+        @Path("socialType") socialType: SocialType,
+        @Field("accessToken") accessToken: String,
+        @Field("deviceToken") deviceToken: String
     ): ApiResult<SocialLoginResponse>
 
 }

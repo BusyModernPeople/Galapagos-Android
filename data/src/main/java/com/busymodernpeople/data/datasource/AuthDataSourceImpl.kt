@@ -3,8 +3,8 @@ package com.busymodernpeople.data.datasource
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
-import com.busymodernpeople.data.network.model.request.SocialLoginRequest
 import com.busymodernpeople.data.network.service.AuthService
+import com.busymodernpeople.data.network.service.SocialType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -34,16 +34,12 @@ class AuthDataSourceImpl @Inject constructor(
         emit(authService.fetchGoogleAccessToken(googleAccessTokenRequest = googleAccessTokenRequest))
     }.flowOn(ioDispatcher)
 
-    override fun loginByGoogle(
-        socialLoginRequest: SocialLoginRequest
+    override fun socialLogin(
+        socialType: SocialType,
+        accessToken: String,
+        deviceToken: String
     ) = flow {
-        emit(authService.loginByGoogle(socialLoginRequest))
-    }.flowOn(ioDispatcher)
-
-    override fun loginByKakao(
-        socialLoginRequest: SocialLoginRequest
-    ) = flow {
-        emit(authService.loginByKakao(socialLoginRequest))
+        emit(authService.socialLogin(socialType, accessToken, deviceToken))
     }.flowOn(ioDispatcher)
 
 }

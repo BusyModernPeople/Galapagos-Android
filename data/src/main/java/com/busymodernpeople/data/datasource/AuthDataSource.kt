@@ -4,11 +4,11 @@ import com.busymodernpeople.data.network.adapter.ApiResult
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
-import com.busymodernpeople.data.network.model.request.SocialLoginRequest
 import com.busymodernpeople.data.network.model.response.ConfirmEmailResponse
 import com.busymodernpeople.data.network.model.response.GoogleAccessTokenResponse
 import com.busymodernpeople.data.network.model.response.SendEmailResponse
 import com.busymodernpeople.data.network.model.response.SocialLoginResponse
+import com.busymodernpeople.data.network.service.SocialType
 import kotlinx.coroutines.flow.Flow
 
 interface AuthDataSource {
@@ -25,12 +25,10 @@ interface AuthDataSource {
         googleAccessTokenRequest: GoogleAccessTokenRequest
     ): Flow<ApiResult<GoogleAccessTokenResponse>>
 
-    fun loginByGoogle(
-        socialLoginRequest: SocialLoginRequest
-    ): Flow<ApiResult<SocialLoginResponse>>
-
-    fun loginByKakao(
-        socialLoginRequest: SocialLoginRequest
+    fun socialLogin(
+        socialType: SocialType,
+        accessToken: String,
+        deviceToken: String
     ): Flow<ApiResult<SocialLoginResponse>>
 
 }

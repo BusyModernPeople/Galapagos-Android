@@ -4,7 +4,7 @@ import com.busymodernpeople.data.datasource.AuthDataSource
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
-import com.busymodernpeople.data.network.model.request.SocialLoginRequest
+import com.busymodernpeople.data.network.service.SocialType
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -44,24 +44,14 @@ class AuthRepositoryImpl @Inject constructor(
         )
     )
 
-    override fun loginByGoogle(
+    override fun socialLogin(
+        socialType: SocialType,
         accessToken: String,
         deviceToken: String
-    ) = authDataSource.loginByGoogle(
-        SocialLoginRequest(
-            accessToken = accessToken,
-            deviceToken = deviceToken
-        )
-    )
-
-    override fun loginByKakao(
-        accessToken: String,
-        deviceToken: String
-    ) = authDataSource.loginByKakao(
-        SocialLoginRequest(
-            accessToken = accessToken,
-            deviceToken = deviceToken
-        )
+    ) = authDataSource.socialLogin(
+        socialType = socialType,
+        accessToken = accessToken,
+        deviceToken = deviceToken
     )
 
 }

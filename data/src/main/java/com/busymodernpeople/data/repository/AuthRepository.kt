@@ -5,6 +5,7 @@ import com.busymodernpeople.data.network.model.response.ConfirmEmailResponse
 import com.busymodernpeople.data.network.model.response.GoogleAccessTokenResponse
 import com.busymodernpeople.data.network.model.response.SendEmailResponse
 import com.busymodernpeople.data.network.model.response.SocialLoginResponse
+import com.busymodernpeople.data.network.service.SocialType
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -25,12 +26,8 @@ interface AuthRepository {
         idToken: String
     ): Flow<ApiResult<GoogleAccessTokenResponse>>
 
-    fun loginByGoogle(
-        accessToken: String,
-        deviceToken: String
-    ): Flow<ApiResult<SocialLoginResponse>>
-
-    fun loginByKakao(
+    fun socialLogin(
+        socialType: SocialType,
         accessToken: String,
         deviceToken: String
     ): Flow<ApiResult<SocialLoginResponse>>

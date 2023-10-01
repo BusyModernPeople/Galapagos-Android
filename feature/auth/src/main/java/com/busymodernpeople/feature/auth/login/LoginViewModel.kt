@@ -1,29 +1,32 @@
 package com.busymodernpeople.feature.auth.login
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.BaseViewModel
+import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.data.network.adapter.ApiResult
+import com.busymodernpeople.data.network.service.SocialType
 import com.busymodernpeople.data.repository.AuthRepository
+import com.busymodernpeople.data.repository.DataStoreRepository
 import com.busymodernpeople.feature.auth.BuildConfig
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
-import com.navercorp.nid.profile.NidProfileCallback
-import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : BaseViewModel<LoginContract.State, LoginContract.Event, LoginContract.Effect>(
     initialState = LoginContract.State()
 ) {
@@ -31,10 +34,10 @@ class LoginViewModel @Inject constructor(
     override fun reduceState(event: LoginContract.Event) {
         when (event) {
             is LoginContract.Event.KaKaoLoginButtonClicked -> {
-                loginByKakao(event.context)
+                kakaoLogin(event.context)
             }
             is LoginContract.Event.NaverLoginButtonClicked -> {
-                loginByNaver(event.context)
+                naverLogin(event.context)
             }
             is LoginContract.Event.GoogleLoginButtonClicked -> {
                 postEffect(LoginContract.Effect.LaunchGoogleLogin)
@@ -49,24 +52,13 @@ class LoginViewModel @Inject constructor(
                 postEffect(LoginContract.Effect.ShowSnackBar("카카오톡으로 로그인 실패"))
             }
         } else if (token != null) {
-            Log.d("kakao_token", token.accessToken)
+            val fcmToken = runBlocking { dataStoreRepository.getFcmToken().first() }
+            socialLogin(
+                socialType = SocialType.kakao,
+                accessToken = token.accessToken,
+                deviceToken = fcmToken
+            )
         }
-    }
-
-    private val naverProfileCallback = object : NidProfileCallback<NidProfileResponse> {
-
-        override fun onError(errorCode: Int, message: String) {
-            postEffect(LoginContract.Effect.ShowSnackBar(message))
-        }
-
-        override fun onFailure(httpStatus: Int, message: String) {
-            postEffect(LoginContract.Effect.ShowSnackBar(message))
-        }
-
-        override fun onSuccess(result: NidProfileResponse) {
-            Log.d("naver_login_result", result.message.toString())
-        }
-
     }
 
     private val naverLoginCallback = object : OAuthLoginCallback {
@@ -80,40 +72,63 @@ class LoginViewModel @Inject constructor(
         }
 
         override fun onSuccess() {
-            Log.d("naver_token", NaverIdLoginSDK.getAccessToken() ?: "")
-            NidOAuthLogin().callProfileApi(naverProfileCallback)
+            val accessToken = NaverIdLoginSDK.getAccessToken() ?: ""
+            val fcmToken = runBlocking { dataStoreRepository.getFcmToken().first() }
+
+            socialLogin(
+                socialType = SocialType.naver,
+                accessToken = accessToken,
+                deviceToken = fcmToken
+            )
         }
 
     }
 
-    fun loginByGoogle(
+    fun socialLogin(
+        socialType: SocialType,
         accessToken: String,
         deviceToken: String
     ) {
         viewModelScope.launch {
-            authRepository.loginByGoogle(
+            authRepository.socialLogin(
+                socialType = socialType,
                 accessToken = accessToken,
                 deviceToken = deviceToken
             ).onStart {
-                currentState.copy(isLoading = true)
+                updateState(currentState.copy(isLoading = true))
             }.collect { result ->
-                currentState.copy(isLoading = true)
+                updateState(currentState.copy(isLoading = true))
                 when (result) {
                     is ApiResult.Success -> {
-
+                        if (result.data.jwtToken != null) {
+                            postEffect(
+                                LoginContract.Effect.NavigateTo(
+                                    HomeDestinations.ROUTE
+                                )
+                            )
+                            dataStoreRepository.setJwtToken(result.data.jwtToken!!)
+                        } else {
+                            postEffect(
+                                LoginContract.Effect.NavigateTo(
+                                    AuthDestinations.Join.NICKNAME
+                                )
+                            )
+                        }
                     }
-                    is ApiResult.NetworkError -> {
 
-                    }
                     is ApiResult.ApiError -> {
+                        postEffect(LoginContract.Effect.ShowSnackBar(result.message))
+                    }
 
+                    is ApiResult.NetworkError -> {
+                        postEffect(LoginContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
                     }
                 }
             }
         }
     }
 
-    fun fetchGoogleAccessToken(
+    fun googleLogin(
         clientId: String = BuildConfig.GOOGLE_OAUTH_CLIENT_ID,
         clientSecret: String = BuildConfig.GOOGLE_OAUTH_CLIENT_SECRET,
         code: String,
@@ -131,13 +146,21 @@ class LoginViewModel @Inject constructor(
                 updateState(currentState.copy(isLoading = false))
                 when (result) {
                     is ApiResult.Success -> {
-                        Log.d("google_token", result.data.accessToken)
-                    }
-                    is ApiResult.NetworkError -> {
+                        val fcmToken = runBlocking { dataStoreRepository.getFcmToken().first() }
 
+                        socialLogin(
+                            socialType = SocialType.google,
+                            accessToken = result.data.accessToken,
+                            deviceToken = fcmToken
+                        )
                     }
+
                     is ApiResult.ApiError -> {
+                        postEffect(LoginContract.Effect.ShowSnackBar(result.message))
+                    }
 
+                    is ApiResult.NetworkError -> {
+                        postEffect(LoginContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
                     }
                 }
             }
@@ -145,7 +168,7 @@ class LoginViewModel @Inject constructor(
     }
 
 
-    fun loginByKakao(context: Context) {
+    fun kakaoLogin(context: Context) {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {
@@ -158,7 +181,13 @@ class LoginViewModel @Inject constructor(
                     }
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = kakaoLoginCallback)
                 } else if (token != null) {
-                    Log.d("kakao_token", token.accessToken)
+                    val fcmToken = runBlocking { dataStoreRepository.getFcmToken().first() }
+
+                    socialLogin(
+                        socialType = SocialType.kakao,
+                        accessToken = token.accessToken,
+                        deviceToken = fcmToken
+                    )
                 }
             }
         } else {
@@ -166,7 +195,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun loginByNaver(context: Context) {
+    fun naverLogin(context: Context) {
         NaverIdLoginSDK.authenticate(context, naverLoginCallback)
     }
 }
