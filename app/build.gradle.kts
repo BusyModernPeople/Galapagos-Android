@@ -6,6 +6,7 @@ plugins {
         id(KOTLIN_ANDROID)
         id(KOTLIN_KAPT)
         id(DAGGER_HILT_ANDROID)
+        id(GOOGLE_SERVICES)
     }
 }
 
@@ -114,6 +115,9 @@ dependencies {
     }
 
     with(Dependencies.Google) {
+        implementation(platform(FIREBASE_BOM))
+        implementation(FIREBASE_ANALYTICS)
+        implementation(FIREBASE_MESSAGING)
         implementation(HILT_ANDROID)
         implementation(MATERIAL)
         kapt(HILT_ANDROID_COMPILER)

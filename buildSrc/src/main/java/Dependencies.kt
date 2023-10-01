@@ -33,6 +33,9 @@ object Dependencies {
         const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.Google.DAGGER}"
         const val MATERIAL = "com.google.android.material:material:${Versions.Google.MATERIAL}"
         const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.Google.DAGGER}"
+        const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Versions.Google.FIREBASE_BOM}"
+        const val FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics-ktx"
+        const val FIREBASE_MESSAGING = "com.google.firebase:firebase-messaging-ktx"
     }
 
     object SquareUp {
