@@ -33,10 +33,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.HomeDestinations
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
@@ -48,7 +48,7 @@ import com.busymodernpeople.feature.auth.R
 @Preview
 @Composable
 fun EmailLoginScreen(
-    navController: NavController = rememberNavController(),
+    appState: GalapagosAppState = rememberGalapagosAppState(),
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     var email by remember { mutableStateOf("") }
@@ -70,7 +70,7 @@ fun EmailLoginScreen(
     ) {
         TopBar(
             leadingIconOnClick = {
-                navController.navigateUp()
+                appState.navigateUp()
             }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
@@ -112,7 +112,7 @@ fun EmailLoginScreen(
             ) {
                 Text(
                     modifier = Modifier.clickable {
-                        navController.navigate(AuthDestinations.FindPassword.ROUTE)
+                        appState.navigate(AuthDestinations.FindPassword.ROUTE)
                     },
                     text = stringResource(id = R.string.email_login_find_password),
                     style = GalapagosTheme.typography.body4.copy(
@@ -136,7 +136,7 @@ fun EmailLoginScreen(
                 enabled = email.isNotEmpty() && password.isNotEmpty(),
                 buttonSize = ButtonSize.Height56,
                 content = stringResource(id = R.string.login),
-                onClick = { navController.navigate(HomeDestinations.ROUTE) }
+                onClick = { appState.navigate(HomeDestinations.ROUTE) }
             )
         }
     }

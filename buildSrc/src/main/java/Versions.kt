@@ -5,6 +5,7 @@ object Versions {
         const val LIFECYCLE = "2.6.1"
         const val ACTIVITY_COMPOSE = "1.7.2"
         const val COMPOSE_UI = "1.4.3"
+        const val DATASTORE = "1.0.0"
         const val FOUNDATION_LAYOUT = "1.5.0"
         const val CONSTRAINT_LAYOUT_COMPOSE = "1.0.1"
         const val NAVIGATION_COMPOSE = "2.6.0"
@@ -23,6 +24,7 @@ object Versions {
     object Google {
         const val DAGGER = "2.47"
         const val MATERIAL = "1.9.0"
+        const val FIREBASE_BOM = "32.3.1"
     }
 
     object SquareUp {
@@ -42,5 +44,6 @@ object Versions {
         const val AGP = "8.0.2"
         const val KOTLIN_ANDROID = "1.8.10"
         const val DAGGER_HILT_ANDROID = "2.44"
+        const val GOOGLE_SERVICES = "4.4.0"
     }
 }

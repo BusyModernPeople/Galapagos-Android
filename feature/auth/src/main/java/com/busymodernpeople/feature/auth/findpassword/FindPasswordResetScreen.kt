@@ -30,9 +30,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
@@ -46,7 +46,7 @@ import com.busymodernpeople.feature.auth.component.ConditionItem
 @Preview
 @Composable
 fun FindPasswordResetScreen(
-    navController: NavController = rememberNavController()
+    appState: GalapagosAppState = rememberGalapagosAppState()
 ) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -79,7 +79,7 @@ fun FindPasswordResetScreen(
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { navController.navigateUp() }
+            leadingIconOnClick = { appState.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(40.dp))
@@ -144,7 +144,7 @@ fun FindPasswordResetScreen(
                 buttonSize = ButtonSize.Height56,
                 enabled = allSatisfied && password == confirmPassword,
                 content = stringResource(id = R.string.join_next),
-                onClick = { navController.navigate(AuthDestinations.FindPassword.COMPLETE) }
+                onClick = { appState.navigate(AuthDestinations.FindPassword.COMPLETE) }
             )
         }
     }

@@ -16,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -25,9 +24,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.busymodernpeople.core.common.base.AuthDestinations
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
@@ -37,18 +37,33 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.busymodernpeople.feature.auth.component.ConditionItem
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
+import kotlinx.coroutines.flow.collectLatest
 
 @Preview
 @Composable
 fun JoinNicknameScreen(
-    navController: NavController = rememberNavController()
+    appState: GalapagosAppState = rememberGalapagosAppState(),
+    viewModel: JoinViewModel = hiltViewModel()
 ) {
-    var nickname by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
 
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
 
     LaunchedEffect(true) {
         focusRequester.requestFocus()
+
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is JoinContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is JoinContract.Effect.ShowSnackBar -> {
+                    appState.showSnackBar(effect.message)
+                }
+            }
+        }
     }
 
     Column(
@@ -60,7 +75,7 @@ fun JoinNicknameScreen(
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { navController.navigateUp() }
+            leadingIconOnClick = { appState.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(10.dp))
@@ -79,15 +94,15 @@ fun JoinNicknameScreen(
             GTextField(
                 modifier = Modifier.focusRequester(focusRequester),
                 textFieldSize = TextFieldSize.Height68,
-                value = nickname,
+                value = uiState.nickname,
                 placeholderText = stringResource(id = R.string.join_nickname_textfield_placeholder),
                 showLength = true,
                 maxChar = 6,
                 onValueChange = {
-                    nickname = it
+                    viewModel.updateState(uiState.copy(nickname = it))
                 }
             )
-            if (nickname.length in 2..6) {
+            if (uiState.nickname.length in 2..6) {
                 Spacer(modifier = Modifier.height(6.dp))
                 ConditionItem(
                     isSatisfied = true,
@@ -98,9 +113,11 @@ fun JoinNicknameScreen(
             GButton(
                 modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
-                enabled = nickname.length in 2..6,
+                enabled = uiState.nickname.length in 2..6,
                 content = stringResource(id = R.string.join_next),
-                onClick = { navController.navigate(AuthDestinations.Join.COMPLETE) }
+                onClick = {
+                    viewModel.processEvent(JoinContract.Event.Join)
+                }
             )
         }
     }

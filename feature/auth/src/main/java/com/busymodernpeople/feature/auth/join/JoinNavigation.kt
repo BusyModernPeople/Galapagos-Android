@@ -1,53 +1,98 @@
 package com.busymodernpeople.feature.auth.join
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.design.ui.component.EnterAnimation
+import com.busymodernpeople.feature.auth.login.rememberNavControllerBackStackEntry
 
 fun NavGraphBuilder.joinGraph(
-    navController: NavHostController
+    appState: GalapagosAppState
 ) {
     navigation(
         route = AuthDestinations.Join.ROUTE,
         startDestination = AuthDestinations.Join.AGREE
     ) {
-        composable(route = AuthDestinations.Join.AGREE) {
+        composable(route = AuthDestinations.Join.AGREE) { entry ->
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = entry,
+                navController = appState.navController,
+                graph = AuthDestinations.Join.ROUTE
+            )
             EnterAnimation {
                 JoinAgreeScreen(
-                    navController = navController
+                    appState = appState,
+                    viewModel = hiltViewModel(backStackEntry)
                 )
             }
         }
-        composable(route = AuthDestinations.Join.EMAIL) {
+        composable(route = AuthDestinations.Join.EMAIL) { entry ->
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = entry,
+                navController = appState.navController,
+                graph = AuthDestinations.Join.ROUTE
+            )
             EnterAnimation {
                 JoinEmailScreen(
-                    navController = navController
+                    appState = appState,
+                    viewModel = hiltViewModel(backStackEntry)
                 )
             }
         }
-        composable(route = AuthDestinations.Join.PASSWORD) {
+        composable(route = AuthDestinations.Join.PASSWORD) { entry ->
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = entry,
+                navController = appState.navController,
+                graph = AuthDestinations.Join.ROUTE
+            )
             EnterAnimation {
                 JoinPasswordScreen(
-                    navController = navController
+                    appState = appState,
+                    viewModel = hiltViewModel(backStackEntry)
                 )
             }
         }
-        composable(route = AuthDestinations.Join.NICKNAME) {
+        composable(route = AuthDestinations.Join.NICKNAME) { entry ->
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = entry,
+                navController = appState.navController,
+                graph = AuthDestinations.Join.ROUTE
+            )
             EnterAnimation {
                 JoinNicknameScreen(
-                    navController = navController
+                    appState = appState,
+                    viewModel = hiltViewModel(backStackEntry)
                 )
             }
         }
-        composable(route = AuthDestinations.Join.COMPLETE) {
+        composable(route = AuthDestinations.Join.COMPLETE) { entry ->
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = entry,
+                navController = appState.navController,
+                graph = AuthDestinations.Join.ROUTE
+            )
             EnterAnimation {
                 JoinCompleteScreen(
-                    navController = navController
+                    appState = appState,
+                    viewModel = hiltViewModel(backStackEntry)
                 )
             }
         }
     }
+}
+
+@Composable
+fun rememberNavControllerBackStackEntry(
+    entry: NavBackStackEntry,
+    navController: NavController,
+    graph: String,
+) = remember(entry) {
+    navController.getBackStackEntry(graph)
 }

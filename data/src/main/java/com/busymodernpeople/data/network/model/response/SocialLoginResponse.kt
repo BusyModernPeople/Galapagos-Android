@@ -8,7 +8,7 @@ data class SocialLoginResponse(
     @SerializedName("nickName")
     val nickName: String,
     @SerializedName("user")
-    val user: String,  // TODO: User 데이터 클래스 정의 후 수정
+    val user: UserResponse?,  // TODO: User 데이터 클래스 정의 후 수정
     @SerializedName("jwtToken")
-    val jwtToken: String
+    val jwtToken: String?
 )

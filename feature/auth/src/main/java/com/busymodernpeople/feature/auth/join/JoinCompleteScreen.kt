@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,21 +30,42 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.HomeDestinations
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
+import kotlinx.coroutines.flow.collectLatest
 
 @Preview
 @Composable
 fun JoinCompleteScreen(
-    navController: NavController = rememberNavController()
+    appState: GalapagosAppState = rememberGalapagosAppState(),
+    viewModel: JoinViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is JoinContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is JoinContract.Effect.ShowSnackBar -> {
+                    appState.showSnackBar(effect.message)
+                }
+            }
+        }
+    }
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +75,7 @@ fun JoinCompleteScreen(
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { navController.navigateUp() }
+            leadingIconOnClick = { appState.navigateUp() }
         )
         Column(
             modifier = Modifier.padding(horizontal = 24.dp),
@@ -99,7 +122,7 @@ fun JoinCompleteScreen(
                 buttonSize = ButtonSize.Height56,
                 iconSpacer = 4,
                 content = stringResource(id = R.string.join_register_pet),
-                onClick = { navController.navigate(HomeDestinations.ROUTE) }
+                onClick = { appState.navigate(HomeDestinations.ROUTE) }
             )
             Spacer(modifier = Modifier.height(10.dp))
             GButton(
@@ -116,7 +139,7 @@ fun JoinCompleteScreen(
                     width = 1.dp,
                     color = GalapagosTheme.colors.BgGray1
                 ),
-                onClick = { navController.navigate(HomeDestinations.ROUTE) }
+                onClick = { appState.navigate(HomeDestinations.ROUTE) }
             )
         }
     }

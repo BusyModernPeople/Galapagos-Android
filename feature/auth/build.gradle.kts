@@ -70,6 +70,7 @@ dependencies {
         implementation(COMPOSE_UI)
         implementation(COMPOSE_UI_TOOLING_PREVIEW)
         implementation(NAVIGATION_COMPOSE)
+        implementation(LIFECYCLE_RUNTIME_COMPOSE)
         implementation(HILT_NAVIGATION_COMPOSE)
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)

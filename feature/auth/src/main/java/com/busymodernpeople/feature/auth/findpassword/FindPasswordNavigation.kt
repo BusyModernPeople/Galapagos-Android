@@ -2,13 +2,13 @@ package com.busymodernpeople.feature.auth.findpassword
 
 import FindPasswordEmailScreen
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
 
 fun NavGraphBuilder.findPasswordGraph(
-    navController: NavHostController
+    appState: GalapagosAppState
 ) {
     navigation(
         route = AuthDestinations.FindPassword.ROUTE,
@@ -16,17 +16,17 @@ fun NavGraphBuilder.findPasswordGraph(
     ) {
         composable(route = AuthDestinations.FindPassword.EMAIL) {
             FindPasswordEmailScreen(
-                navController = navController
+                appState = appState
             )
         }
         composable(route = AuthDestinations.FindPassword.RESET_PASSWORD) {
             FindPasswordResetScreen(
-                navController = navController
+                appState = appState
             )
         }
         composable(route = AuthDestinations.FindPassword.COMPLETE) {
             FindPasswordCompleteScreen(
-                navController = navController
+                appState = appState
             )
         }
     }

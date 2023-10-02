@@ -54,6 +54,7 @@ dependencies {
     implementation(project(":core:common"))
 
     with(Dependencies.AndroidX) {
+        implementation(DATASTORE)
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)
     }

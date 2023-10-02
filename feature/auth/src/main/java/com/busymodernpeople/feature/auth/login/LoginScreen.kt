@@ -33,23 +33,22 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.google.android.gms.common.api.ApiException
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
 
 @Preview
 @Composable
 fun LoginScreen(
-    navController: NavController = rememberNavController(),
-    effectFlow: Flow<LoginContract.Effect> = flow { },
+    appState: GalapagosAppState = rememberGalapagosAppState(),
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val effectFlow = viewModel.effect
+
     val context = LocalContext.current
 
     val googleLoginResultLauncher =
@@ -57,9 +56,7 @@ fun LoginScreen(
             try {
                 val gsa = task?.getResult(ApiException::class.java)
                 if (gsa != null) {
-                    Log.d("google_token", gsa.idToken.toString())
-
-                    viewModel.fetchGoogleAccessToken(
+                    viewModel.googleLogin(
                         code = gsa.serverAuthCode.toString(),
                         idToken = gsa.idToken.toString()
                     )
@@ -73,11 +70,11 @@ fun LoginScreen(
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateTo -> {
-                    navController.navigate(effect.destination, effect.navOptions)
+                    appState.navigate(effect.destination, effect.navOptions)
                 }
 
                 is LoginContract.Effect.ShowSnackBar -> {
-                    // TODO : 구현예정
+                    appState.showSnackBar(effect.message)
                 }
 
                 is LoginContract.Effect.LaunchGoogleLogin -> {
@@ -125,7 +122,7 @@ fun LoginScreen(
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(AuthDestinations.Join.ROUTE)
+                    appState.navigate(AuthDestinations.Join.ROUTE)
                 },
                 text = stringResource(id = R.string.login_email_signup),
                 color = GalapagosTheme.colors.FontBlack,
@@ -139,7 +136,7 @@ fun LoginScreen(
             )
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(AuthDestinations.Login.EMAIL_LOGIN)
+                    appState.navigate(AuthDestinations.Login.EMAIL_LOGIN)
                 },
                 text = stringResource(id = R.string.login_email_login),
                 color = GalapagosTheme.colors.FontBlack,
