@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
+/**
+ * @param isComment 답글(true)인지 댓글(false)인지 구분
+ */
 @Preview
 @Composable
 fun CommunityCommentItem(
@@ -32,15 +35,18 @@ fun CommunityCommentItem(
     content: String = "실례지만, 어떤 아이를 키우고 계시는지 여쭈어봐도 될까요?",
     likeCount: Int = 36,
     commentCount: Int = 14,
-    createdTime: String = "58분 전"
+    createdTime: String = "58분 전",
+    isComment: Boolean = false
 ) {
     Box(
         modifier = Modifier.padding(24.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.fillMaxWidth()
         ) {
+            if (!isComment) {
+                Spacer(modifier = Modifier.width(33.dp))
+            }
             Image(
                 modifier = Modifier
                     .width(28.dp)
@@ -59,7 +65,8 @@ fun CommunityCommentItem(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(
-                        modifier = Modifier
+                        modifier = Modifier,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
@@ -86,29 +93,32 @@ fun CommunityCommentItem(
                     color = GalapagosTheme.colors.FontGray1
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Row(
 
-                ) {
-                    Text(
-                        text = "답글쓰기",
-                        style = GalapagosTheme.typography.body4,
-                        color = GalapagosTheme.colors.BgGray3
-                    )
-                    Text(
-                        text = "∙",
-                        style = GalapagosTheme.typography.body4,
-                        color = GalapagosTheme.colors.BgGray3
-                    )
-                    Text(
-                        text = "답글",
-                        style = GalapagosTheme.typography.body4,
-                        color = GalapagosTheme.colors.BgGray3
-                    )
-                    Text(
-                        text = commentCount.toString(),
-                        style = GalapagosTheme.typography.body4,
-                        color = GalapagosTheme.colors.BgGray3
-                    )
+                if (isComment) {
+                    Row(
+                        modifier = Modifier
+                    ) {
+                        Text(
+                            text = "답글쓰기",
+                            style = GalapagosTheme.typography.body4,
+                            color = GalapagosTheme.colors.BgGray3
+                        )
+                        Text(
+                            text = "∙",
+                            style = GalapagosTheme.typography.body4,
+                            color = GalapagosTheme.colors.BgGray3
+                        )
+                        Text(
+                            text = "답글",
+                            style = GalapagosTheme.typography.body4,
+                            color = GalapagosTheme.colors.BgGray3
+                        )
+                        Text(
+                            text = commentCount.toString(),
+                            style = GalapagosTheme.typography.body4,
+                            color = GalapagosTheme.colors.BgGray3
+                        )
+                    }
                 }
             }
         }

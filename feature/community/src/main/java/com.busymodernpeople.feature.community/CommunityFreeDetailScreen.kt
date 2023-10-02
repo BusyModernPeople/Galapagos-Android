@@ -1,6 +1,8 @@
 package com.busymodernpeople.feature.community
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,24 +14,44 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,7 +59,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.design.R
+import com.busymodernpeople.core.design.ui.component.GTextField
+import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.core.design.ui.theme.LocalColors
+import com.busymodernpeople.core.design.ui.theme.LocalTypography
 import com.busymodernpeople.core.design.ui.theme.Pretendard
 
 @Preview(
@@ -82,7 +108,9 @@ private fun TopBar() {
                 painter = painterResource(id = R.drawable.ic_app_bar_prev),
                 contentDescription = null,
                 tint = Color.Unspecified,
-                modifier = Modifier.size(24.dp).clip(CircleShape)
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape)
                     .clickable { /* TODO */ }
             )
             Row(
@@ -93,13 +121,17 @@ private fun TopBar() {
                     painter = painterResource(id = R.drawable.ic_share),
                     contentDescription = null,
                     tint = Color.Unspecified,
-                    modifier = Modifier.clip(CircleShape).clickable { /* TODO */ }
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .clickable { /* TODO */ }
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_dot_menu_vertical),
                     contentDescription = null,
                     tint = Color.Unspecified,
-                    modifier = Modifier.clip(CircleShape).clickable { /* TODO */ }
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .clickable { /* TODO */ }
                 )
             }
         }
@@ -217,4 +249,114 @@ private fun CommunityFreeDetailContent() {
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun BottomCommentField() {
+    var comment by remember { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
+    var isFocused by remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier.padding(horizontal = 24.dp, vertical = 10.dp).fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Image(
+            modifier = Modifier
+                .width(28.dp)
+                .height(28.dp)
+                .clip(RoundedCornerShape(10.dp)),
+            painter = painterResource(R.drawable.ic_profile_empty),
+            contentDescription = null
+        )
+
+        CommentTextField(
+            modifier = Modifier.wrapContentWidth()
+                .focusRequester(focusRequester)
+                .onFocusChanged {
+                    isFocused = it.isFocused
+                },
+            value = comment,
+            onValueChange = { comment = it },
+            placeholderText = "댓글을 입력해주세요"
+        )
+
+        Surface(
+            modifier = Modifier.clip(RoundedCornerShape(36.dp)),
+            color = GalapagosTheme.colors.PrimaryGreen
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(6.dp)
+                    .height(24.dp)
+                    .width(24.dp)
+            ) {
+                IconButton(
+                    onClick = { /* TODO */ }
+                ) {
+                    Icon(
+                        painterResource(id = R.drawable.ic_arrow_right),
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CommentTextField(
+    modifier: Modifier = Modifier,
+    textFieldSize: TextFieldSize = TextFieldSize.Height68,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholderText: String = "",
+    keyboardOptions: KeyboardOptions? = null,
+    keyboardActions: KeyboardActions? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+) {
+    val localColors = LocalColors.current
+    val localTypography = LocalTypography.current
+
+    val focusRequester = remember { FocusRequester() }
+    var isFocused by remember { mutableStateOf(false) }
+
+    BasicTextField(
+        modifier = modifier
+            .focusRequester(focusRequester)
+            .onFocusChanged {
+                isFocused = it.isFocused
+            },
+        value = value,
+        onValueChange = {
+            onValueChange(it)
+        },
+        singleLine = true,
+        textStyle = localTypography.title4.copy(color = localColors.FontGray1),
+        keyboardOptions = keyboardOptions ?: KeyboardOptions(),
+        keyboardActions = keyboardActions ?: KeyboardActions(),
+        decorationBox = { innerTextField ->
+            Row(
+                modifier = Modifier.height(27.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(modifier = Modifier) {
+                    if (value.isEmpty()) {
+                        Text(
+                            modifier = Modifier.offset(y = 1.dp),
+                            text = placeholderText,
+                            style = GalapagosTheme.typography.body1.copy(
+                                color = localColors.BgGray1
+                            )
+                        )
+                    }
+                    innerTextField()
+                }
+            }
+        },
+        visualTransformation = visualTransformation
+    )
 }
