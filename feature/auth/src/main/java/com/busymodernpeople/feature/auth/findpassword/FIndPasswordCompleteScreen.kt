@@ -22,9 +22,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
@@ -33,7 +33,7 @@ import com.busymodernpeople.feature.auth.R
 @Preview
 @Composable
 fun FindPasswordCompleteScreen(
-    navController: NavController = rememberNavController()
+    appState: GalapagosAppState = rememberGalapagosAppState()
 ) {
     Box(
         modifier = Modifier
@@ -75,7 +75,7 @@ fun FindPasswordCompleteScreen(
                 modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
                 content = stringResource(id = R.string.login),
-                onClick = { navController.navigate(AuthDestinations.ROUTE) }
+                onClick = { appState.navigate(AuthDestinations.ROUTE) }
             )
         }
     }

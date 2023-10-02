@@ -1,11 +1,15 @@
 package com.busymodernpeople.galapagos
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +24,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.TopLevelDestination
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.BottomNavigationBar
 import com.busymodernpeople.core.design.ui.component.BottomNavigationItem
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
@@ -31,7 +37,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun GalapagosNavHost() {
     val appState = rememberGalapagosAppState()
-    val navController = appState.navController
 
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     var bottomSheetContent: SheetContent? by remember { mutableStateOf(null) }
@@ -53,10 +58,26 @@ fun GalapagosNavHost() {
             bottomSheetContent?.invoke(this)
         },
         sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(20.dp)
+        sheetShape = RoundedCornerShape(20.dp),
+        modifier = Modifier.navigationBarsPadding()
     ) {
         Scaffold(
             backgroundColor = GalapagosTheme.colors.FontWhite,
+            snackbarHost = {
+                SnackbarHost(hostState = appState.scaffoldState.snackbarHostState,
+                    snackbar = { data ->
+                        Snackbar(
+                            modifier = Modifier.padding(
+                                bottom = 50.dp,
+                                start = 20.dp,
+                                end = 20.dp
+                            )
+                        ) {
+                            Text(text = data.message)
+                        }
+                    }
+                )
+            },
             bottomBar = {
                 if (appState.shouldShowBottomBar) {
                     GalapagosBottomNavigationBar(
@@ -69,14 +90,14 @@ fun GalapagosNavHost() {
         ) { padding ->
             NavHost(
                 modifier = Modifier.padding(padding),
-                navController = navController,
+                navController = appState.navController,
                 startDestination = AuthDestinations.ROUTE
             ) {
                 authGraph(
-                    navController = navController
+                    appState = appState,
                 )
                 homeGraph(
-                    navController = navController,
+                    appState = appState,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet
                 )

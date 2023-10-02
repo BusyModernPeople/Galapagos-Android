@@ -9,9 +9,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
 
 fun NavGraphBuilder.loginGraph(
-    navController: NavController
+    appState: GalapagosAppState
 ) {
     navigation(
         route = AuthDestinations.Login.ROUTE,
@@ -20,14 +21,13 @@ fun NavGraphBuilder.loginGraph(
         composable(route = AuthDestinations.Login.LOGIN) { entry ->
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
-                navController = navController,
+                navController = appState.navController,
                 graph = AuthDestinations.Login.ROUTE
             )
             val viewModel: LoginViewModel = hiltViewModel(backStackEntry)
 
             LoginScreen(
-                navController = navController,
-                effectFlow = viewModel.effect,
+                appState = appState,
                 viewModel = viewModel
             )
         }
@@ -35,12 +35,12 @@ fun NavGraphBuilder.loginGraph(
         composable(route = AuthDestinations.Login.EMAIL_LOGIN) { entry ->
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
-                navController = navController,
+                navController = appState.navController,
                 graph = AuthDestinations.Login.ROUTE
             )
 
             EmailLoginScreen(
-                navController = navController,
+                appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }

@@ -21,10 +21,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,21 +36,42 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
+import kotlinx.coroutines.flow.collectLatest
 
 @Preview
 @Composable
 fun JoinAgreeScreen(
-    navController: NavController = rememberNavController()
+    appState: GalapagosAppState = rememberGalapagosAppState(),
+    viewModel: JoinViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is JoinContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is JoinContract.Effect.ShowSnackBar -> {
+                    appState.showSnackBar(effect.message)
+                }
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +81,7 @@ fun JoinAgreeScreen(
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { navController.navigateUp() }
+            leadingIconOnClick = { appState.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(10.dp))
@@ -83,10 +102,7 @@ fun JoinAgreeScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
 
-            var termsOfUseChecked by remember { mutableStateOf(false) }
-            var privacyPolicyChecked by remember { mutableStateOf(false) }
-            var adInfoAgreeChecked by remember { mutableStateOf(false) }
-            val allChecked = termsOfUseChecked && privacyPolicyChecked && adInfoAgreeChecked
+            val allChecked = uiState.termsAgreed.count { it } == 3
             
             Surface(
                 modifier = Modifier.fillMaxWidth(),
@@ -107,13 +123,17 @@ fun JoinAgreeScreen(
                         },
                         onClick = {
                             if (allChecked) {
-                                termsOfUseChecked = false
-                                privacyPolicyChecked = false
-                                adInfoAgreeChecked = false
+                                viewModel.updateState(
+                                    uiState.copy(
+                                        termsAgreed = listOf(false, false, false)
+                                    )
+                                )
                             } else {
-                                termsOfUseChecked = true
-                                privacyPolicyChecked = true
-                                adInfoAgreeChecked = true
+                                viewModel.updateState(
+                                    uiState.copy(
+                                        termsAgreed = listOf(true, true, true)
+                                    )
+                                )
                             }
                         }
                     )
@@ -122,7 +142,7 @@ fun JoinAgreeScreen(
             Spacer(modifier = Modifier.height(40.dp))
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 CheckBoxItem(
-                    checked = termsOfUseChecked,
+                    checked = uiState.termsAgreed[0],
                     content = {
                         Text(
                             text = buildAnnotatedString {
@@ -137,11 +157,16 @@ fun JoinAgreeScreen(
                         )
                     },
                     onClick = {
-                        termsOfUseChecked = !termsOfUseChecked
+                        viewModel.updateState(
+                            uiState.copy(
+                                termsAgreed = uiState.termsAgreed
+                                    .toMutableList().apply { set(0, !uiState.termsAgreed[0]) }
+                            )
+                        )
                     }
                 )
                 CheckBoxItem(
-                    checked = privacyPolicyChecked,
+                    checked = uiState.termsAgreed[1],
                     content = {
                         Text(
                             text = buildAnnotatedString {
@@ -156,11 +181,16 @@ fun JoinAgreeScreen(
                         )
                     },
                     onClick = {
-                        privacyPolicyChecked = !privacyPolicyChecked
+                        viewModel.updateState(
+                            uiState.copy(
+                                termsAgreed = uiState.termsAgreed
+                                    .toMutableList().apply { set(1, !uiState.termsAgreed[1]) }
+                            )
+                        )
                     }
                 )
                 CheckBoxItem(
-                    checked = adInfoAgreeChecked,
+                    checked = uiState.termsAgreed[2],
                     content = {
                         Text(
                             text = buildAnnotatedString {
@@ -174,7 +204,12 @@ fun JoinAgreeScreen(
                         )
                     },
                     onClick = {
-                        adInfoAgreeChecked = !adInfoAgreeChecked
+                        viewModel.updateState(
+                            uiState.copy(
+                                termsAgreed = uiState.termsAgreed
+                                    .toMutableList().apply { set(2, !uiState.termsAgreed[2]) }
+                            )
+                        )
                     }
                 )
             }
@@ -182,9 +217,9 @@ fun JoinAgreeScreen(
             GButton(
                 modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
-                enabled = termsOfUseChecked && privacyPolicyChecked,
+                enabled = uiState.termsAgreed[0] && uiState.termsAgreed[1],
                 content = stringResource(id = R.string.join_next),
-                onClick = { navController.navigate(AuthDestinations.Join.EMAIL) }
+                onClick = { appState.navigate(AuthDestinations.Join.EMAIL) }
             )
         }
     }

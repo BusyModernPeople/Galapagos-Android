@@ -2,6 +2,7 @@ package com.busymodernpeople.data.datasource
 
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
+import com.busymodernpeople.data.network.model.request.JoinRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
 import com.busymodernpeople.data.network.service.AuthService
 import com.busymodernpeople.data.network.service.SocialType
@@ -40,6 +41,10 @@ class AuthDataSourceImpl @Inject constructor(
         deviceToken: String
     ) = flow {
         emit(authService.socialLogin(socialType, accessToken, deviceToken))
+    }.flowOn(ioDispatcher)
+
+    override fun join(joinRequest: JoinRequest) = flow {
+        emit(authService.join(joinRequest))
     }.flowOn(ioDispatcher)
 
 }

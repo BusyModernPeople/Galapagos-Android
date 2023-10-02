@@ -1,30 +1,30 @@
 package com.busymodernpeople.feature.auth
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.feature.auth.findpassword.findPasswordGraph
 import com.busymodernpeople.feature.auth.join.joinGraph
 import com.busymodernpeople.feature.auth.login.loginGraph
 
 fun NavGraphBuilder.authGraph(
-    navController: NavHostController
+    appState: GalapagosAppState
 ) {
     navigation(
         route = AuthDestinations.ROUTE,
         startDestination = AuthDestinations.Login.ROUTE
     ) {
         loginGraph(
-            navController = navController
+            appState = appState
         )
 
         joinGraph(
-            navController = navController
+            appState = appState
         )
 
         findPasswordGraph(
-            navController = navController
+            appState = appState
         )
     }
 }

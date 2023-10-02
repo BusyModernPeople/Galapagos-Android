@@ -3,6 +3,7 @@ package com.busymodernpeople.data.repository
 import com.busymodernpeople.data.datasource.AuthDataSource
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
+import com.busymodernpeople.data.network.model.request.JoinRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
 import com.busymodernpeople.data.network.service.SocialType
 import javax.inject.Inject
@@ -52,6 +53,20 @@ class AuthRepositoryImpl @Inject constructor(
         socialType = socialType,
         accessToken = accessToken,
         deviceToken = deviceToken
+    )
+
+    override fun join(
+        email: String?,
+        password: String?,
+        nickname: String,
+        socialType: SocialType
+    ) = authDataSource.join(
+        JoinRequest(
+            email = email,
+            password = password,
+            nickname = nickname,
+            socialType = socialType
+        )
     )
 
 }

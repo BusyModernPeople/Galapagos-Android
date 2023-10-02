@@ -29,16 +29,28 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
     kotlinOptions {
         jvmTarget = "${JavaVersion.VERSION_17}"
     }
 }
 
 dependencies {
+    implementation(project(":core:design"))
+
     with(Dependencies.AndroidX) {
         implementation(CORE_KTX)
+        implementation(LIFECYCLE_RUNTIME_KTX)
+        implementation(LIFECYCLE_RUNTIME_COMPOSE)
         implementation(COMPOSE_UI)
         implementation(COMPOSE_FOUNDATION_LAYOUT)
+        implementation(COMPOSE_MATERIAL)
+        implementation(NAVIGATION_COMPOSE)
         implementation(LIFECYCLE_VIEWMODEL_COMPOSE)
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)

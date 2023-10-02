@@ -41,9 +41,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.ContentTab
 import com.busymodernpeople.core.design.ui.component.GButton
@@ -52,7 +52,7 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 @Preview
 @Composable
 fun HomeScreen(
-    navController: NavController = rememberNavController(),
+    appState: GalapagosAppState = rememberGalapagosAppState(),
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { }
 ) {

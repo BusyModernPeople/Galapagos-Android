@@ -3,9 +3,11 @@ package com.busymodernpeople.data.network.service
 import com.busymodernpeople.data.network.adapter.ApiResult
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
+import com.busymodernpeople.data.network.model.request.JoinRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
 import com.busymodernpeople.data.network.model.response.ConfirmEmailResponse
 import com.busymodernpeople.data.network.model.response.GoogleAccessTokenResponse
+import com.busymodernpeople.data.network.model.response.JoinResponse
 import com.busymodernpeople.data.network.model.response.SendEmailResponse
 import com.busymodernpeople.data.network.model.response.SocialLoginResponse
 import retrofit2.http.Body
@@ -16,7 +18,7 @@ import retrofit2.http.Path
 import retrofit2.http.Url
 
 enum class SocialType {
-    kakao, google, naver
+    kakao, google, naver, EMAIL
 }
 
 interface AuthService {
@@ -44,5 +46,10 @@ interface AuthService {
         @Field("accessToken") accessToken: String,
         @Field("deviceToken") deviceToken: String
     ): ApiResult<SocialLoginResponse>
+
+    @POST("/user/signup")
+    suspend fun join(
+        @Body joinRequest: JoinRequest
+    ): ApiResult<JoinResponse>
 
 }

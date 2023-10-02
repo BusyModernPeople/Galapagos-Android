@@ -30,9 +30,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
@@ -48,7 +48,7 @@ import kotlinx.coroutines.delay
 @Preview
 @Composable
 fun FindPasswordEmailScreen(
-    navController: NavController = rememberNavController()
+    appState: GalapagosAppState = rememberGalapagosAppState()
 ) {
     var email by remember { mutableStateOf("") }
     var isSentAuthenticationCode by remember { mutableStateOf(false) }
@@ -69,7 +69,7 @@ fun FindPasswordEmailScreen(
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { navController.navigateUp() }
+            leadingIconOnClick = { appState.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(40.dp))
@@ -208,7 +208,7 @@ fun FindPasswordEmailScreen(
                     buttonSize = ButtonSize.Height56,
                     enabled = isSentAuthenticationCode && isAuthenticated,
                     content = stringResource(id = com.busymodernpeople.core.design.R.string.next),
-                    onClick = { navController.navigate(AuthDestinations.FindPassword.RESET_PASSWORD) }
+                    onClick = { appState.navigate(AuthDestinations.FindPassword.RESET_PASSWORD) }
                 )
             }
         }

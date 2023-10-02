@@ -3,6 +3,7 @@ package com.busymodernpeople.data.repository
 import com.busymodernpeople.data.network.adapter.ApiResult
 import com.busymodernpeople.data.network.model.response.ConfirmEmailResponse
 import com.busymodernpeople.data.network.model.response.GoogleAccessTokenResponse
+import com.busymodernpeople.data.network.model.response.JoinResponse
 import com.busymodernpeople.data.network.model.response.SendEmailResponse
 import com.busymodernpeople.data.network.model.response.SocialLoginResponse
 import com.busymodernpeople.data.network.service.SocialType
@@ -31,5 +32,12 @@ interface AuthRepository {
         accessToken: String,
         deviceToken: String
     ): Flow<ApiResult<SocialLoginResponse>>
+
+    fun join(
+        email: String?,
+        password: String?,
+        nickname: String,
+        socialType: SocialType
+    ): Flow<ApiResult<JoinResponse>>
 
 }

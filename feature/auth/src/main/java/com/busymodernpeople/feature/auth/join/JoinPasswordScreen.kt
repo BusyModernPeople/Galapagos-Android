@@ -20,7 +20,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -31,9 +30,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
@@ -43,34 +44,35 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.busymodernpeople.feature.auth.component.ConditionItem
 import com.busymodernpeople.feature.auth.join.component.JoinProgressBar
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalLayoutApi::class)
 @Preview
 @Composable
 fun JoinPasswordScreen(
-    navController: NavController = rememberNavController()
+    appState: GalapagosAppState = rememberGalapagosAppState(),
+    viewModel: JoinViewModel = hiltViewModel()
 ) {
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
 
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
 
     LaunchedEffect(true) {
         focusRequester.requestFocus()
-    }
 
-    // TODO: 후에 패스워드 확인 과정 ViewModel 단으로 넘김
-    val regExp = listOf(
-        "^(?=.*[a-zA-Z]).+",
-        "^(?=.*[0-9]).+",
-        """^(?=.*[-+_!@#\$%^&*., ?]).+""",
-        "^.{8,20}$"
-    )
-    val conditions = mutableListOf(false, false, false, false)
-    for (i: Int in conditions.indices) {
-        conditions[i] = password.matches(regExp[i].toRegex())
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is JoinContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is JoinContract.Effect.ShowSnackBar -> {
+                    appState.showSnackBar(effect.message)
+                }
+            }
+        }
     }
-    val allSatisfied = conditions.count { it } == 4
 
     Column(
         modifier = Modifier
@@ -81,7 +83,7 @@ fun JoinPasswordScreen(
             .imePadding()
     ) {
         TopBar(
-            leadingIconOnClick = { navController.navigateUp() }
+            leadingIconOnClick = { appState.navigateUp() }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(10.dp))
@@ -100,12 +102,13 @@ fun JoinPasswordScreen(
             GTextField(
                 modifier = Modifier.focusRequester(focusRequester),
                 textFieldSize = TextFieldSize.Height68,
-                value = password,
+                value = uiState.password ?: "",
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 placeholderText = stringResource(id = R.string.join_password_textfield_placeholder),
                 onValueChange = {
-                    password = it
+                    viewModel.updateState(uiState.copy(password = it))
+                    viewModel.checkPassword()
                 }
             )
             Spacer(modifier = Modifier.height(6.dp))
@@ -114,45 +117,48 @@ fun JoinPasswordScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 ConditionItem(
-                    isSatisfied = conditions[0],
+                    isSatisfied = uiState.passwordConditions[0],
                     content = R.string.join_password_condition_english
                 )
                 ConditionItem(
-                    isSatisfied = conditions[1],
+                    isSatisfied = uiState.passwordConditions[1],
                     content = R.string.join_password_condition_number
                 )
                 ConditionItem(
-                    isSatisfied = conditions[2],
+                    isSatisfied = uiState.passwordConditions[2],
                     content = R.string.join_password_condition_symbol
                 )
                 ConditionItem(
-                    isSatisfied = conditions[3],
+                    isSatisfied = uiState.passwordConditions[3],
                     content = R.string.join_password_condition_length
                 )
             }
             Spacer(modifier = Modifier.height(30.dp))
             GTextField(
                 textFieldSize = TextFieldSize.Height68,
-                value = confirmPassword,
+                value = uiState.confirmPassword,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 placeholderText = stringResource(id = R.string.join_confirm_password_textfield_placeholder),
                 onValueChange = {
-                    confirmPassword = it
+                    viewModel.updateState(uiState.copy(confirmPassword = it))
                 }
             )
             Spacer(modifier = Modifier.height(6.dp))
             ConditionItem(
-                isSatisfied = allSatisfied && password == confirmPassword,
+                isSatisfied =
+                    uiState.passwordConditions.count { it } == 4
+                            && uiState.password == uiState.confirmPassword,
                 content = R.string.join_password_condition_match
             )
             Spacer(modifier = Modifier.weight(1f))
             GButton(
                 modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
-                enabled = allSatisfied && password == confirmPassword,
+                enabled = uiState.passwordConditions.count { it } == 4
+                                && uiState.password == uiState.confirmPassword,
                 content = stringResource(id = R.string.join_next),
-                onClick = { navController.navigate(AuthDestinations.Join.NICKNAME) }
+                onClick = { appState.navigate(AuthDestinations.Join.NICKNAME) }
             )
         }
     }
