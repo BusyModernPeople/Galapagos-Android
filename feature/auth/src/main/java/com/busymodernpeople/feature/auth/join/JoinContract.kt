@@ -10,7 +10,7 @@ class JoinContract {
     data class State(
         val isLoading: Boolean = false,
         val termsAgreed: List<Boolean> = listOf(false, false, false),
-        val email: String? = null,
+        val email: String = "",
         val emailErrorState: Boolean = false,
         val authCode: String = "",
         val authCodeErrorState: Boolean = false,

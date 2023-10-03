@@ -6,7 +6,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
@@ -17,14 +19,27 @@ fun NavGraphBuilder.joinGraph(
     appState: GalapagosAppState
 ) {
     navigation(
-        route = AuthDestinations.Join.ROUTE,
-        startDestination = AuthDestinations.Join.AGREE
+        route = "${AuthDestinations.Join.ROUTE}?socialType={socialType}&email={email}",
+        startDestination = "${AuthDestinations.Join.AGREE}?socialType={socialType}&email={email}"
     ) {
-        composable(route = AuthDestinations.Join.AGREE) { entry ->
+        composable(
+            route = "${AuthDestinations.Join.AGREE}?socialType={socialType}&email={email}",
+            arguments = listOf(
+                navArgument("socialType") {
+                    type = NavType.StringType
+                    defaultValue = "EMAIL"
+                },
+                navArgument("email") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = ""
+                }
+            )
+        ) { entry ->
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
                 navController = appState.navController,
-                graph = AuthDestinations.Join.ROUTE
+                graph = "${AuthDestinations.Join.ROUTE}?socialType={socialType}&email={email}"
             )
             EnterAnimation {
                 JoinAgreeScreen(
@@ -37,7 +52,7 @@ fun NavGraphBuilder.joinGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
                 navController = appState.navController,
-                graph = AuthDestinations.Join.ROUTE
+                graph = "${AuthDestinations.Join.ROUTE}?socialType={socialType}&email={email}"
             )
             EnterAnimation {
                 JoinEmailScreen(
@@ -50,7 +65,7 @@ fun NavGraphBuilder.joinGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
                 navController = appState.navController,
-                graph = AuthDestinations.Join.ROUTE
+                graph = "${AuthDestinations.Join.ROUTE}?socialType={socialType}&email={email}"
             )
             EnterAnimation {
                 JoinPasswordScreen(
@@ -63,7 +78,7 @@ fun NavGraphBuilder.joinGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
                 navController = appState.navController,
-                graph = AuthDestinations.Join.ROUTE
+                graph = "${AuthDestinations.Join.ROUTE}?socialType={socialType}&email={email}"
             )
             EnterAnimation {
                 JoinNicknameScreen(
@@ -76,7 +91,7 @@ fun NavGraphBuilder.joinGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
                 navController = appState.navController,
-                graph = AuthDestinations.Join.ROUTE
+                graph = "${AuthDestinations.Join.ROUTE}?socialType={socialType}&email={email}"
             )
             EnterAnimation {
                 JoinCompleteScreen(

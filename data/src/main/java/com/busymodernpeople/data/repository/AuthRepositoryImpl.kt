@@ -56,10 +56,10 @@ class AuthRepositoryImpl @Inject constructor(
     )
 
     override fun join(
-        email: String?,
+        email: String,
         password: String?,
         nickname: String,
-        socialType: SocialType
+        socialType: String
     ) = authDataSource.join(
         JoinRequest(
             email = email,

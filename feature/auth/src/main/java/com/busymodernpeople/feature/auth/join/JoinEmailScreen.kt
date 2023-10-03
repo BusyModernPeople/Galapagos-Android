@@ -123,7 +123,7 @@ fun JoinEmailScreen(
             Spacer(modifier = Modifier.height(10.dp))
             GButton(
                 buttonSize = ButtonSize.Height56,
-                enabled = uiState.email?.isNotEmpty() ?: false,
+                enabled = uiState.email.isNotEmpty() && !uiState.isSentAuthCode,
                 content = stringResource(id = R.string.join_authenticate_email),
                 onClick = {
                     viewModel.processEvent(

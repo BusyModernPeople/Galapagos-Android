@@ -15,7 +15,10 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
@@ -53,11 +56,20 @@ class LoginViewModel @Inject constructor(
             }
         } else if (token != null) {
             val fcmToken = runBlocking { dataStoreRepository.getFcmToken().first() }
-            socialLogin(
-                socialType = SocialType.kakao,
-                accessToken = token.accessToken,
-                deviceToken = fcmToken
-            )
+
+            UserApiClient.instance.me { user, error ->
+                if (error != null) {
+                    postEffect(LoginContract.Effect.ShowSnackBar("$error"))
+                } else if (user != null) {
+                    val email = user.kakaoAccount?.email ?: ""
+                    socialLogin(
+                        socialType = SocialType.kakao,
+                        email = email,
+                        accessToken = token.accessToken,
+                        deviceToken = fcmToken
+                    )
+                }
+            }
         }
     }
 
@@ -75,20 +87,48 @@ class LoginViewModel @Inject constructor(
             val accessToken = NaverIdLoginSDK.getAccessToken() ?: ""
             val fcmToken = runBlocking { dataStoreRepository.getFcmToken().first() }
 
-            socialLogin(
-                socialType = SocialType.naver,
-                accessToken = accessToken,
-                deviceToken = fcmToken
-            )
+            NidOAuthLogin().callProfileApi(object : NidProfileCallback<NidProfileResponse> {
+                override fun onError(errorCode: Int, message: String) {
+                    postEffect(LoginContract.Effect.ShowSnackBar("errorCode:$errorCode, errorMessage:$message"))
+                }
+
+                override fun onFailure(httpStatus: Int, message: String) {
+                    postEffect(LoginContract.Effect.ShowSnackBar("httpStatus:$httpStatus, errorDesc:$message"))
+                }
+
+                override fun onSuccess(result: NidProfileResponse) {
+                    val email = result.profile?.email ?: ""
+                    socialLogin(
+                        socialType = SocialType.naver,
+                        email = email,
+                        accessToken = accessToken,
+                        deviceToken = fcmToken
+                    )
+                }
+            })
+
         }
 
     }
 
     fun socialLogin(
         socialType: SocialType,
+        email: String,
         accessToken: String,
         deviceToken: String
     ) {
+        val type = when (socialType) {
+            SocialType.kakao -> {
+                "KAKAO"
+            }
+            SocialType.google -> {
+                "GOOGLE"
+            }
+            SocialType.naver -> {
+                "NAVER"
+            }
+        }
+
         viewModelScope.launch {
             authRepository.socialLogin(
                 socialType = socialType,
@@ -110,7 +150,7 @@ class LoginViewModel @Inject constructor(
                         } else {
                             postEffect(
                                 LoginContract.Effect.NavigateTo(
-                                    AuthDestinations.Join.NICKNAME
+                                    "${AuthDestinations.Join.ROUTE}?socialType=$socialType&email=$email"
                                 )
                             )
                         }
@@ -132,7 +172,8 @@ class LoginViewModel @Inject constructor(
         clientId: String = BuildConfig.GOOGLE_OAUTH_CLIENT_ID,
         clientSecret: String = BuildConfig.GOOGLE_OAUTH_CLIENT_SECRET,
         code: String,
-        idToken: String
+        idToken: String,
+        email: String
     ) {
         viewModelScope.launch {
             authRepository.fetchGoogleAccessToken(
@@ -150,6 +191,7 @@ class LoginViewModel @Inject constructor(
 
                         socialLogin(
                             socialType = SocialType.google,
+                            email = email,
                             accessToken = result.data.accessToken,
                             deviceToken = fcmToken
                         )
@@ -183,11 +225,19 @@ class LoginViewModel @Inject constructor(
                 } else if (token != null) {
                     val fcmToken = runBlocking { dataStoreRepository.getFcmToken().first() }
 
-                    socialLogin(
-                        socialType = SocialType.kakao,
-                        accessToken = token.accessToken,
-                        deviceToken = fcmToken
-                    )
+                    UserApiClient.instance.me { user, error ->
+                        if (error != null) {
+                            postEffect(LoginContract.Effect.ShowSnackBar("$error"))
+                        } else if (user != null) {
+                            val email = user.kakaoAccount?.email ?: ""
+                            socialLogin(
+                                socialType = SocialType.kakao,
+                                email = email,
+                                accessToken = token.accessToken,
+                                deviceToken = fcmToken
+                            )
+                        }
+                    }
                 }
             }
         } else {

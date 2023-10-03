@@ -34,10 +34,10 @@ interface AuthRepository {
     ): Flow<ApiResult<SocialLoginResponse>>
 
     fun join(
-        email: String?,
+        email: String,
         password: String?,
         nickname: String,
-        socialType: SocialType
+        socialType: String
     ): Flow<ApiResult<JoinResponse>>
 
 }

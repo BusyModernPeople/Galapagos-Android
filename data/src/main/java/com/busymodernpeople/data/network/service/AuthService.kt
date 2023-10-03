@@ -18,7 +18,7 @@ import retrofit2.http.Path
 import retrofit2.http.Url
 
 enum class SocialType {
-    kakao, google, naver, EMAIL
+    kakao, google, naver
 }
 
 interface AuthService {

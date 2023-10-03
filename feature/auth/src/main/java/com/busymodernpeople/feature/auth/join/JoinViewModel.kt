@@ -1,10 +1,10 @@
 package com.busymodernpeople.feature.auth.join
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.BaseViewModel
 import com.busymodernpeople.data.network.adapter.ApiResult
-import com.busymodernpeople.data.network.service.SocialType
 import com.busymodernpeople.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -14,10 +14,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JoinViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    savedStateBundle: SavedStateHandle
 ) : BaseViewModel<JoinContract.State, JoinContract.Event, JoinContract.Effect>(
     initialState = JoinContract.State()
 ) {
+    val socialType: String = savedStateBundle["socialType"] ?: "EMAIL"
+    val email: String = savedStateBundle["email"] ?: ""
+
+    init {
+        updateState(currentState.copy(email = email))
+    }
 
     override fun reduceState(event: JoinContract.Event) {
         when (event) {
@@ -134,7 +141,7 @@ class JoinViewModel @Inject constructor(
             currentState.email,
             currentState.password,
             currentState.nickname,
-            SocialType.EMAIL
+            socialType
         ).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collect { result ->

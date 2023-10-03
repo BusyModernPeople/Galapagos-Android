@@ -57,8 +57,9 @@ fun LoginScreen(
                 val gsa = task?.getResult(ApiException::class.java)
                 if (gsa != null) {
                     viewModel.googleLogin(
-                        code = gsa.serverAuthCode.toString(),
-                        idToken = gsa.idToken.toString()
+                        code = gsa.serverAuthCode ?: "",
+                        idToken = gsa.idToken ?: "",
+                        email = gsa.email ?: ""
                     )
                 }
             } catch (e: ApiException) {
@@ -122,7 +123,7 @@ fun LoginScreen(
         ) {
             Text(
                 modifier = Modifier.clickable {
-                    appState.navigate(AuthDestinations.Join.ROUTE)
+                    appState.navigate("${AuthDestinations.Join.ROUTE}?socialType=EMAIL&email=")
                 },
                 text = stringResource(id = R.string.login_email_signup),
                 color = GalapagosTheme.colors.FontBlack,
