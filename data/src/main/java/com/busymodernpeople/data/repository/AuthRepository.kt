@@ -33,11 +33,16 @@ interface AuthRepository {
         deviceToken: String
     ): Flow<ApiResult<SocialLoginResponse>>
 
+    fun emailLogin(
+        email: String,
+        password: String
+    ): Flow<ApiResult<JoinResponse>>
+
     fun join(
-        email: String?,
+        email: String,
         password: String?,
         nickname: String,
-        socialType: SocialType
+        socialType: String
     ): Flow<ApiResult<JoinResponse>>
 
 }

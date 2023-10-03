@@ -18,7 +18,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +30,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.navOptions
+import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
@@ -49,7 +49,6 @@ fun JoinCompleteScreen(
     appState: GalapagosAppState = rememberGalapagosAppState(),
     viewModel: JoinViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
     LaunchedEffect(true) {
@@ -139,7 +138,14 @@ fun JoinCompleteScreen(
                     width = 1.dp,
                     color = GalapagosTheme.colors.BgGray1
                 ),
-                onClick = { appState.navigate(HomeDestinations.ROUTE) }
+                onClick = {
+                    appState.navigate(
+                        destination = HomeDestinations.ROUTE,
+                        navOptions = navOptions {
+                            popUpTo(AuthDestinations.Login.LOGIN)
+                        }
+                    )
+                }
             )
         }
     }

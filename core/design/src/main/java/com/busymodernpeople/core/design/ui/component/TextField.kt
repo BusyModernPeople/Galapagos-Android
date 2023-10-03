@@ -74,6 +74,7 @@ fun GTextField(
     placeholderText: String = "",
     isError: Boolean = false,
     enabled: Boolean = true,
+    focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions? = null,
     keyboardActions: KeyboardActions? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -83,24 +84,30 @@ fun GTextField(
     val localColors = LocalColors.current
     val localTypography = LocalTypography.current
     
-    val focusRequester = remember { FocusRequester() }
+    val composableFocusRequester = remember { focusRequester }
+    var initState by remember { mutableStateOf(true) }
     var isFocused by remember { mutableStateOf(false) }
+
+    val borderColor = when {
+        initState -> localColors.BgGray1
+        !enabled -> localColors.BgGray1
+        isError -> localColors.FontRed
+        isFocused -> localColors.PrimaryGreen
+        else -> localColors.PrimaryGreen
+    }
 
     BasicTextField(
         modifier = modifier
-            .focusRequester(focusRequester)
+            .focusRequester(composableFocusRequester)
             .onFocusChanged {
+                if (it.isFocused && initState) {
+                    initState = false
+                }
                 isFocused = it.isFocused
             }
             .border(
                 width = 1.dp,
-                color = if (isError) {
-                    localColors.FontRed
-                } else if (isFocused) {
-                    localColors.PrimaryGreen
-                } else {
-                    localColors.BgGray1
-                },
+                color = borderColor,
                 shape = when (textFieldSize) {
                     is TextFieldSize.Height68 -> RoundedCornerShape(8.dp)
                     is TextFieldSize.Height56 -> RoundedCornerShape(6.dp)
@@ -119,7 +126,9 @@ fun GTextField(
         },
         singleLine = true,
         enabled = enabled,
-        textStyle = localTypography.title4.copy(color = localColors.FontGray1),
+        textStyle = localTypography.title4.copy(
+            color = if (enabled) localColors.FontGray1 else localColors.BgGray1
+        ),
         keyboardOptions = keyboardOptions ?: KeyboardOptions(),
         keyboardActions = keyboardActions ?: KeyboardActions(),
         decorationBox = { innerTextField ->

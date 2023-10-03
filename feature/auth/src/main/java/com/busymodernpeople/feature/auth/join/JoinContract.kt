@@ -10,7 +10,7 @@ class JoinContract {
     data class State(
         val isLoading: Boolean = false,
         val termsAgreed: List<Boolean> = listOf(false, false, false),
-        val email: String? = null,
+        val email: String = "",
         val emailErrorState: Boolean = false,
         val authCode: String = "",
         val authCodeErrorState: Boolean = false,
@@ -20,7 +20,6 @@ class JoinContract {
         val remainingTime: Int = 180,
         val password: String? = null,
         val passwordConditions: List<Boolean> = listOf(false, false, false, false),
-        val passwordErrorState: Boolean = false,
         val confirmPassword: String = "",
         val nickname: String = ""
     ) : UiState

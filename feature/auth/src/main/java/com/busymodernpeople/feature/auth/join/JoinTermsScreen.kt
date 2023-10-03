@@ -219,7 +219,15 @@ fun JoinAgreeScreen(
                 buttonSize = ButtonSize.Height56,
                 enabled = uiState.termsAgreed[0] && uiState.termsAgreed[1],
                 content = stringResource(id = R.string.join_next),
-                onClick = { appState.navigate(AuthDestinations.Join.EMAIL) }
+                onClick = {
+                    appState.navigate(
+                        if (viewModel.socialType == "EMAIL") {
+                            AuthDestinations.Join.EMAIL
+                        } else {
+                            AuthDestinations.Join.NICKNAME
+                        }
+                    )
+                }
             )
         }
     }

@@ -2,6 +2,7 @@ package com.busymodernpeople.data.datasource
 
 import com.busymodernpeople.data.network.adapter.ApiResult
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
+import com.busymodernpeople.data.network.model.request.EmailLoginRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
 import com.busymodernpeople.data.network.model.request.JoinRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
@@ -32,6 +33,10 @@ interface AuthDataSource {
         accessToken: String,
         deviceToken: String
     ): Flow<ApiResult<SocialLoginResponse>>
+
+    fun emailLogin(
+        emailLoginRequest: EmailLoginRequest
+    ): Flow<ApiResult<JoinResponse>>
 
     fun join(
         joinRequest: JoinRequest

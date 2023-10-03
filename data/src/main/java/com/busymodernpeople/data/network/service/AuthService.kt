@@ -2,6 +2,7 @@ package com.busymodernpeople.data.network.service
 
 import com.busymodernpeople.data.network.adapter.ApiResult
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
+import com.busymodernpeople.data.network.model.request.EmailLoginRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
 import com.busymodernpeople.data.network.model.request.JoinRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
@@ -13,12 +14,13 @@ import com.busymodernpeople.data.network.model.response.SocialLoginResponse
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Url
 
 enum class SocialType {
-    kakao, google, naver, EMAIL
+    kakao, google, naver
 }
 
 interface AuthService {
@@ -47,9 +49,19 @@ interface AuthService {
         @Field("deviceToken") deviceToken: String
     ): ApiResult<SocialLoginResponse>
 
-    @POST("/user/signup")
+    @POST("/users/email-login")
+    suspend fun emailLogin(
+        @Body emailLoginRequest: EmailLoginRequest
+    ): ApiResult<JoinResponse>
+
+    @POST("/users/signup")
     suspend fun join(
         @Body joinRequest: JoinRequest
     ): ApiResult<JoinResponse>
 
+    @PATCH("/users/nickname/edit")
+    suspend fun editNickname()
+
+    @PATCH("/users/password/edit")
+    suspend fun editPassword()
 }

@@ -19,11 +19,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,9 +32,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
-import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
@@ -44,6 +43,7 @@ import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
+import kotlinx.coroutines.flow.collectLatest
 
 @Preview
 @Composable
@@ -51,13 +51,27 @@ fun EmailLoginScreen(
     appState: GalapagosAppState = rememberGalapagosAppState(),
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
 
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
 
     LaunchedEffect(true) {
         focusRequester.requestFocus()
+
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is LoginContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is LoginContract.Effect.ShowSnackBar -> {
+                    appState.showSnackBar(effect.message)
+                }
+
+                else -> { }
+            }
+        }
     }
 
     Column(
@@ -82,24 +96,44 @@ fun EmailLoginScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
-                modifier = Modifier.focusRequester(focusRequester),
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused && uiState.emailErrorState) {
+                        viewModel.updateState(
+                            uiState.copy(emailErrorState = false)
+                        )
+                    }
+                },
                 textFieldSize = TextFieldSize.Height68,
-                value = email,
+                value = uiState.email,
+                isError = uiState.emailErrorState,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 placeholderText = stringResource(id = R.string.join_email_textfield_placeholder),
+                focusRequester = focusRequester,
+                maxChar = 40,
                 onValueChange = {
-                    email = it
+                    viewModel.updateState(
+                        uiState.copy(email = it)
+                    )
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
             GTextField(
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused && uiState.passwordErrorState) {
+                        viewModel.updateState(
+                            uiState.copy(passwordErrorState = false)
+                        )
+                    }
+                },
                 textFieldSize = TextFieldSize.Height68,
-                value = password,
+                value = uiState.password,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 placeholderText = stringResource(id = R.string.join_password_textfield_placeholder),
                 onValueChange = {
-                    password = it
+                    viewModel.updateState(
+                        uiState.copy(password = it)
+                    )
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -122,6 +156,9 @@ fun EmailLoginScreen(
                     textDecoration = TextDecoration.Underline
                 )
                 Text(
+                    modifier = Modifier.clickable {
+                        appState.navigate("${AuthDestinations.Join.ROUTE}?socialType=EMAIL&email=")
+                    },
                     text = stringResource(id = R.string.email_login_signup),
                     style = GalapagosTheme.typography.body4.copy(
                         fontWeight = FontWeight.Normal,
@@ -133,10 +170,12 @@ fun EmailLoginScreen(
             Spacer(modifier = Modifier.weight(1f))
             GButton(
                 modifier = Modifier.padding(bottom = 50.dp),
-                enabled = email.isNotEmpty() && password.isNotEmpty(),
+                enabled = uiState.email.isNotEmpty() && uiState.password.isNotEmpty(),
                 buttonSize = ButtonSize.Height56,
                 content = stringResource(id = R.string.login),
-                onClick = { appState.navigate(HomeDestinations.ROUTE) }
+                onClick = {
+                    viewModel.emailLogin()
+                }
             )
         }
     }

@@ -1,5 +1,7 @@
 package com.busymodernpeople.data.network.adapter
 
+import com.busymodernpeople.data.network.model.response.ErrorResponse
+import com.google.gson.Gson
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
@@ -20,10 +22,16 @@ class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
                             )
                         )
                     } else {
+                        val gson = Gson()
+                        val errorResponse = gson.fromJson(
+                            response.errorBody()?.string(),
+                            ErrorResponse::class.java
+                        )
+
                         callback.onResponse(
                             this@ApiResultCall,
                             Response.success(
-                                ApiResult.ApiError(response.message(), response.code())
+                                ApiResult.ApiError(errorResponse.errorMessage, errorResponse.status)
                             )
                         )
                     }
