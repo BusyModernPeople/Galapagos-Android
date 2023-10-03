@@ -22,7 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -100,12 +99,12 @@ fun JoinPasswordScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
-                modifier = Modifier.focusRequester(focusRequester),
                 textFieldSize = TextFieldSize.Height68,
                 value = uiState.password ?: "",
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 placeholderText = stringResource(id = R.string.join_password_textfield_placeholder),
+                focusRequester = focusRequester,
                 onValueChange = {
                     viewModel.updateState(uiState.copy(password = it))
                     viewModel.checkPassword()

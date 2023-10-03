@@ -150,7 +150,7 @@ class LoginViewModel @Inject constructor(
                         } else {
                             postEffect(
                                 LoginContract.Effect.NavigateTo(
-                                    "${AuthDestinations.Join.ROUTE}?socialType=$socialType&email=$email"
+                                    "${AuthDestinations.Join.ROUTE}?socialType=$type&email=$email"
                                 )
                             )
                         }
@@ -168,30 +168,29 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun emailLogin(
-        email: String,
-        password: String
-    ) {
-        viewModelScope.launch {
-            authRepository.emailLogin(
-                email = email,
-                password = password
-            ).onStart {
-                updateState(currentState.copy(isLoading = true))
-            }.collect { result ->
-                updateState(currentState.copy(isLoading = false))
-                when (result) {
-                    is ApiResult.Success -> {
-                        postEffect(LoginContract.Effect.NavigateTo(HomeDestinations.ROUTE))
-                    }
+    fun emailLogin() = viewModelScope.launch {
+        authRepository.emailLogin(
+            email = currentState.email,
+            password = currentState.password
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collect { result ->
+            updateState(currentState.copy(isLoading = false))
+            when (result) {
+                is ApiResult.Success -> {
+                    postEffect(LoginContract.Effect.NavigateTo(HomeDestinations.ROUTE))
+                    updateState(currentState.copy(emailErrorState = false))
+                    updateState(currentState.copy(passwordErrorState = false))
+                }
 
-                    is ApiResult.ApiError -> {
-                        postEffect(LoginContract.Effect.ShowSnackBar(result.message))
-                    }
+                is ApiResult.ApiError -> {
+                    postEffect(LoginContract.Effect.ShowSnackBar(result.message))
+                    updateState(currentState.copy(emailErrorState = true))
+                    updateState(currentState.copy(passwordErrorState = true))
+                }
 
-                    is ApiResult.NetworkError -> {
-                        postEffect(LoginContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
-                    }
+                is ApiResult.NetworkError -> {
+                    postEffect(LoginContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
                 }
             }
         }

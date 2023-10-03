@@ -8,7 +8,11 @@ import com.busymodernpeople.core.common.base.UiState
 
 class LoginContract {
     data class State(
-        val isLoading: Boolean = false
+        val isLoading: Boolean = false,
+        val email: String = "",
+        val emailErrorState: Boolean = false,
+        val password: String = "",
+        val passwordErrorState: Boolean = false
     ) : UiState
 
     sealed class Event : UiEvent {

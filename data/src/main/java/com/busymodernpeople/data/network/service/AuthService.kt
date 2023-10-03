@@ -49,19 +49,19 @@ interface AuthService {
         @Field("deviceToken") deviceToken: String
     ): ApiResult<SocialLoginResponse>
 
-    @POST("/user/email-login")
+    @POST("/users/email-login")
     suspend fun emailLogin(
         @Body emailLoginRequest: EmailLoginRequest
     ): ApiResult<JoinResponse>
 
-    @POST("/user/signup")
+    @POST("/users/signup")
     suspend fun join(
         @Body joinRequest: JoinRequest
     ): ApiResult<JoinResponse>
 
-    @PATCH("/user/nickname/edit")
+    @PATCH("/users/nickname/edit")
     suspend fun editNickname()
 
-    @PATCH("/user/password/edit")
+    @PATCH("/users/password/edit")
     suspend fun editPassword()
 }

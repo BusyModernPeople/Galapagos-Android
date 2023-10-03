@@ -24,7 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -105,12 +105,20 @@ fun JoinEmailScreen(
             }
             Spacer(modifier = Modifier.height(40.dp))
             GTextField(
-                modifier = Modifier.focusRequester(focusRequester),
+                modifier = Modifier.onFocusChanged {
+                    if (it.isFocused && uiState.emailErrorState) {
+                        viewModel.updateState(
+                            uiState.copy(emailErrorState = false)
+                        )
+                    }
+                },
                 textFieldSize = TextFieldSize.Height68,
                 enabled = !uiState.isSentAuthCode,
-                value = uiState.email ?: "",
+                value = uiState.email,
+                isError = uiState.emailErrorState,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 placeholderText = stringResource(id = R.string.join_email_textfield_placeholder),
+                focusRequester = focusRequester,
                 maxChar = 40,
                 onValueChange = {
                     viewModel.updateState(
@@ -139,10 +147,17 @@ fun JoinEmailScreen(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
 
-
                 GTextField(
+                    modifier = Modifier.onFocusChanged {
+                        if (it.isFocused && uiState.authCodeErrorState) {
+                            viewModel.updateState(
+                                uiState.copy(authCodeErrorState = false)
+                            )
+                        }
+                    },
                     textFieldSize = TextFieldSize.Height68,
                     value = uiState.authCode,
+                    isError = uiState.authCodeErrorState,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     placeholderText = stringResource(id = R.string.join_authentication_number_textfield_placeholder),
                     maxChar = 6,
