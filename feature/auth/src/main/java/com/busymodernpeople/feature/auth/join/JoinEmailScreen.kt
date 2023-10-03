@@ -114,9 +114,7 @@ fun JoinEmailScreen(
                 maxChar = 40,
                 onValueChange = {
                     viewModel.updateState(
-                        uiState.copy(
-                            email = it
-                        )
+                        uiState.copy(email = it)
                     )
                 }
             )

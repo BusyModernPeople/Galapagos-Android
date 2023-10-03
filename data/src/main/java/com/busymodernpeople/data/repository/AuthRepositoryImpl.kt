@@ -2,6 +2,7 @@ package com.busymodernpeople.data.repository
 
 import com.busymodernpeople.data.datasource.AuthDataSource
 import com.busymodernpeople.data.network.model.request.ConfirmEmailRequest
+import com.busymodernpeople.data.network.model.request.EmailLoginRequest
 import com.busymodernpeople.data.network.model.request.GoogleAccessTokenRequest
 import com.busymodernpeople.data.network.model.request.JoinRequest
 import com.busymodernpeople.data.network.model.request.SendEmailRequest
@@ -53,6 +54,16 @@ class AuthRepositoryImpl @Inject constructor(
         socialType = socialType,
         accessToken = accessToken,
         deviceToken = deviceToken
+    )
+
+    override fun emailLogin(
+        email: String,
+        password: String
+    ) = authDataSource.emailLogin(
+        EmailLoginRequest(
+            email = email,
+            password = password
+        )
     )
 
     override fun join(

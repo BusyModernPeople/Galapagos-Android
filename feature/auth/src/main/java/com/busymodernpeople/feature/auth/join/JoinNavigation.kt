@@ -20,10 +20,10 @@ fun NavGraphBuilder.joinGraph(
 ) {
     navigation(
         route = "${AuthDestinations.Join.ROUTE}?socialType={socialType}&email={email}",
-        startDestination = "${AuthDestinations.Join.AGREE}?socialType={socialType}&email={email}"
+        startDestination = "${AuthDestinations.Join.TERMS}?socialType={socialType}&email={email}"
     ) {
         composable(
-            route = "${AuthDestinations.Join.AGREE}?socialType={socialType}&email={email}",
+            route = "${AuthDestinations.Join.TERMS}?socialType={socialType}&email={email}",
             arguments = listOf(
                 navArgument("socialType") {
                     type = NavType.StringType

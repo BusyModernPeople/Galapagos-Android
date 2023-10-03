@@ -21,7 +21,7 @@ object AuthDestinations {
     object Join {
         const val ROUTE = "joinRoute"
 
-        const val AGREE = "joinAgree"
+        const val TERMS = "joinTerms"
         const val EMAIL = "joinEmail"
         const val PASSWORD = "joinPassword"
         const val NICKNAME = "joinNickname"

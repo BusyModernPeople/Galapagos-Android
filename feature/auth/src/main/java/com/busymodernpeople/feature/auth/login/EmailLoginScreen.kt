@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
-import com.busymodernpeople.core.common.base.HomeDestinations
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
@@ -44,6 +43,7 @@ import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
+import kotlinx.coroutines.flow.collectLatest
 
 @Preview
 @Composable
@@ -51,6 +51,8 @@ fun EmailLoginScreen(
     appState: GalapagosAppState = rememberGalapagosAppState(),
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val effectFlow = viewModel.effect
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -58,6 +60,20 @@ fun EmailLoginScreen(
 
     LaunchedEffect(true) {
         focusRequester.requestFocus()
+
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is LoginContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is LoginContract.Effect.ShowSnackBar -> {
+                    appState.showSnackBar(effect.message)
+                }
+
+                else -> { }
+            }
+        }
     }
 
     Column(
@@ -87,6 +103,7 @@ fun EmailLoginScreen(
                 value = email,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 placeholderText = stringResource(id = R.string.join_email_textfield_placeholder),
+                maxChar = 40,
                 onValueChange = {
                     email = it
                 }
@@ -122,6 +139,9 @@ fun EmailLoginScreen(
                     textDecoration = TextDecoration.Underline
                 )
                 Text(
+                    modifier = Modifier.clickable {
+                        appState.navigate("${AuthDestinations.Join.ROUTE}?socialType=EMAIL&email=")
+                    },
                     text = stringResource(id = R.string.email_login_signup),
                     style = GalapagosTheme.typography.body4.copy(
                         fontWeight = FontWeight.Normal,
@@ -136,7 +156,9 @@ fun EmailLoginScreen(
                 enabled = email.isNotEmpty() && password.isNotEmpty(),
                 buttonSize = ButtonSize.Height56,
                 content = stringResource(id = R.string.login),
-                onClick = { appState.navigate(HomeDestinations.ROUTE) }
+                onClick = {
+                    viewModel.emailLogin(email, password)
+                }
             )
         }
     }

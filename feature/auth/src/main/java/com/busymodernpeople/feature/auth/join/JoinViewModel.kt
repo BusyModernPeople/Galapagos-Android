@@ -2,6 +2,7 @@ package com.busymodernpeople.feature.auth.join
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.navOptions
 import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.BaseViewModel
 import com.busymodernpeople.data.network.adapter.ApiResult
@@ -150,7 +151,10 @@ class JoinViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     postEffect(
                         JoinContract.Effect.NavigateTo(
-                            AuthDestinations.Join.COMPLETE
+                            destination = AuthDestinations.Join.COMPLETE,
+                            navOptions = navOptions {
+                                popUpTo(AuthDestinations.Login.LOGIN)
+                            }
                         )
                     )
                 }
