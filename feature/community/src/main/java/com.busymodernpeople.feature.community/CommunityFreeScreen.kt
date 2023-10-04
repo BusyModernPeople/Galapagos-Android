@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
@@ -33,7 +34,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.design.R
-import com.busymodernpeople.core.design.ui.component.GFloatingButton
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.community.component.CommunityFreeItem
@@ -57,9 +57,11 @@ fun CommunityFreeScreen(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        // TopBar(content = "자유게시판", trailingIcon = R.drawable.ic_animal_category, leadingIconOnClick = { /*TODO*/ })
+        TopBar(content = "자유게시판", trailingIcon = R.drawable.ic_animal_category, leadingIconOnClick = { /*TODO*/ })
         CommunityInformBar()
         Spacer(modifier = Modifier.height(8.dp))
+        CommunityAnimal()
+        Spacer(modifier = Modifier.height(16.dp))
         CommunityContent()
         // GFloatingButton(modifier = Modifier.width(56.dp).height(56.dp), onClick = { /*TODO*/ }, icon = R.drawable.ic_write)
     }
@@ -69,45 +71,89 @@ fun CommunityFreeScreen(
 @Composable
 private fun CommunityInformBar() {
     Box(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth(1f),
         contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier,
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .padding(horizontal = 24.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Surface(
-                modifier = Modifier, shape = RoundedCornerShape(5.dp),
-                color = GalapagosTheme.colors.FontRed.copy(alpha = 0.2f)
+            Row(
+                modifier = Modifier,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Surface(
+                    modifier = Modifier, shape = RoundedCornerShape(5.dp),
+                    color = GalapagosTheme.colors.FontRed.copy(alpha = 0.2f)
+                ) {
+                    Text(
+                        modifier = Modifier.padding(vertical = 6.dp, horizontal = 8.dp),
+                        text = "공지",
+                        style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Bold),
+                        color = GalapagosTheme.colors.FontRed
+                    )
+                }
+                Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    modifier = Modifier.padding(vertical = 6.dp, horizontal = 8.dp),
-                    text = "공지",
-                    style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier,
+                    text = "질문금지, 상품판매 금지",
+                    style = GalapagosTheme.typography.body2.copy(fontWeight = FontWeight.Normal),
                     color = GalapagosTheme.colors.FontRed
                 )
             }
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
+            Row(
                 modifier = Modifier,
-                text = "질문금지, 상품판매 금지",
-                style = GalapagosTheme.typography.body2.copy(fontWeight = FontWeight.Normal),
-                color = GalapagosTheme.colors.FontRed
-            )
-            Text(
-                text = "전체보기>",
-                style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
-                color = GalapagosTheme.colors.FontRed
-            )
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "전체보기>",
+                    style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
+                    color = GalapagosTheme.colors.FontRed
+                )
+            }
         }
     }
 }
 
 @Preview
 @Composable
+private fun CommunityAnimal() {
+    Row(
+        modifier = Modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.width(18.dp))
+        CommunityAnimalFilter(modifier = Modifier, content = "게코 도마뱀", onClick = { /* TODO */ })
+    }
+}
+
+@Composable
+private fun CommunityAnimalFilter(
+    modifier: Modifier = Modifier,
+    content: String = "",
+    onClick: (index: Int) -> Unit
+) {
+    Surface(
+        modifier = modifier,
+        shape = CircleShape,
+        color = GalapagosTheme.colors.PrimaryGreen
+    ) {
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            text = content,
+            style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.SemiBold),
+            color = GalapagosTheme.colors.FontWhite
+        )
+    }
+}
+
+@Preview
+@Composable
 private fun CommunityContent() {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         repeat(5) {
             CommunityFreeItem()
         }

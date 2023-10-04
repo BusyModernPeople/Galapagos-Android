@@ -61,7 +61,9 @@ fun CommunityScreen(
             .imePadding()
     ) {
         CommunityTopBar()
+        Spacer(modifier = Modifier.height(24.dp))
         CommunityTopMenu()
+        Spacer(modifier = Modifier.height(40.dp))
         CommunityContent()
     }
 }
@@ -127,7 +129,6 @@ private fun CommunityTopMenu() {
                 CommunityTopMenuItem(R.drawable.ic_community_qna, "QnA")
                 Spacer(modifier = Modifier.width(24.dp))
                 CommunityTopMenuItem(R.drawable.ic_community_inform, "공지사항")
-                Spacer(modifier = Modifier.width(24.dp))
             }
         }
     }
@@ -136,8 +137,6 @@ private fun CommunityTopMenu() {
 @Preview
 @Composable
 private fun CommunityContent() {
-    Spacer(modifier = Modifier.height(40.dp))
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
