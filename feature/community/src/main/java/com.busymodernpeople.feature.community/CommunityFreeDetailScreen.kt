@@ -43,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -65,6 +66,7 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.core.design.ui.theme.LocalColors
 import com.busymodernpeople.core.design.ui.theme.LocalTypography
 import com.busymodernpeople.core.design.ui.theme.Pretendard
+import com.busymodernpeople.feature.community.component.CommunityCommentItem
 
 @Preview(
     showBackground = true,
@@ -87,7 +89,20 @@ fun CommunityFreeDetailScreen(
     ) {
         TopBar()
         CommunityFreeDetailContent()
+
+        // TODO : 댓글이 있을 경우
+        Spacer(modifier = Modifier.height(78.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .height(16.dp)
+                .background(color = GalapagosTheme.colors.BgGray3)
+        ) { }
+        CommunityCommentItem()
+        CommunityCommentItem(isComment = false)
+        BottomCommentField()
     }
+    HeartFB()
 }
 
 @Composable
@@ -125,6 +140,7 @@ private fun TopBar() {
                         .clip(CircleShape)
                         .clickable { /* TODO */ }
                 )
+                Spacer(modifier = Modifier.width(10.dp))
                 Icon(
                     painter = painterResource(id = R.drawable.ic_dot_menu_vertical),
                     contentDescription = null,
@@ -258,51 +274,67 @@ private fun BottomCommentField() {
     val focusRequester = remember { FocusRequester() }
     var isFocused by remember { mutableStateOf(false) }
 
-    Row(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 10.dp).fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+    Box(
+        modifier = Modifier
     ) {
-        Image(
+        Row(
             modifier = Modifier
-                .width(28.dp)
-                .height(28.dp)
-                .clip(RoundedCornerShape(10.dp)),
-            painter = painterResource(R.drawable.ic_profile_empty),
-            contentDescription = null
-        )
-
-        CommentTextField(
-            modifier = Modifier.wrapContentWidth()
-                .focusRequester(focusRequester)
-                .onFocusChanged {
-                    isFocused = it.isFocused
-                },
-            value = comment,
-            onValueChange = { comment = it },
-            placeholderText = "댓글을 입력해주세요"
-        )
-
-        Surface(
-            modifier = Modifier.clip(RoundedCornerShape(36.dp)),
-            color = GalapagosTheme.colors.PrimaryGreen
+                .padding(horizontal = 24.dp, vertical = 10.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
+            Image(
                 modifier = Modifier
-                    .padding(6.dp)
-                    .height(24.dp)
-                    .width(24.dp)
+                    .width(28.dp)
+                    .height(28.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                painter = painterResource(R.drawable.ic_profile_empty),
+                contentDescription = null
+            )
+
+            Surface(
+                modifier = Modifier.clip(RoundedCornerShape(36.dp)),
+                color = GalapagosTheme.colors.PrimaryGreen
             ) {
-                IconButton(
-                    onClick = { /* TODO */ }
+                Box(
+                    modifier = Modifier
+                        .padding(6.dp)
+                        .height(24.dp)
+                        .width(24.dp)
                 ) {
-                    Icon(
-                        painterResource(id = R.drawable.ic_arrow_right),
-                        contentDescription = null,
-                        tint = Color.White
-                    )
+                    IconButton(
+                        onClick = { /* TODO */ }
+                    ) {
+                        Icon(
+                            painterResource(id = R.drawable.ic_arrow_right),
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
                 }
             }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 10.dp)
+                .height(36.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            CommentTextField(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(start = 38.dp, end = 44.dp)
+                    .focusRequester(focusRequester)
+                    .onFocusChanged {
+                        isFocused = it.isFocused
+                    },
+                value = comment,
+                onValueChange = { comment = it },
+                placeholderText = "댓글을 입력해주세요"
+            )
         }
     }
 }
@@ -310,7 +342,6 @@ private fun BottomCommentField() {
 @Composable
 fun CommentTextField(
     modifier: Modifier = Modifier,
-    textFieldSize: TextFieldSize = TextFieldSize.Height68,
     value: String,
     onValueChange: (String) -> Unit,
     placeholderText: String = "",
@@ -343,10 +374,12 @@ fun CommentTextField(
                 modifier = Modifier.height(27.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(modifier = Modifier) {
+                Box(modifier = Modifier.fillMaxSize(1f)) {
                     if (value.isEmpty()) {
                         Text(
-                            modifier = Modifier.offset(y = 1.dp),
+                            modifier = Modifier
+                                .offset(y = 1.dp)
+                                .fillMaxSize(1f),
                             text = placeholderText,
                             style = GalapagosTheme.typography.body1.copy(
                                 color = localColors.BgGray1
@@ -359,4 +392,32 @@ fun CommentTextField(
         },
         visualTransformation = visualTransformation
     )
+}
+
+@Preview
+@Composable
+private fun HeartFB() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(1f)
+            .padding(end = 24.dp, bottom = 80.dp),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Surface(
+            modifier = Modifier.size(56.dp).shadow(elevation = 4.dp, shape = RoundedCornerShape(56.dp)),
+            shape = RoundedCornerShape(56.dp),
+            color = GalapagosTheme.colors.PrimaryGreen
+        ) {
+            IconButton(
+                onClick = { /* TODO */ }
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.ic_heart),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
 }

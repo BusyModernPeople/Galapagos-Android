@@ -25,7 +25,7 @@ import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
 /**
- * @param isComment 답글(true)인지 댓글(false)인지 구분
+ * @param isComment 댓글(true)인지 답글(false)인지 구분
  */
 @Preview
 @Composable
@@ -36,7 +36,7 @@ fun CommunityCommentItem(
     likeCount: Int = 36,
     commentCount: Int = 14,
     createdTime: String = "58분 전",
-    isComment: Boolean = false
+    isComment: Boolean = true
 ) {
     Box(
         modifier = Modifier.padding(24.dp)
@@ -101,22 +101,22 @@ fun CommunityCommentItem(
                         Text(
                             text = "답글쓰기",
                             style = GalapagosTheme.typography.body4,
-                            color = GalapagosTheme.colors.BgGray3
+                            color = GalapagosTheme.colors.FontGray3
                         )
                         Text(
                             text = "∙",
                             style = GalapagosTheme.typography.body4,
-                            color = GalapagosTheme.colors.BgGray3
+                            color = GalapagosTheme.colors.FontGray3
                         )
                         Text(
                             text = "답글",
                             style = GalapagosTheme.typography.body4,
-                            color = GalapagosTheme.colors.BgGray3
+                            color = GalapagosTheme.colors.FontGray3
                         )
                         Text(
                             text = commentCount.toString(),
                             style = GalapagosTheme.typography.body4,
-                            color = GalapagosTheme.colors.BgGray3
+                            color = GalapagosTheme.colors.FontGray3
                         )
                     }
                 }
