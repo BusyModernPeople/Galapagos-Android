@@ -55,7 +55,7 @@ fun TopBar(
 
             if (trailingIcon != null) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_app_bar_prev),
+                    painter = painterResource(id = trailingIcon),
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier.clip(CircleShape).clickable { trailingIconOnClick() }
