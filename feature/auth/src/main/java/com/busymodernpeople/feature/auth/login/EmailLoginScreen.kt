@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -136,33 +137,31 @@ fun EmailLoginScreen(
                     )
                 }
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             Row(
-                modifier = Modifier.align(Alignment.End),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(
-                    space = 16.dp,
-                    alignment = Alignment.End
+                    space = 4.dp,
+                    alignment = Alignment.CenterHorizontally
                 )
             ) {
                 Text(
                     modifier = Modifier.clickable {
-                        appState.navigate(AuthDestinations.FindPassword.ROUTE)
+                        appState.navigate(AuthDestinations.ResetPassword.ROUTE)
                     },
-                    text = stringResource(id = R.string.email_login_find_password),
+                    text = stringResource(id = R.string.email_login_forget_password),
                     style = GalapagosTheme.typography.body4.copy(
                         fontWeight = FontWeight.Normal,
                         color = GalapagosTheme.colors.FontGray2
-                    ),
-                    textDecoration = TextDecoration.Underline
+                    )
                 )
                 Text(
                     modifier = Modifier.clickable {
-                        appState.navigate("${AuthDestinations.Join.ROUTE}?socialType=EMAIL&email=")
+                        appState.navigate(AuthDestinations.ResetPassword.ROUTE)
                     },
-                    text = stringResource(id = R.string.email_login_signup),
+                    text = stringResource(id = R.string.email_login_reset_password),
                     style = GalapagosTheme.typography.body4.copy(
-                        fontWeight = FontWeight.Normal,
-                        color = GalapagosTheme.colors.FontGray2
+                        color = GalapagosTheme.colors.FontGray1
                     ),
                     textDecoration = TextDecoration.Underline
                 )

@@ -1,4 +1,4 @@
-package com.busymodernpeople.feature.auth.findpassword
+package com.busymodernpeople.feature.auth.resetpassword
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,7 +32,7 @@ import com.busymodernpeople.feature.auth.R
 
 @Preview
 @Composable
-fun FindPasswordCompleteScreen(
+fun ResetPasswordCompleteScreen(
     appState: GalapagosAppState = rememberGalapagosAppState()
 ) {
     Box(
@@ -75,7 +75,7 @@ fun FindPasswordCompleteScreen(
                 modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
                 content = stringResource(id = R.string.login),
-                onClick = { appState.navigate(AuthDestinations.ROUTE) }
+                onClick = { appState.navigate(AuthDestinations.Login.EMAIL_LOGIN) }
             )
         }
     }

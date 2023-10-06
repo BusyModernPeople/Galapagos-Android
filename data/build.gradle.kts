@@ -74,6 +74,10 @@ dependencies {
         kapt(HILT_ANDROID_COMPILER)
         implementation(HILT_ANDROID)
     }
+
+    with(Dependencies.ChuckerTeam) {
+        debugImplementation(CHUCKER_LIBRARY)
+    }
     
     with(Dependencies.Junit) {
         testImplementation(JUNIT)

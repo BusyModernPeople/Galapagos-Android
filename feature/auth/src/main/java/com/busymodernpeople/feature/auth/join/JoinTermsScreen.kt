@@ -140,7 +140,7 @@ fun JoinAgreeScreen(
                 }
             }
             Spacer(modifier = Modifier.height(40.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 CheckBoxItem(
                     checked = uiState.termsAgreed[0],
                     content = {

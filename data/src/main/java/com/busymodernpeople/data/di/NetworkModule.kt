@@ -1,12 +1,15 @@
 package com.busymodernpeople.data.di
 
+import android.content.Context
 import com.busymodernpeople.data.BuildConfig
 import com.busymodernpeople.data.network.adapter.ApiResultCallAdapterFactory
 import com.busymodernpeople.data.network.converter.EnumConverterFactory
 import com.busymodernpeople.data.network.service.AuthService
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,7 +23,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesOkHttpClient(): OkHttpClient =
+    fun providesOkHttpClient(
+        @ApplicationContext context: Context
+    ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor()
@@ -30,6 +35,7 @@ object NetworkModule {
                         }
                     }
             )
+            .addInterceptor(ChuckerInterceptor(context))
             .build()
 
     @Provides

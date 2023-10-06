@@ -36,6 +36,10 @@ object Versions {
         const val DESUGAR_JDK_LIBS = "2.0.3"
     }
 
+    object ChuckerTeam {
+        const val CHUCKER_LIBRARY = "4.0.0"
+    }
+
     object JUnit {
         const val JUNIT = "4.13.2"
     }

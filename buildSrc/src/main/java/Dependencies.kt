@@ -50,6 +50,10 @@ object Dependencies {
         const val DESUGAR_JDK_LIBS = "com.android.tools:desugar_jdk_libs:${Versions.Tools.DESUGAR_JDK_LIBS}"
     }
 
+    object ChuckerTeam {
+        const val CHUCKER_LIBRARY = "com.github.chuckerteam.chucker:library:${Versions.ChuckerTeam.CHUCKER_LIBRARY}"
+    }
+
     object Junit {
         const val JUNIT = "junit:junit:${Versions.JUnit.JUNIT}"
     }

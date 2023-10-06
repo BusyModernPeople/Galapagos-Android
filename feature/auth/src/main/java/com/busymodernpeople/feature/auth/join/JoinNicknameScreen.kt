@@ -113,7 +113,7 @@ fun JoinNicknameScreen(
                 modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
                 enabled = uiState.nickname.length in 2..6,
-                content = stringResource(id = R.string.join_next),
+                content = stringResource(id = R.string.join_complete),
                 onClick = {
                     viewModel.processEvent(JoinContract.Event.Join)
                 }

@@ -39,6 +39,7 @@ import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
 import com.google.android.gms.common.api.ApiException
+import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.flow.collectLatest
 
 @Preview
@@ -68,6 +69,13 @@ fun LoginScreen(
         }
 
     LaunchedEffect(true) {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) Log.d("카카오", "연결 해제")
+        }
+        UserApiClient.instance.logout { error ->
+            if (error != null) Log.d("카카오", "연결 해제")
+        }
+
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateTo -> {

@@ -126,7 +126,7 @@ fun JoinEmailScreen(
                     )
                 }
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             GButton(
                 buttonSize = ButtonSize.Height56,
                 enabled = uiState.email.isNotEmpty() && !uiState.isSentAuthCode,
@@ -139,7 +139,7 @@ fun JoinEmailScreen(
             )
 
             if (uiState.isSentAuthCode) {
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(32.dp))
                 Text(
                     text = stringResource(id = R.string.join_input_authenticate_number),
                     style = GalapagosTheme.typography.body2,

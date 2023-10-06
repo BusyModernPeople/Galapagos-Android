@@ -45,7 +45,7 @@ class JoinViewModel @Inject constructor(
 
     private fun sendAuthCode() = viewModelScope.launch {
         authRepository.sendEmail(
-            currentState.email ?: ""
+            currentState.email
         ).onStart { 
             updateState(currentState.copy(isLoading = true))
         }.collect { result ->
@@ -92,7 +92,7 @@ class JoinViewModel @Inject constructor(
 
     private fun authenticateCode() = viewModelScope.launch {
         authRepository.confirmEmail(
-            currentState.email ?: "",
+            currentState.email,
             currentState.authCode
         ).onStart {
             updateState(currentState.copy(isLoading = true))

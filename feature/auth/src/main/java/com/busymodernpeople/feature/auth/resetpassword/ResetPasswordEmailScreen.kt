@@ -1,10 +1,7 @@
-package com.busymodernpeople.feature.auth.findpassword
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -13,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,14 +18,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.common.base.AuthDestinations
@@ -40,35 +40,21 @@ import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
-import com.busymodernpeople.feature.auth.component.ConditionItem
 
-@OptIn(ExperimentalLayoutApi::class)
 @Preview
 @Composable
-fun FindPasswordResetScreen(
+fun FindPasswordEmailScreen(
     appState: GalapagosAppState = rememberGalapagosAppState()
 ) {
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var isSentAuthenticationCode by remember { mutableStateOf(false) }
+    var isAuthenticated by remember { mutableStateOf(false) }
 
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
 
     LaunchedEffect(true) {
         focusRequester.requestFocus()
     }
-
-    // TODO: 후에 패스워드 확인 과정 ViewModel 단으로 넘김
-    val regExp = listOf(
-        "^(?=.*[a-zA-Z]).+",
-        "^(?=.*[0-9]).+",
-        """^(?=.*[-+_!@#\$%^&*., ?]).+""",
-        "^.{8,20}$"
-    )
-    val conditions = mutableListOf(false, false, false, false)
-    for (i: Int in conditions.indices) {
-        conditions[i] = password.matches(regExp[i].toRegex())
-    }
-    val allSatisfied = conditions.count { it } == 4
 
     Column(
         modifier = Modifier
@@ -84,68 +70,63 @@ fun FindPasswordResetScreen(
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = stringResource(id = R.string.find_password_reset_title),
+                text = stringResource(id = R.string.find_password_email_title),
                 style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold),
                 color = GalapagosTheme.colors.FontBlack
             )
             Spacer(modifier = Modifier.height(40.dp))
+            
+            Text(
+                text = stringResource(id = R.string.find_password_input_registered_email),
+                style = GalapagosTheme.typography.body2.copy(fontWeight = FontWeight.Normal),
+                color = GalapagosTheme.colors.FontGray1
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+
             GTextField(
                 modifier = Modifier.focusRequester(focusRequester),
                 textFieldSize = TextFieldSize.Height68,
-                value = password,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                placeholderText = stringResource(id = R.string.find_password_password_textfield_placeholder),
+                enabled = !isSentAuthenticationCode,
+                value = email,
+                maxChar = 40,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                placeholderText = stringResource(id = R.string.find_password_email_textfield_placeholder),
                 onValueChange = {
-                    password = it
+                    email = it
                 }
             )
-            Spacer(modifier = Modifier.height(6.dp))
-            FlowRow(
-                verticalArrangement = Arrangement.Center,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            Spacer(modifier = Modifier.height(7.5.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                ConditionItem(
-                    isSatisfied = conditions[0],
-                    content = R.string.join_password_condition_english
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_join_info),
+                    contentDescription = null,
+                    tint = Color.Unspecified
                 )
-                ConditionItem(
-                    isSatisfied = conditions[1],
-                    content = R.string.join_password_condition_number
+                Text(
+                    text = stringResource(id = R.string.find_password_not_received_authentication_code),
+                    style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
+                    color = GalapagosTheme.colors.FontGray2
                 )
-                ConditionItem(
-                    isSatisfied = conditions[2],
-                    content = R.string.join_password_condition_symbol
-                )
-                ConditionItem(
-                    isSatisfied = conditions[3],
-                    content = R.string.join_password_condition_length
+                Text(
+                    text = stringResource(id = R.string.find_password_resend_authentication_code),
+                    style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
+                    color = GalapagosTheme.colors.FontGray2,
+                    textDecoration = TextDecoration.Underline
                 )
             }
-            Spacer(modifier = Modifier.height(30.dp))
-            GTextField(
-                textFieldSize = TextFieldSize.Height68,
-                value = confirmPassword,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                placeholderText = stringResource(id = R.string.find_password_confirm_password_textfield_placeholder),
-                onValueChange = {
-                    confirmPassword = it
-                }
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            ConditionItem(
-                isSatisfied = allSatisfied && password == confirmPassword,
-                content = R.string.join_password_condition_match
-            )
+
             Spacer(modifier = Modifier.weight(1f))
             GButton(
                 modifier = Modifier.padding(bottom = 50.dp),
                 buttonSize = ButtonSize.Height56,
-                enabled = allSatisfied && password == confirmPassword,
-                content = stringResource(id = R.string.join_next),
-                onClick = { appState.navigate(AuthDestinations.FindPassword.COMPLETE) }
+                enabled = email.isNotEmpty(),
+                content = stringResource(id = R.string.find_password_send_authentication_code),
+                onClick = { appState.navigate(AuthDestinations.ResetPassword.COMPLETE) }
             )
         }
     }
 }
+
