@@ -40,7 +40,8 @@ fun CommunityTopMenuItem(
             Icon(
                 modifier = Modifier.height(32.dp).width(32.dp),
                 painter = painterResource(id = icon),
-                contentDescription = null
+                contentDescription = null,
+                tint = Color.Unspecified
             )
         }
 
