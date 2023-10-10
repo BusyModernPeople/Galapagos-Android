@@ -102,11 +102,6 @@ fun GalapagosNavHost() {
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet
                 )
-//                communityGraph(
-//                    navController = navController,
-//                    showBottomSheet = showBottomSheet,
-//                    hideBottomSheet = hideBottomSheet
-//                )
             }
         }
     }

@@ -66,6 +66,7 @@ fun CommunityScreen(
         Spacer(modifier = Modifier.height(40.dp))
         CommunityContent()
     }
+    writeFB()
 }
 
 @Composable
@@ -205,6 +206,35 @@ private fun ShowMoreButton(
                 painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_show_more),
                 contentDescription = null
             )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun writeFB() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(1f)
+            .padding(end = 24.dp, bottom = 16.dp),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Surface(
+            modifier = Modifier.size(56.dp).shadow(elevation = 4.dp, shape = RoundedCornerShape(56.dp)),
+            shape = RoundedCornerShape(56.dp),
+            color = GalapagosTheme.colors.PrimaryGreen
+        ) {
+            IconButton(
+                modifier = Modifier,
+                onClick = { /* TODO */ }
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.ic_write),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
     }
 }
