@@ -34,6 +34,12 @@ object HomeDestinations {
     const val HOME = "home"
 }
 
+object DiaryDestinations {
+    const val ROUTE = "diaryRoute"
+
+    const val DIARY = "diary"
+}
+
 object CommunityDestinations {
     const val ROUTE = "communityRoute"
 

@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
-import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.DiaryDestinations
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.common.base.TopLevelDestination
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
@@ -30,7 +30,7 @@ import com.busymodernpeople.core.design.ui.component.BottomNavigationBar
 import com.busymodernpeople.core.design.ui.component.BottomNavigationItem
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.authGraph
-import com.busymodernpeople.feature.community.communityGraph
+import com.busymodernpeople.feature.diary.diaryGraph
 import com.busymodernpeople.feature.home.homeGraph
 import kotlinx.coroutines.launch
 
@@ -92,12 +92,17 @@ fun GalapagosNavHost() {
             NavHost(
                 modifier = Modifier.padding(padding),
                 navController = appState.navController,
-                startDestination = AuthDestinations.ROUTE
+                startDestination = DiaryDestinations.ROUTE
             ) {
                 authGraph(
                     appState = appState,
                 )
                 homeGraph(
+                    appState = appState,
+                    showBottomSheet = showBottomSheet,
+                    hideBottomSheet = hideBottomSheet
+                )
+                diaryGraph(
                     appState = appState,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet

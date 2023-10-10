@@ -2,6 +2,7 @@ plugins {
     with(Plugins) {
         id(ANDROID_LIBRARY)
         id(KOTLIN_ANDROID)
+        id(KOTLIN_KAPT)
     }
 }
 
@@ -26,11 +27,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "${JavaVersion.VERSION_17}"
     }
     buildFeatures {
         compose = true
@@ -43,17 +44,26 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:design"))
+    implementation(project(":data"))
 
     with(Dependencies.AndroidX) {
         implementation(CORE_KTX)
         implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_UI)
         implementation(COMPOSE_UI_TOOLING_PREVIEW)
+        implementation(NAVIGATION_COMPOSE)
+        implementation(LIFECYCLE_RUNTIME_COMPOSE)
+        implementation(HILT_NAVIGATION_COMPOSE)
         androidTestImplementation(EXT_JUNIT)
         androidTestImplementation(ESPRESSO_CORE)
         androidTestImplementation(UI_TEST_JUNIT4)
         debugImplementation(UI_TOOLING)
         debugImplementation(UI_TEST_MANIFEST)
+    }
+
+    with(Dependencies.Google) {
+        kapt(HILT_ANDROID_COMPILER)
+        implementation(HILT_ANDROID)
     }
 
     with(Dependencies.Junit) {

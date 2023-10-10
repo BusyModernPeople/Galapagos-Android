@@ -89,7 +89,7 @@ private fun ScrollableTabItem(
 }
 
 @Composable
-fun ScrollableTabRow(
+fun GScrollableTabRow(
     modifier: Modifier = Modifier,
     items: List<String>,
     selectedItemIndex: Int,
@@ -352,7 +352,7 @@ fun PreviewScrollableTab() {
     var selectedItemIndex by remember { mutableStateOf(0) }
 
     GalapagosTheme {
-        ScrollableTabRow(
+        GScrollableTabRow(
             items = listOf("전체", "도마뱀", "거북이"),
             selectedItemIndex = selectedItemIndex,
             onClick = { selectedItemIndex = it }

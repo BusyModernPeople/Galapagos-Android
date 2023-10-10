@@ -8,9 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.core.design.R
+import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
 @Composable
 fun CommunityReportMenuItem(
@@ -27,7 +26,7 @@ fun CommunityReportMenuItem(
             style = GalapagosTheme.typography.body1
         )
         Icon(
-            painter = painterResource(id = R.drawable.ic_arrow_right_2),
+            painter = painterResource(id = R.drawable.ic_arrow_right_black),
             contentDescription = null,
             tint = GalapagosTheme.colors.FontBlack
         )
