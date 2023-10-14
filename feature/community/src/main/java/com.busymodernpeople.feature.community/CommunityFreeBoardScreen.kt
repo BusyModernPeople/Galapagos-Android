@@ -1,19 +1,16 @@
 package com.busymodernpeople.feature.community
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -21,10 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -34,11 +28,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.R
-import com.busymodernpeople.core.design.ui.component.GFloatingButton
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.community.component.CommunityFreeItem
@@ -49,8 +42,8 @@ import com.busymodernpeople.feature.community.component.CommunityFreeItem
     backgroundColor = 0xFFFFFFFF
 )
 @Composable
-fun CommunityFreeScreen(
-    navController: NavController = rememberNavController(),
+fun CommunityFreeBoardScreen(
+    appState: GalapagosAppState = rememberGalapagosAppState(),
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { }
 ) {

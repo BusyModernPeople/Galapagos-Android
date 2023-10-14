@@ -1,6 +1,5 @@
 package com.busymodernpeople.feature.community
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -32,9 +30,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.component.ContentTab
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
@@ -48,7 +46,7 @@ import com.busymodernpeople.feature.community.component.CommunityTopMenuItem
 )
 @Composable
 fun CommunityScreen(
-    navController: NavController = rememberNavController(),
+    appState: GalapagosAppState = rememberGalapagosAppState(),
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { }
 ) {
@@ -71,37 +69,35 @@ fun CommunityScreen(
 
 @Composable
 private fun CommunityTopBar() {
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .padding(horizontal = 20.dp)
+            .padding(
+                horizontal = 24.dp,
+                vertical = 7.dp
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "커뮤니티",
-                style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold)
-            )
+        Text(
+            text = "커뮤니티",
+            style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold)
+        )
 
-            Row(
-                horizontalArrangement = Arrangement.End
-            ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_search),
-                        contentDescription = null
-                    )
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_alarm),
-                        contentDescription = null
-                    )
-                }
+        Row(
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_search),
+                    contentDescription = null
+                )
+            }
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_alarm),
+                    contentDescription = null
+                )
             }
         }
     }
@@ -111,26 +107,22 @@ private fun CommunityTopBar() {
 @Composable
 private fun CommunityTopMenu() {
     Surface(
-        modifier = Modifier.shadow(20.dp).padding(horizontal = 24.dp),
-        shape = RoundedCornerShape(16.dp)
+        modifier = Modifier
+            .shadow(20.dp)
+            .padding(
+                horizontal = 24.dp,
+                vertical = 20.dp
+            ),
+        shape = RoundedCornerShape(16.dp),
+        color = Color.White,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color.White)
-                .padding(vertical = 20.dp),
-            contentAlignment = Alignment.Center
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                modifier = Modifier,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                CommunityTopMenuItem(R.drawable.ic_community_free, "자유게시판")
-                Spacer(modifier = Modifier.width(24.dp))
-                CommunityTopMenuItem(R.drawable.ic_community_qna, "QnA")
-                Spacer(modifier = Modifier.width(24.dp))
-                CommunityTopMenuItem(R.drawable.ic_community_inform, "공지사항")
-            }
+            CommunityTopMenuItem(R.drawable.ic_community_free, "자유게시판")
+            CommunityTopMenuItem(R.drawable.ic_community_qna, "QnA")
+            CommunityTopMenuItem(R.drawable.ic_community_inform, "공지사항")
         }
     }
 }
@@ -220,7 +212,9 @@ private fun writeFB() {
         contentAlignment = Alignment.BottomEnd
     ) {
         Surface(
-            modifier = Modifier.size(56.dp).shadow(elevation = 4.dp, shape = RoundedCornerShape(56.dp)),
+            modifier = Modifier
+                .size(56.dp)
+                .shadow(elevation = 4.dp, shape = RoundedCornerShape(56.dp)),
             shape = RoundedCornerShape(56.dp),
             color = GalapagosTheme.colors.PrimaryGreen
         ) {

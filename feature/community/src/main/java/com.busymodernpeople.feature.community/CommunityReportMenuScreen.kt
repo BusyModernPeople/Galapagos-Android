@@ -11,8 +11,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.core.design.ui.theme.Pretendard
@@ -20,7 +21,9 @@ import com.busymodernpeople.feature.community.component.CommunityReportMenuItem
 
 @Preview
 @Composable
-fun CommunityReportScreen() {
+fun CommunityReportMenuScreen(
+    appState: GalapagosAppState = rememberGalapagosAppState()
+) {
     Column(
         modifier = Modifier
     ) {

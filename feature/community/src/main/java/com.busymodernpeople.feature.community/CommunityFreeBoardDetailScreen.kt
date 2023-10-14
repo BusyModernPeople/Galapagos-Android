@@ -2,7 +2,6 @@ package com.busymodernpeople.feature.community
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,13 +28,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,19 +44,16 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.R
-import com.busymodernpeople.core.design.ui.component.GTextField
-import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.core.design.ui.theme.LocalColors
 import com.busymodernpeople.core.design.ui.theme.LocalTypography
@@ -74,8 +66,8 @@ import com.busymodernpeople.feature.community.component.CommunityCommentItem
     backgroundColor = 0xFFFFFFFF
 )
 @Composable
-fun CommunityFreeDetailScreen(
-    navController: NavController = rememberNavController(),
+fun CommunityFreeBoardDetailScreen(
+    appState: GalapagosAppState = rememberGalapagosAppState(),
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { }
 ) {
