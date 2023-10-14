@@ -19,9 +19,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -30,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.busymodernpeople.core.common.base.CommunityDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
@@ -59,14 +62,15 @@ fun CommunityScreen(
             .imePadding()
     ) {
         CommunityTopBar()
-        Spacer(modifier = Modifier.height(24.dp))
-        CommunityTopMenu()
+        Spacer(modifier = Modifier.height(20.dp))
+        CommunityTopMenu(appState)
         Spacer(modifier = Modifier.height(40.dp))
         CommunityContent()
     }
     writeFB()
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CommunityTopBar() {
     Row(
@@ -85,42 +89,52 @@ private fun CommunityTopBar() {
         )
 
         Row(
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.spacedBy(
+                space = 10.dp,
+                alignment = Alignment.End
+            )
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_search),
-                    contentDescription = null
-                )
-            }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_alarm),
-                    contentDescription = null
-                )
+            CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = null
+                    )
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_alarm),
+                        contentDescription = null
+                    )
+                }
             }
         }
     }
 }
 
-@Preview
 @Composable
-private fun CommunityTopMenu() {
+private fun CommunityTopMenu(
+    appState: GalapagosAppState
+) {
     Surface(
-        modifier = Modifier
-            .shadow(20.dp)
-            .padding(
-                horizontal = 24.dp,
-                vertical = 20.dp
-            ),
+        modifier = Modifier.padding(horizontal = 24.dp).shadow(20.dp),
         shape = RoundedCornerShape(16.dp),
         color = Color.White,
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 27.dp,
+                    vertical = 20.dp
+                ),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            CommunityTopMenuItem(R.drawable.ic_community_free, "자유게시판")
+            CommunityTopMenuItem(
+                icon = R.drawable.ic_community_free,
+                content = "자유게시판",
+                onClick = { appState.navigate(CommunityDestinations.FREE_BOARD) }
+            )
             CommunityTopMenuItem(R.drawable.ic_community_qna, "QnA")
             CommunityTopMenuItem(R.drawable.ic_community_inform, "공지사항")
         }
@@ -195,7 +209,7 @@ private fun ShowMoreButton(
             )
 
             Icon(
-                painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_show_more),
+                painterResource(id = R.drawable.ic_show_more),
                 contentDescription = null
             )
         }

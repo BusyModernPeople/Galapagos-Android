@@ -1,8 +1,10 @@
 package com.busymodernpeople.feature.community
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.busymodernpeople.core.common.base.CommunityDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
@@ -25,16 +27,16 @@ fun NavGraphBuilder.communityGraph(
         }
 
         composable(route = CommunityDestinations.FREE_BOARD) {
-            CommunityFreeBoardDetailScreen(
-                appState = appState,
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet
+            CommunityFreeBoardScreen(
+                appState = appState
             )
         }
 
-        composable(route = CommunityDestinations.FREE_BOARD_DETAIL) {
-            CommunityFreeBoardScreen(
-                appState = appState
+        composable(route = CommunityDestinations.POST_DETAIL) {
+            CommunityPostDetailScreen(
+                appState = appState,
+                showBottomSheet = showBottomSheet,
+                hideBottomSheet = hideBottomSheet
             )
         }
 
@@ -44,9 +46,18 @@ fun NavGraphBuilder.communityGraph(
             )
         }
 
-        composable(route = CommunityDestinations.REPORT_FORM) {
+        composable(
+            route = "${CommunityDestinations.REPORT_FORM}?title={title}",
+            arguments = listOf(
+                navArgument("title") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) { entry ->
             CommunityReportFormScreen(
-                appState = appState
+                appState = appState,
+                title = entry.arguments?.getString("title") ?: ""
             )
         }
     }

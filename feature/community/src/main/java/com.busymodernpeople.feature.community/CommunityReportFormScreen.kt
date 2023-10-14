@@ -49,7 +49,10 @@ fun CommunityReportFormScreen(
     Column(
         modifier = Modifier
     ) {
-        TopBar(content = title, leadingIconOnClick = { /*TODO*/ })
+        TopBar(
+            content = title,
+            leadingIconOnClick = { appState.navigateUp() }
+        )
         Column(
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {

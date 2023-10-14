@@ -28,13 +28,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.busymodernpeople.core.common.base.CommunityDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
-import com.busymodernpeople.feature.community.component.CommunityFreeItem
+import com.busymodernpeople.feature.community.component.CommunityPostItem
 
 @Preview(
     showBackground = true,
@@ -49,19 +50,24 @@ fun CommunityFreeBoardScreen(
 ) {
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .systemBarsPadding()
             .navigationBarsPadding()
             .imePadding()
     ) {
-        TopBar(content = "자유게시판", trailingIcon = R.drawable.ic_animal_category, leadingIconOnClick = { /*TODO*/ })
-        CommunityInformBar()
-        Spacer(modifier = Modifier.height(8.dp))
-        // TODO : 디자인 수정 후 추가
-        // CommunityAnimal()
-        Spacer(modifier = Modifier.height(16.dp))
-        CommunityContent()
+        TopBar(
+            content = "자유게시판",
+            trailingIcon = R.drawable.ic_animal_category,
+            leadingIconOnClick = { appState.navigateUp() }
+        )
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            CommunityInformBar()
+            Spacer(modifier = Modifier.height(8.dp))
+            // TODO : 디자인 수정 후 추가
+            // CommunityAnimal()
+            Spacer(modifier = Modifier.height(16.dp))
+            CommunityContent(appState = appState)
+        }
     }
 }
 
@@ -149,12 +155,15 @@ private fun CommunityAnimalFilter(
     }
 }
 
-@Preview
 @Composable
-private fun CommunityContent() {
+private fun CommunityContent(appState: GalapagosAppState) {
     Column(modifier = Modifier.padding(horizontal = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         repeat(5) {
-            CommunityFreeItem()
+            CommunityPostItem(
+                onClick = {
+                    appState.navigate(CommunityDestinations.POST_DETAIL)
+                }
+            )
         }
         ShowMoreButton()
     }
@@ -190,7 +199,7 @@ private fun ShowMoreButton(
             )
 
             Icon(
-                painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_show_more),
+                painterResource(id = R.drawable.ic_show_more),
                 contentDescription = null
             )
         }

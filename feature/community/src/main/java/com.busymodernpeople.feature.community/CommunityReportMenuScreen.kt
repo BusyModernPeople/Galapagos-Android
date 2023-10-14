@@ -1,5 +1,7 @@
 package com.busymodernpeople.feature.community
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -12,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.busymodernpeople.core.common.base.CommunityDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.TopBar
@@ -27,7 +30,10 @@ fun CommunityReportMenuScreen(
     Column(
         modifier = Modifier
     ) {
-        TopBar(content = "게시판 신고", leadingIconOnClick = { /*TODO*/ })
+        TopBar(
+            content = "게시판 신고",
+            leadingIconOnClick = { appState.navigateUp() }
+        )
         Column(
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {
@@ -56,21 +62,51 @@ fun CommunityReportMenuScreen(
         }
         Spacer(modifier = Modifier.height(40.dp))
         Column(
-            modifier = Modifier.padding(horizontal = 36.dp)
+            modifier = Modifier.padding(horizontal = 36.dp),
+            verticalArrangement = Arrangement.spacedBy(26.dp)
         ) {
-            CommunityReportMenuItem(modifier = Modifier, "광고")
-            Spacer(modifier = Modifier.height(26.dp))
-            CommunityReportMenuItem(modifier = Modifier, "폭언/욕설/혐오 발언")
-            Spacer(modifier = Modifier.height(26.dp))
-            CommunityReportMenuItem(modifier = Modifier, "불법성 정보")
-            Spacer(modifier = Modifier.height(26.dp))
-            CommunityReportMenuItem(modifier = Modifier, "음란성 정보")
-            Spacer(modifier = Modifier.height(26.dp))
-            CommunityReportMenuItem(modifier = Modifier, "개인정보 노출")
-            Spacer(modifier = Modifier.height(26.dp))
-            CommunityReportMenuItem(modifier = Modifier, "주제와 무관한 글")
-            Spacer(modifier = Modifier.height(26.dp))
-            CommunityReportMenuItem(modifier = Modifier, "기타")
+            CommunityReportMenuItem(
+                modifier = Modifier.clickable {
+                    appState.navigate("${CommunityDestinations.REPORT_FORM}?title=광고")
+                },
+                content = "광고"
+            )
+            CommunityReportMenuItem(
+                modifier = Modifier.clickable {
+                    appState.navigate("${CommunityDestinations.REPORT_FORM}?title=폭언/욕설/혐오 발언")
+                },
+                content = "폭언/욕설/혐오 발언"
+            )
+            CommunityReportMenuItem(
+                modifier = Modifier.clickable {
+                    appState.navigate("${CommunityDestinations.REPORT_FORM}?title=불법성 정보")
+                },
+                content = "불법성 정보"
+            )
+            CommunityReportMenuItem(
+                modifier = Modifier.clickable {
+                    appState.navigate("${CommunityDestinations.REPORT_FORM}?title=음란성 정보")
+                },
+                content = "음란성 정보"
+            )
+            CommunityReportMenuItem(
+                modifier = Modifier.clickable {
+                    appState.navigate("${CommunityDestinations.REPORT_FORM}?title=개인정보 노출")
+                },
+                content = "개인정보 노출"
+            )
+            CommunityReportMenuItem(
+                modifier = Modifier.clickable {
+                    appState.navigate("${CommunityDestinations.REPORT_FORM}?title=주제와 무관한 글")
+                },
+                content = "주제와 무관한 글"
+            )
+            CommunityReportMenuItem(
+                modifier = Modifier.clickable {
+                    appState.navigate("${CommunityDestinations.REPORT_FORM}?title=기타")
+                },
+                content = "기타"
+            )
         }
     }
 }

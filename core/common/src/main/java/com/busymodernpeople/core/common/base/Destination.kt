@@ -46,7 +46,7 @@ object CommunityDestinations {
     const val COMMUNITY = "community"
 
     const val FREE_BOARD = "freeBoard"
-    const val FREE_BOARD_DETAIL = "freeBoardDetail"
+    const val POST_DETAIL = "postDetail"
     const val REPORT_MENU = "reportMenu"
     const val REPORT_FORM = "reportForm"
 }
