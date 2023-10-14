@@ -7,7 +7,7 @@ import androidx.navigation.navigation
 import com.busymodernpeople.core.common.base.AuthDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
 
-fun NavGraphBuilder.ResetPasswordGraph(
+fun NavGraphBuilder.resetPasswordGraph(
     appState: GalapagosAppState
 ) {
     navigation(

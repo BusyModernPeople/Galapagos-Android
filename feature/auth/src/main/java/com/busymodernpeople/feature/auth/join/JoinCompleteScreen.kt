@@ -117,7 +117,6 @@ fun JoinCompleteScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             GButton(
-                trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_arrow_right,
                 buttonSize = ButtonSize.Height56,
                 iconSpacer = 4,
                 content = stringResource(id = R.string.join_register_pet),
@@ -126,7 +125,6 @@ fun JoinCompleteScreen(
             Spacer(modifier = Modifier.height(10.dp))
             GButton(
                 modifier = Modifier.padding(bottom = 50.dp),
-                trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_arrow_right,
                 buttonSize = ButtonSize.Height56,
                 iconSpacer = 4,
                 content = stringResource(id = R.string.join_guest_mode),

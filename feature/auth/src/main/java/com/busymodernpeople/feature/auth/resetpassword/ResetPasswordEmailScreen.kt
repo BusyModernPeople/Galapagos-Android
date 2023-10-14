@@ -1,7 +1,5 @@
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -10,7 +8,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,16 +15,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.common.base.AuthDestinations
@@ -95,28 +89,6 @@ fun FindPasswordEmailScreen(
                     email = it
                 }
             )
-            Spacer(modifier = Modifier.height(7.5.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_join_info),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-                Text(
-                    text = stringResource(id = R.string.find_password_not_received_authentication_code),
-                    style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
-                    color = GalapagosTheme.colors.FontGray2
-                )
-                Text(
-                    text = stringResource(id = R.string.find_password_resend_authentication_code),
-                    style = GalapagosTheme.typography.body4.copy(fontWeight = FontWeight.Normal),
-                    color = GalapagosTheme.colors.FontGray2,
-                    textDecoration = TextDecoration.Underline
-                )
-            }
 
             Spacer(modifier = Modifier.weight(1f))
             GButton(
