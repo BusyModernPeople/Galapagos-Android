@@ -46,7 +46,7 @@ fun ProfileBasicData(
                 elevation = 2.dp
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_animal_category),
+                    painter = painterResource(id = R.drawable.ic_camera),
                     contentDescription = null,
                     tint = Color(0xFF111111),
                     modifier = Modifier.padding(7.dp)

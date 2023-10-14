@@ -61,7 +61,7 @@ fun MyPageUpdateScreen(
                     leadingIcon = null,
                     leadingIconOnClick = { /* TODO */ },
                     content = "내 프로필 수정",
-                    trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_animal_category,
+                    trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_write,
                     trailingIconOnClick = { /* TODO */ }
                 )
             } else {
