@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.mypage.component.MenuListItem
+import com.busymodernpeople.feature.mypage.component.ProfileBasicData
 
 @Preview
 @Composable
@@ -102,44 +103,6 @@ private fun MyPageTopBar() {
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun ProfileBasicData() {
-    Column(
-        modifier = Modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Surface(
-            modifier = Modifier
-                .height(110.dp)
-                .width(110.dp)
-                .padding(27.dp),
-            color = GalapagosTheme.colors.BgGray3,
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_man),
-                contentDescription = null,
-                tint = GalapagosTheme.colors.BgGray1
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Row(
-            modifier = Modifier,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "도랭이애비",
-                style = GalapagosTheme.typography.title3.copy(fontWeight = FontWeight.Bold)
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_right_black),
-                contentDescription = null,
-                modifier = Modifier.size(20.dp)
-            )
         }
     }
 }

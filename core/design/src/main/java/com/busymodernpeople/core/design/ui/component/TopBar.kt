@@ -51,7 +51,7 @@ fun TopBar(
                     modifier = Modifier.size(24.dp).clip(CircleShape)
                         .clickable { leadingIconOnClick() }
                 )
-            }
+            } else { Box(modifier = Modifier.size(24.dp)) {} }
 
             if (trailingIcon != null) {
                 Icon(
