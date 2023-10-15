@@ -10,18 +10,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,37 +25,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.busymodernpeople.core.design.R
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.ButtonSize
 import com.busymodernpeople.core.design.ui.component.GButton
-import com.busymodernpeople.core.design.ui.component.GTextField
-import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
-import com.busymodernpeople.core.design.ui.theme.LocalColors
-import com.busymodernpeople.core.design.ui.theme.LocalTypography
 import com.busymodernpeople.core.design.ui.theme.Pretendard
-import com.busymodernpeople.feature.community.component.CommunityReportMenuItem
 
 @Preview
 @Composable
-fun CommunityReportTextScreen(
+fun CommunityReportFormScreen(
+    appState: GalapagosAppState = rememberGalapagosAppState(),
     title: String = "게시판 신고"
 ) {
     var reportText by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
     ) {
-        TopBar(content = title, leadingIconOnClick = { /*TODO*/ })
+        TopBar(
+            content = title,
+            leadingIconOnClick = { appState.navigateUp() }
+        )
         Column(
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {

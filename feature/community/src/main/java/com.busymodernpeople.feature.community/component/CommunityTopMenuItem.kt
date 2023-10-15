@@ -4,10 +4,8 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -27,7 +25,8 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 @Composable
 fun CommunityTopMenuItem(
     @DrawableRes icon: Int = R.drawable.ic_community_free,
-    content: String = ""
+    content: String = "",
+    onClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.background(color = Color.White).width(80.dp),
@@ -35,7 +34,7 @@ fun CommunityTopMenuItem(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         IconButton(
-            onClick = { /*TODO*/ }
+            onClick = { onClick() }
         ) {
             Icon(
                 modifier = Modifier.height(32.dp).width(32.dp),

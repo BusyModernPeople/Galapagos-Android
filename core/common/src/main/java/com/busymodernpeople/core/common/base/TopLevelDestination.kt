@@ -21,7 +21,7 @@ enum class TopLevelDestination(
     Community(
         label = com.busymodernpeople.core.design.R.string.tab_community,
         icon = com.busymodernpeople.core.design.R.drawable.ic_community,
-        route = "communityGraph"
+        route = CommunityDestinations.COMMUNITY
     ),
     MyPage(
         label = com.busymodernpeople.core.design.R.string.tab_my_page,

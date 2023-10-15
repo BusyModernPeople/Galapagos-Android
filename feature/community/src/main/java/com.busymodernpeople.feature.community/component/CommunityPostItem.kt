@@ -1,6 +1,7 @@
 package com.busymodernpeople.feature.community.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,15 +29,18 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
 @Preview
 @Composable
-fun CommunityFreeItem(
+fun CommunityPostItem(
     title: String = "눈 오는 날 산책 다녀왔어요.",
     content: String = "이런저런 이야기",
     likeCount: Int = 36,
     commentCount: Int = 14,
-    createdTime: String = "58분 전"
+    createdTime: String = "58분 전",
+    onClick: () -> Unit = { },
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier

@@ -44,4 +44,9 @@ object CommunityDestinations {
     const val ROUTE = "communityRoute"
 
     const val COMMUNITY = "community"
+
+    const val FREE_BOARD = "freeBoard"
+    const val POST_DETAIL = "postDetail"
+    const val REPORT_MENU = "reportMenu"
+    const val REPORT_FORM = "reportForm"
 }

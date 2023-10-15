@@ -2,7 +2,6 @@ package com.busymodernpeople.feature.community
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -27,13 +27,14 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -49,19 +50,18 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.busymodernpeople.core.common.base.CommunityDestinations
+import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.R
-import com.busymodernpeople.core.design.ui.component.GTextField
-import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.core.design.ui.theme.LocalColors
 import com.busymodernpeople.core.design.ui.theme.LocalTypography
@@ -74,39 +74,45 @@ import com.busymodernpeople.feature.community.component.CommunityCommentItem
     backgroundColor = 0xFFFFFFFF
 )
 @Composable
-fun CommunityFreeDetailScreen(
-    navController: NavController = rememberNavController(),
+fun CommunityPostDetailScreen(
+    appState: GalapagosAppState = rememberGalapagosAppState(),
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { }
 ) {
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .systemBarsPadding()
             .navigationBarsPadding()
             .imePadding()
     ) {
-        TopBar()
-        CommunityFreeDetailContent()
+        TopBar(appState = appState)
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            CommunityPostDetailContent()
 
-        // TODO : 댓글이 있을 경우
-        Spacer(modifier = Modifier.height(78.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(1f)
-                .height(16.dp)
-                .background(color = GalapagosTheme.colors.BgGray3)
-        ) { }
-        CommunityCommentItem()
-        CommunityCommentItem(isComment = false)
-        BottomCommentField()
+            // TODO : 댓글이 있을 경우
+            Spacer(modifier = Modifier.height(78.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(1f)
+                    .height(16.dp)
+                    .background(color = GalapagosTheme.colors.BgGray3)
+            ) { }
+            CommunityCommentItem()
+            CommunityCommentItem(isComment = false)
+            BottomCommentField()
+        }
     }
     HeartFB()
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun TopBar() {
+private fun TopBar(
+    appState: GalapagosAppState
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -126,29 +132,52 @@ private fun TopBar() {
                 modifier = Modifier
                     .size(24.dp)
                     .clip(CircleShape)
-                    .clickable { /* TODO */ }
+                    .clickable { appState.navigateUp() }
             )
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 10.dp,
+                    alignment = Alignment.End
+                )
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_share),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { /* TODO */ }
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_dot_menu_vertical),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { /* TODO */ }
-                )
+                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_share),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .clickable { /* TODO */ }
+                    )
+                    Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_dot_menu_vertical),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .clickable { isExpanded = !isExpanded }
+                        )
+
+                        DropdownMenu(
+                            offset = DpOffset(x = 0.dp, y = 13.dp),
+                            expanded = isExpanded,
+                            onDismissRequest = { isExpanded = false }
+                        ) {
+                            DropdownMenuItem(
+                                onClick = { appState.navigate(CommunityDestinations.REPORT_MENU) }
+                            ) {
+                                Text(
+                                    text = "신고하기",
+                                    style = GalapagosTheme.typography.body1.copy(
+                                        color = GalapagosTheme.colors.FontGray1,
+                                        fontWeight = FontWeight.Normal
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -164,7 +193,7 @@ private fun TopBar() {
 
 @Preview
 @Composable
-private fun CommunityFreeDetailContent() {
+private fun CommunityPostDetailContent() {
     Column(
         modifier = Modifier.padding(horizontal = 24.dp)
     ) {
@@ -404,7 +433,9 @@ private fun HeartFB() {
         contentAlignment = Alignment.BottomEnd
     ) {
         Surface(
-            modifier = Modifier.size(56.dp).shadow(elevation = 4.dp, shape = RoundedCornerShape(56.dp)),
+            modifier = Modifier
+                .size(56.dp)
+                .shadow(elevation = 4.dp, shape = RoundedCornerShape(56.dp)),
             shape = RoundedCornerShape(56.dp),
             color = GalapagosTheme.colors.PrimaryGreen
         ) {

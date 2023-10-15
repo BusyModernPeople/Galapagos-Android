@@ -17,7 +17,7 @@ fun CommunityReportMenuItem(
     content: String = ""
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(1f),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
