@@ -3,6 +3,7 @@ package com.busymodernpeople.core.design.ui.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,8 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.core.design.ui.theme.LocalColors
 import com.busymodernpeople.core.design.ui.theme.LocalTypography
 import kotlinx.coroutines.delay
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 sealed class TextFieldSize {
     object Height68 : TextFieldSize()
@@ -74,6 +77,7 @@ fun GTextField(
     placeholderText: String = "",
     isError: Boolean = false,
     enabled: Boolean = true,
+    readOnly: Boolean = false,
     focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions? = null,
     keyboardActions: KeyboardActions? = null,
@@ -400,4 +404,32 @@ fun PreviewGTextFieldWithTrailingContent() {
             }
         }
     }
+}
+
+@Composable
+fun DateField(
+    placeholderText: String = "",
+    selectedDate: LocalDate? = null,
+    showDataPicker: () -> Unit,
+) {
+    val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
+    val formattedDate = selectedDate?.format(formatter)
+
+    GTextField(
+        value = formattedDate ?: "",
+        placeholderText = placeholderText,
+        textFieldSize = TextFieldSize.Height56,
+        readOnly = true,
+        onValueChange = { },
+        trailingContent = {
+            Icon(
+                modifier = Modifier.clickable {
+                    showDataPicker()
+                },
+                painter = painterResource(id = R.drawable.ic_calendar),
+                contentDescription = "IC_CALENDAR",
+                tint = Color.Unspecified
+            )
+        }
+    )
 }
