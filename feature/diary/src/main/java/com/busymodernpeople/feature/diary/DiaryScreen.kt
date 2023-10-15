@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.busymodernpeople.core.common.base.DiaryDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
@@ -72,7 +73,7 @@ fun DiaryScreen(
             DiaryContent()
         }
         AddDiaryFB {
-
+            appState.navigate(DiaryDestinations.ADD_PET)
         }
     }
 }
@@ -119,7 +120,7 @@ private fun NoDiaryContent(
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "아직 작성한 다이어리가 없어요.",
+                    text = "아직 등록된 동물이 없어요.",
                     style = GalapagosTheme.typography.title4.copy(
                         fontWeight = FontWeight.Medium,
                         color = GalapagosTheme.colors.FontGray1
@@ -130,7 +131,7 @@ private fun NoDiaryContent(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = "버튼을 눌러 다이어리를 작성해주세요.",
+                    text = "버튼을 눌러 반려동물을 등록해주세요.",
                     style = GalapagosTheme.typography.body4.copy(
                         fontWeight = FontWeight.Normal,
                         color = GalapagosTheme.colors.FontGray2
@@ -161,7 +162,7 @@ fun DiaryContent() {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 40.dp),
-        verticalArrangement = Arrangement.spacedBy(15.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         repeat(6) {

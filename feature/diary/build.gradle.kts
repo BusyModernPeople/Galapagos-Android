@@ -27,6 +27,8 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -64,6 +66,10 @@ dependencies {
     with(Dependencies.Google) {
         kapt(HILT_ANDROID_COMPILER)
         implementation(HILT_ANDROID)
+    }
+
+    with(Dependencies.Tools) {
+        coreLibraryDesugaring(DESUGAR_JDK_LIBS)
     }
 
     with(Dependencies.Junit) {

@@ -38,6 +38,8 @@ object DiaryDestinations {
     const val ROUTE = "diaryRoute"
 
     const val DIARY = "diary"
+
+    const val ADD_PET = "addPet"
 }
 
 object CommunityDestinations {
