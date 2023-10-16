@@ -40,7 +40,10 @@ import kotlinx.coroutines.launch
 fun GalapagosNavHost() {
     val appState = rememberGalapagosAppState()
 
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
     var bottomSheetContent: SheetContent? by remember { mutableStateOf(null) }
     val scope = rememberCoroutineScope()
 
@@ -60,7 +63,7 @@ fun GalapagosNavHost() {
             bottomSheetContent?.invoke(this)
         },
         sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(20.dp),
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         modifier = Modifier.navigationBarsPadding()
     ) {
         Scaffold(

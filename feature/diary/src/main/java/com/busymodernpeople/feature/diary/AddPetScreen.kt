@@ -40,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
@@ -152,7 +153,7 @@ private fun PetDetails(
         Spacer(modifier = Modifier.height(32.dp))
 
         // 성별 선택
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = "성별*",
                 style = GalapagosTheme.typography.body1.copy(
@@ -170,7 +171,7 @@ private fun PetDetails(
         Spacer(modifier = Modifier.height(32.dp))
 
         // 종 선택
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = "종 선택*",
                 style = GalapagosTheme.typography.body1.copy(
@@ -197,7 +198,7 @@ private fun PetDetails(
         Spacer(modifier = Modifier.height(32.dp))
 
         // 입양일 선택
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = "입양일*",
                 style = GalapagosTheme.typography.body1.copy(
@@ -209,15 +210,40 @@ private fun PetDetails(
                 placeholderText = "입양일을 선택해주세요",
                 showDataPicker = {
                     showBottomSheet {
-                        DatePicker(
-                            modifier = Modifier.padding(40.dp),
-                            selectedDate = selectedBirthDate ?: LocalDate.now(),
-                            onYearMonthChanged = { },
-                            onDayClicked = {
-                                selectedBirthDate = it
-                                hideBottomSheet()
+                        Column(modifier = Modifier.padding(horizontal = 22.dp)) {
+                            Spacer(modifier = Modifier.height(20.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "입양일",
+                                    style = GalapagosTheme.typography.title3.copy(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = GalapagosTheme.colors.FontBlack
+                                    )
+                                )
+                                Icon(
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .clip(CircleShape)
+                                        .clickable { hideBottomSheet() },
+                                    painter = painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_close),
+                                    contentDescription = "IC_CLOSE",
+                                    tint = Color.Unspecified
+                                )
                             }
-                        )
+                            DatePicker(
+                                modifier = Modifier.padding(vertical = 30.dp),
+                                selectedDate = selectedBirthDate ?: LocalDate.now(),
+                                onYearMonthChanged = { },
+                                onDayClicked = {
+                                    selectedBirthDate = it
+                                    hideBottomSheet()
+                                }
+                            )
+                        }
                     }
                 }
             )
@@ -231,27 +257,60 @@ private fun PetDetails(
         Spacer(modifier = Modifier.height(32.dp))
 
         // 탄생일 선택
-        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             BirthdateSection(isBirthdateUnknown) { isBirthdateUnknown = it }
             DateField(
                 placeholderText = "탄생일을 선택해주세요",
                 showDataPicker = {
                     showBottomSheet {
-                        DatePicker(
-                            modifier = Modifier.padding(40.dp),
-                            selectedDate = selectedBirthDate ?: LocalDate.now(),
-                            onYearMonthChanged = { },
-                            onDayClicked = {
-                                selectedBirthDate = it
-                                hideBottomSheet()
+                        Column(modifier = Modifier.padding(horizontal = 22.dp)) {
+                            Spacer(modifier = Modifier.height(20.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "탄생일",
+                                    style = GalapagosTheme.typography.title3.copy(
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = GalapagosTheme.colors.FontBlack
+                                    )
+                                )
+                                Icon(
+                                    modifier = Modifier
+                                        .size(20.dp)
+                                        .clip(CircleShape)
+                                        .clickable { hideBottomSheet() },
+                                    painter = painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_close),
+                                    contentDescription = "IC_CLOSE",
+                                    tint = Color.Unspecified
+                                )
                             }
-                        )
+                            DatePicker(
+                                modifier = Modifier.padding(vertical = 30.dp),
+                                selectedDate = selectedBirthDate ?: LocalDate.now(),
+                                onYearMonthChanged = { },
+                                onDayClicked = {
+                                    selectedBirthDate = it
+                                    hideBottomSheet()
+                                }
+                            )
+                        }
                     }
                 }
             )
         }
 
         Spacer(modifier = Modifier.height(40.dp))
+
+        GButton(
+            modifier = Modifier.padding(bottom = 16.dp),
+            buttonSize = ButtonSize.Height56,
+            enabled = name.isNotEmpty() && selectedSpecies.isNotEmpty() && selectedAdoptDate != null,
+            content = "다음",
+            onClick = {  }
+        )
     }
 }
 
@@ -377,6 +436,49 @@ private fun SelectionRadioButton(
                 }
             )
         }
+    }
+}
+
+@Composable
+fun DateSelectionSection(
+    title: String,
+    selectedDate: LocalDate?,
+    onDateSelected: (LocalDate) -> Unit,
+    hideBottomSheet: () -> Unit,
+) {
+    Column(modifier = Modifier.padding(horizontal = 22.dp)) {
+        Spacer(modifier = Modifier.height(20.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = title,
+                style = GalapagosTheme.typography.title3.copy(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = GalapagosTheme.colors.FontBlack
+                )
+            )
+            Icon(
+                modifier = Modifier
+                    .size(20.dp)
+                    .clip(CircleShape)
+                    .clickable { hideBottomSheet() },
+                painter = painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_close),
+                contentDescription = "IC_CLOSE",
+                tint = Color.Unspecified
+            )
+        }
+        DatePicker(
+            modifier = Modifier.padding(vertical = 30.dp),
+            selectedDate = selectedDate ?: LocalDate.now(),
+            onYearMonthChanged = { },
+            onDayClicked = {
+                onDateSelected(it)
+                hideBottomSheet()
+            }
+        )
     }
 }
 
