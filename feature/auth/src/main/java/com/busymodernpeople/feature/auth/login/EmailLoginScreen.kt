@@ -168,7 +168,7 @@ fun EmailLoginScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             GButton(
-                modifier = Modifier.padding(bottom = 50.dp),
+                modifier = Modifier.padding(bottom = 16.dp),
                 enabled = uiState.email.isNotEmpty() && uiState.password.isNotEmpty(),
                 buttonSize = ButtonSize.Height56,
                 content = stringResource(id = R.string.login),

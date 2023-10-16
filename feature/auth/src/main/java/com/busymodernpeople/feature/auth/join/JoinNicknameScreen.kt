@@ -110,7 +110,7 @@ fun JoinNicknameScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             GButton(
-                modifier = Modifier.padding(bottom = 50.dp),
+                modifier = Modifier.padding(bottom = 16.dp),
                 buttonSize = ButtonSize.Height56,
                 enabled = uiState.nickname.length in 2..6,
                 content = stringResource(id = R.string.join_complete),

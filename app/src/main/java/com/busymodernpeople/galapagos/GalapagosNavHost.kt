@@ -73,7 +73,7 @@ fun GalapagosNavHost() {
                     snackbar = { data ->
                         Snackbar(
                             modifier = Modifier.padding(
-                                bottom = 50.dp,
+                                bottom = 16.dp,
                                 start = 20.dp,
                                 end = 20.dp
                             )
