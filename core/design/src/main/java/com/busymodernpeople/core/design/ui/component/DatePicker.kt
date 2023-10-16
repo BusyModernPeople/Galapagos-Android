@@ -225,8 +225,6 @@ fun DatePicker(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(15.dp))
-
         MonthSelector(
             currentMonth = currentMonth,
             prevBtnOnClick = {

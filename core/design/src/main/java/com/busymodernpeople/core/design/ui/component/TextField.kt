@@ -94,7 +94,7 @@ fun GTextField(
 
     val borderColor = when {
         initState -> localColors.BgGray1
-        !enabled -> localColors.BgGray1
+        !enabled -> Color.Transparent
         isError -> localColors.FontRed
         isFocused -> localColors.PrimaryGreen
         else -> localColors.PrimaryGreen
@@ -118,7 +118,7 @@ fun GTextField(
                 }
             )
             .background(
-                color = localColors.FontWhite,
+                color = if (enabled) localColors.FontWhite else localColors.BgGray3,
                 shape = when (textFieldSize) {
                     is TextFieldSize.Height68 -> RoundedCornerShape(8.dp)
                     is TextFieldSize.Height56 -> RoundedCornerShape(6.dp)
@@ -129,6 +129,7 @@ fun GTextField(
             if (it.length <= maxChar) onValueChange(it)
         },
         singleLine = true,
+        readOnly = readOnly,
         enabled = enabled,
         textStyle = localTypography.title4.copy(
             color = if (enabled) localColors.FontGray1 else localColors.BgGray1
@@ -410,6 +411,7 @@ fun PreviewGTextFieldWithTrailingContent() {
 fun DateField(
     placeholderText: String = "",
     selectedDate: LocalDate? = null,
+    enabled: Boolean = true,
     showDataPicker: () -> Unit,
 ) {
     val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
@@ -420,6 +422,7 @@ fun DateField(
         placeholderText = placeholderText,
         textFieldSize = TextFieldSize.Height56,
         readOnly = true,
+        enabled = enabled,
         onValueChange = { },
         trailingContent = {
             Icon(

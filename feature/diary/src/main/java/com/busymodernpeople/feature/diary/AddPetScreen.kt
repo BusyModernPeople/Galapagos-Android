@@ -145,6 +145,7 @@ private fun PetDetails(
             GTextField(
                 textFieldSize = TextFieldSize.Height56,
                 value = name,
+                placeholderText = "이름을 입력하새주세요",
                 onValueChange = { name = it },
                 showLength = true
             )
@@ -208,49 +209,19 @@ private fun PetDetails(
             )
             DateField(
                 placeholderText = "입양일을 선택해주세요",
+                selectedDate = selectedAdoptDate,
                 showDataPicker = {
                     showBottomSheet {
-                        Column(modifier = Modifier.padding(horizontal = 22.dp)) {
-                            Spacer(modifier = Modifier.height(20.dp))
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = "입양일",
-                                    style = GalapagosTheme.typography.title3.copy(
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = GalapagosTheme.colors.FontBlack
-                                    )
-                                )
-                                Icon(
-                                    modifier = Modifier
-                                        .size(20.dp)
-                                        .clip(CircleShape)
-                                        .clickable { hideBottomSheet() },
-                                    painter = painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_close),
-                                    contentDescription = "IC_CLOSE",
-                                    tint = Color.Unspecified
-                                )
-                            }
-                            DatePicker(
-                                modifier = Modifier.padding(vertical = 30.dp),
-                                selectedDate = selectedBirthDate ?: LocalDate.now(),
-                                onYearMonthChanged = { },
-                                onDayClicked = {
-                                    selectedBirthDate = it
-                                    hideBottomSheet()
-                                }
-                            )
-                        }
+                        DateSelectionSection(
+                            title = "입양일",
+                            selectedDate = selectedAdoptDate,
+                            onDateSelected = {
+                                selectedAdoptDate = it
+                            },
+                            hideBottomSheet = hideBottomSheet
+                        )
                     }
                 }
-            )
-            SelectionRadioButton(
-                items = listOf("일", "월", "년"),
-                selectedItem = 0, // 기본값은 "일"로 설정
-                onItemSelected = { /*TODO*/ }
             )
         }
 
@@ -261,42 +232,18 @@ private fun PetDetails(
             BirthdateSection(isBirthdateUnknown) { isBirthdateUnknown = it }
             DateField(
                 placeholderText = "탄생일을 선택해주세요",
+                enabled = !isBirthdateUnknown,
+                selectedDate = selectedBirthDate,
                 showDataPicker = {
                     showBottomSheet {
-                        Column(modifier = Modifier.padding(horizontal = 22.dp)) {
-                            Spacer(modifier = Modifier.height(20.dp))
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = "탄생일",
-                                    style = GalapagosTheme.typography.title3.copy(
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = GalapagosTheme.colors.FontBlack
-                                    )
-                                )
-                                Icon(
-                                    modifier = Modifier
-                                        .size(20.dp)
-                                        .clip(CircleShape)
-                                        .clickable { hideBottomSheet() },
-                                    painter = painterResource(id = com.busymodernpeople.core.design.R.drawable.ic_close),
-                                    contentDescription = "IC_CLOSE",
-                                    tint = Color.Unspecified
-                                )
-                            }
-                            DatePicker(
-                                modifier = Modifier.padding(vertical = 30.dp),
-                                selectedDate = selectedBirthDate ?: LocalDate.now(),
-                                onYearMonthChanged = { },
-                                onDayClicked = {
-                                    selectedBirthDate = it
-                                    hideBottomSheet()
-                                }
-                            )
-                        }
+                        DateSelectionSection(
+                            title = "탄생일",
+                            selectedDate = selectedBirthDate,
+                            onDateSelected = {
+                                selectedBirthDate = it
+                            },
+                            hideBottomSheet = hideBottomSheet
+                        )
                     }
                 }
             )
