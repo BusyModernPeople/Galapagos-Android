@@ -124,7 +124,7 @@ fun JoinCompleteScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             GButton(
-                modifier = Modifier.padding(bottom = 50.dp),
+                modifier = Modifier.padding(bottom = 16.dp),
                 buttonSize = ButtonSize.Height56,
                 iconSpacer = 4,
                 content = stringResource(id = R.string.join_guest_mode),

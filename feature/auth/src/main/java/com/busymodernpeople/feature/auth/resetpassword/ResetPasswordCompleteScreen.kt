@@ -72,7 +72,7 @@ fun ResetPasswordCompleteScreen(
         ) {
             Spacer(modifier = Modifier.fillMaxHeight().weight(1f))
             GButton(
-                modifier = Modifier.padding(bottom = 50.dp),
+                modifier = Modifier.padding(bottom = 16.dp),
                 buttonSize = ButtonSize.Height56,
                 content = stringResource(id = R.string.login),
                 onClick = { appState.navigate(AuthDestinations.Login.EMAIL_LOGIN) }

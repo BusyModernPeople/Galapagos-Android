@@ -61,6 +61,19 @@ data class GalapagosTypography(
             trim = LineHeightStyle.Trim.None
         )
     ),
+    val title5: TextStyle = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        lineHeight = 1.5.em,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
     val body1: TextStyle = TextStyle(
         fontFamily = Pretendard,
         fontWeight = FontWeight.Medium,

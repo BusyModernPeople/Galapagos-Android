@@ -33,19 +33,16 @@ fun BottomNavigationBar(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(90.dp)
+                .padding(vertical = 10.dp)
+                .height(56.dp)
         ) {
-            Spacer(modifier = Modifier.height(10.dp))
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .selectableGroup(),
+                    .selectableGroup()
+                    .padding(horizontal = 38.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(
-                    space = 33.dp,
-                    alignment = Alignment.CenterHorizontally
-                ),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 content()
             }

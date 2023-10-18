@@ -17,8 +17,14 @@ fun NavGraphBuilder.diaryGraph(
         startDestination = DiaryDestinations.DIARY
     ) {
         composable(route = DiaryDestinations.DIARY) {
-            DiaryScreen(
-                appState = appState
+            DiaryScreen(appState = appState)
+        }
+
+        composable(route = DiaryDestinations.ADD_PET) {
+            AddPetScreen(
+                appState = appState,
+                showBottomSheet = showBottomSheet,
+                hideBottomSheet = hideBottomSheet
             )
         }
     }

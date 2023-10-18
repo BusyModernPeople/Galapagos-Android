@@ -225,8 +225,6 @@ fun DatePicker(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(15.dp))
-
         MonthSelector(
             currentMonth = currentMonth,
             prevBtnOnClick = {
@@ -243,7 +241,7 @@ fun DatePicker(
 
         WeekHeader()
 
-        for (num in 0..currentMonth.getNumberWeeks()) {
+        for (num in 0 until currentMonth.getNumberWeeks()) {
             Week(
                 weekNumber = num,
                 currentMonth = currentMonth,
@@ -269,7 +267,7 @@ fun PreviewDatePicker() {
     GalapagosTheme {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .background(Color.White)
                 .padding(40.dp),
             contentAlignment = Alignment.Center
         ) {

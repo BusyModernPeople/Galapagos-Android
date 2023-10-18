@@ -225,7 +225,7 @@ fun JoinEmailScreen(
 
             Spacer(modifier = Modifier.weight(1f))
             GButton(
-                modifier = Modifier.padding(bottom = 50.dp),
+                modifier = Modifier.padding(bottom = 16.dp),
                 buttonSize = ButtonSize.Height56,
                 enabled = uiState.isSentAuthCode && uiState.isAuthenticated,
                 content = stringResource(id = R.string.join_next),
