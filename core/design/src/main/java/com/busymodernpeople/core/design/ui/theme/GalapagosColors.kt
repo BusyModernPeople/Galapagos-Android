@@ -21,7 +21,7 @@ class GalapagosColors(
     bgGray4: Color = Color(0xFFF9F9F9),
     bgGray5: Color = Color(0xFFFCFCFE),
     iconBlack: Color = Color(0xFF222738),
-    primaryGreen: Color = Color(0xFF57BA83),
+    primaryGreen: Color = Color(0xFF13BF81),
     primaryYellow: Color = Color(0xFFFFD771)
 ) {
     var FontBlack by mutableStateOf(fontBlack)
