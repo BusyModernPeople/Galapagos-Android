@@ -33,27 +33,9 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 fun ProfileBasicData(
     nickname: String = "",
     arrowFlag: Boolean = true,
-    isEdit: Boolean = true,
+    isEdit: Boolean = false,
     modifier: Modifier = Modifier
 ) {
-    if (isEdit) {
-        Box(
-            modifier = Modifier.width(116.dp).padding(top = 84.dp, start = 84.dp)
-        ) {
-            Surface(
-                shape = RoundedCornerShape(32.dp),
-                color = Color(0xFFFFFFFF),
-                elevation = 2.dp
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_camera),
-                    contentDescription = null,
-                    tint = Color(0xFF111111),
-                    modifier = Modifier.padding(7.dp)
-                )
-            }
-        }
-    }
     Column(
         modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -89,6 +71,25 @@ fun ProfileBasicData(
                     painter = painterResource(id = R.drawable.ic_arrow_right_black),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+    }
+
+    if (isEdit) {
+        Box(
+            modifier = Modifier.width(116.dp).padding(top = 84.dp, start = 84.dp)
+        ) {
+            Surface(
+                shape = RoundedCornerShape(32.dp),
+                color = Color(0xFFFFFFFF),
+                elevation = 2.dp
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_camera),
+                    contentDescription = null,
+                    tint = Color(0xFF111111),
+                    modifier = Modifier.padding(7.dp)
                 )
             }
         }

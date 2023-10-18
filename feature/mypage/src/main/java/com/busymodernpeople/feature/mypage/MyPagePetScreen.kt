@@ -85,11 +85,14 @@ fun MyPagePetScreen() {
 @Composable
 private fun PetAddFB() {
     Box(
-        modifier = Modifier.fillMaxSize(1f).padding(bottom = 50.dp),
+        modifier = Modifier
+            .fillMaxSize(1f)
+            .padding(bottom = 50.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         Surface(
-            modifier = Modifier.height(54.dp)
+            modifier = Modifier
+                .height(54.dp)
                 .shadow(elevation = 4.dp, shape = RoundedCornerShape(56.dp)),
             shape = RoundedCornerShape(999.dp),
             color = GalapagosTheme.colors.PrimaryGreen
@@ -108,7 +111,6 @@ private fun PetAddFB() {
                         modifier = Modifier.size(24.dp)
                     )
                 }
-                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "동물 추가하기",
                     style = GalapagosTheme.typography.body1.copy(fontWeight = FontWeight.Bold),

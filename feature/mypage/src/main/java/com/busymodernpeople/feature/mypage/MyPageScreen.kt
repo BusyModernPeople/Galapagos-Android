@@ -56,7 +56,7 @@ fun MyPageScreen(
             .imePadding()
     ) {
         MyPageTopBar()
-        ProfileBasicData()
+        Spacer(modifier = Modifier.height(240.dp))
         ProfileMenu()
         Spacer(modifier = Modifier.height(32.dp))
         Box(
@@ -68,6 +68,12 @@ fun MyPageScreen(
         ) {}
         Spacer(modifier = Modifier.height(24.dp))
         MenuList()
+    }
+    Box(
+        modifier = Modifier.height(296.dp).fillMaxWidth(1f).padding(top = 56.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        ProfileBasicData()
     }
 }
 
@@ -88,7 +94,6 @@ private fun MyPageTopBar() {
             text = "마이페이지",
             style = GalapagosTheme.typography.title1.copy(fontWeight = FontWeight.Bold)
         )
-
         Row(
             horizontalArrangement = Arrangement.spacedBy(
                 space = 10.dp,
