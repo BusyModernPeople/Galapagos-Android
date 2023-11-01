@@ -44,10 +44,12 @@ import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.capture.Capturable
 import com.busymodernpeople.core.design.ui.capture.rememberCaptureController
+import com.busymodernpeople.core.design.ui.component.DatePicker
 import com.busymodernpeople.core.design.ui.component.GlassmorphicTab
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import kotlinx.coroutines.delay
+import java.time.LocalDate
 
 @Preview
 @Composable
@@ -57,6 +59,7 @@ fun PetDiaryScreen(
     hideBottomSheet: () -> Unit = { }
 ) {
     var selectedItemIndex by remember { mutableStateOf(0) }
+    var selectedDate: LocalDate? by remember { mutableStateOf(null) }
 
     val captureController = rememberCaptureController()
     var background: ImageBitmap by remember { mutableStateOf(ImageBitmap(1, 1)) }
@@ -87,16 +90,39 @@ fun PetDiaryScreen(
             ) {
                 PetDiaryTopBar()
                 LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(32.dp)
+                    contentPadding = PaddingValues(vertical = 20.dp)
                 ) {
                     item {
-                        DayCounter()
+                        DayCounter(modifier = Modifier.padding(horizontal = 24.dp))
+                        Spacer(modifier = Modifier.height(if (selectedItemIndex == 1) 20.dp else 32.dp))
+                    }
+
+                    if (selectedItemIndex == 1) {
+                        item {
+                            DatePicker(
+                                modifier = Modifier.padding(
+                                    top = 15.dp, bottom = 35.dp, start = 30.dp, end = 30.dp
+                                ),
+                                selectedDate = selectedDate ?: LocalDate.now(),
+                                onYearMonthChanged = { },
+                                onDayClicked = {
+                                    selectedDate = it
+                                }
+                            )
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(12.dp)
+                                    .background(color = GalapagosTheme.colors.BgGray3)
+                            )
+                            Spacer(modifier = Modifier.height(30.dp))
+                        }
                     }
 
                     repeat(10) {
                         item {
-                            DiaryItem()
+                            DiaryItem(modifier = Modifier.padding(horizontal = 24.dp))
+                            Spacer(modifier = Modifier.height(32.dp))
                         }
                     }
                 }
@@ -169,10 +195,11 @@ private fun DayCounter(
 @Preview
 @Composable
 private fun DiaryItem(
+    modifier: Modifier = Modifier,
     date: String = "4월 13일",
     content: String = "ㅁ이라ㅓ님퍼ㅑㅐㅊ터퍁파ㅣㅌ피ㅓㄴ매퍄ㅓ;차퍼미;ㅏㅓㅣㅁ처태ㅑ퍼매ㅑㅌ처파ㅣㅌ첲미ㅏㅊ텊처탶ㅌ처ㅏㅣㅍ"
 ) {
-    Column {
+    Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
