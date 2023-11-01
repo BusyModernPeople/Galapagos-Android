@@ -25,6 +25,7 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 
 @Composable
 fun TopBar(
+    modifier: Modifier = Modifier,
     content: String = "",
     @DrawableRes leadingIcon: Int? = R.drawable.ic_app_bar_prev,
     @DrawableRes trailingIcon: Int? = null,
@@ -32,7 +33,7 @@ fun TopBar(
     trailingIconOnClick: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(68.dp),
         contentAlignment = Alignment.Center

@@ -27,5 +27,13 @@ fun NavGraphBuilder.diaryGraph(
                 hideBottomSheet = hideBottomSheet
             )
         }
+
+        composable(route = DiaryDestinations.PET_DIARY) {
+            PetDiaryScreen(
+                appState = appState,
+                showBottomSheet = showBottomSheet,
+                hideBottomSheet = hideBottomSheet
+            )
+        }
     }
 }

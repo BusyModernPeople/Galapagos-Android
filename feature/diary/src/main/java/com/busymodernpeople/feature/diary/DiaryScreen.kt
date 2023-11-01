@@ -2,6 +2,7 @@ package com.busymodernpeople.feature.diary
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -70,7 +71,7 @@ fun DiaryScreen(
         ) {
             DiaryTopBar()
             //NoDiaryContent()
-            DiaryContent()
+            DiaryContent(appState)
         }
         AddDiaryFB {
             appState.navigate(DiaryDestinations.ADD_PET)
@@ -156,9 +157,8 @@ private fun NoDiaryContent(
     }
 }
 
-@Preview
 @Composable
-fun DiaryContent() {
+fun DiaryContent(appState: GalapagosAppState) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 40.dp),
@@ -167,7 +167,11 @@ fun DiaryContent() {
     ) {
         repeat(6) {
             item {
-                DiaryItem()
+                DiaryItem(
+                    onClick = {
+                        appState.navigate(DiaryDestinations.PET_DIARY)
+                    }
+                )
             }
         }
     }
@@ -175,14 +179,16 @@ fun DiaryContent() {
 
 @Preview
 @Composable
-fun DiaryItem(
-    isBookMarked: Boolean = true
+private fun DiaryItem(
+    isBookMarked: Boolean = true,
+    onClick: () -> Unit = { }
 ) {
     Box(contentAlignment = Alignment.TopEnd) {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(0.75f),
+                .aspectRatio(0.75f)
+                .clickable { onClick() },
             shape = RoundedCornerShape(8.dp),
             color = GalapagosTheme.colors.FontWhite,
             elevation = 10.dp
