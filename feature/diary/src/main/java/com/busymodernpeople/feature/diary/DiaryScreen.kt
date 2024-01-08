@@ -147,7 +147,7 @@ private fun NoDiaryContent(
                     buttonSize = ButtonSize.Height52,
                     shape = RoundedCornerShape(100.dp),
                     leadingIcon = R.drawable.ic_plus,
-                    content = "다이어리 작성하기",
+                    content = "동물 등록하기",
                     onClick = {
                         addDiaryOnClick()
                     }
@@ -183,12 +183,14 @@ private fun DiaryItem(
     isBookMarked: Boolean = true,
     onClick: () -> Unit = { }
 ) {
-    Box(contentAlignment = Alignment.TopEnd) {
+    Box(
+        modifier = Modifier.clickable { onClick() },
+        contentAlignment = Alignment.TopEnd
+    ) {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(0.75f)
-                .clickable { onClick() },
+                .aspectRatio(0.75f),
             shape = RoundedCornerShape(8.dp),
             color = GalapagosTheme.colors.FontWhite,
             elevation = 10.dp
@@ -293,7 +295,7 @@ fun AddDiaryFB(
                 buttonSize = ButtonSize.Height52,
                 shape = RoundedCornerShape(100.dp),
                 leadingIcon = R.drawable.ic_plus,
-                content = "다이어리 작성하기",
+                content = "동물 등록하기",
                 onClick = {
                     onClick()
                 }

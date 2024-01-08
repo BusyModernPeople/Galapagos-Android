@@ -2,6 +2,7 @@ package com.busymodernpeople.feature.diary
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -39,9 +43,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.busymodernpeople.core.common.base.DiaryDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
 import com.busymodernpeople.core.common.base.SheetContent
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
+import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.capture.Capturable
 import com.busymodernpeople.core.design.ui.capture.rememberCaptureController
 import com.busymodernpeople.core.design.ui.component.DatePicker
@@ -72,7 +78,7 @@ fun PetDiaryScreen(
     }
 
     Box(
-        contentAlignment = Alignment.BottomCenter
+        contentAlignment = Alignment.BottomEnd
     ) {
         Capturable(
             controller = captureController,
@@ -86,6 +92,7 @@ fun PetDiaryScreen(
                     .background(color = Color.White)
                     .systemBarsPadding()
                     .navigationBarsPadding()
+                    .statusBarsPadding()
                     .imePadding()
             ) {
                 PetDiaryTopBar()
@@ -129,13 +136,22 @@ fun PetDiaryScreen(
             }
         }
 
-        GlassmorphicTab(
-            modifier = Modifier.padding(bottom = 16.dp),
-            items = listOf("리스트", "캘린더"),
-            backgroundBitmap = background,
-            selectedItemIndex = selectedItemIndex,
-            onClick = { selectedItemIndex = it}
-        )
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            GlassmorphicTab(
+                modifier = Modifier.padding(bottom = 16.dp),
+                items = listOf("리스트", "캘린더"),
+                backgroundBitmap = background,
+                selectedItemIndex = selectedItemIndex,
+                onClick = { selectedItemIndex = it }
+            )
+        }
+
+        AddPetDiaryFB {
+            appState.navigate(DiaryDestinations.ADD_DIARY)
+        }
     }
 }
 
@@ -249,6 +265,26 @@ private fun DiaryItem(
             style = GalapagosTheme.typography.body4.copy(
                 color = GalapagosTheme.colors.FontGray2
             )
+        )
+    }
+}
+
+@Composable
+private fun AddPetDiaryFB(
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier.padding(bottom = 8.dp, end = 20.dp),
+        contentAlignment = Alignment.TopStart
+    ) {
+        Icon(
+            modifier = Modifier
+                .size(64.dp)
+                .clip(CircleShape)
+                .clickable { onClick() },
+            painter = painterResource(id = R.drawable.ic_add_pet_diary),
+            contentDescription = "IC_ADD_PET_DIARY",
+            tint = Color.Unspecified
         )
     }
 }

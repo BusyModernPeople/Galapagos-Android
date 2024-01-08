@@ -35,5 +35,9 @@ fun NavGraphBuilder.diaryGraph(
                 hideBottomSheet = hideBottomSheet
             )
         }
+
+        composable(route = DiaryDestinations.ADD_DIARY) {
+            AddDiaryScreen()
+        }
     }
 }
