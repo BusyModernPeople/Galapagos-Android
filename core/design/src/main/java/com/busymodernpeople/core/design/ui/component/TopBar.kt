@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,7 +30,7 @@ fun TopBar(
     content: String = "",
     @DrawableRes leadingIcon: Int? = R.drawable.ic_app_bar_prev,
     @DrawableRes trailingIcon: Int? = null,
-    leadingIconOnClick: () -> Unit,
+    leadingIconOnClick: () -> Unit = {},
     trailingIconOnClick: () -> Unit = {},
 ) {
     Box(
@@ -49,9 +50,13 @@ fun TopBar(
                     painter = painterResource(id = R.drawable.ic_app_bar_prev),
                     contentDescription = null,
                     tint = Color.Unspecified,
-                    modifier = Modifier.size(24.dp).clip(CircleShape)
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(CircleShape)
                         .clickable { leadingIconOnClick() }
                 )
+            } else {
+                Spacer(modifier = Modifier.size(1.dp))
             }
 
             if (trailingIcon != null) {
@@ -59,7 +64,9 @@ fun TopBar(
                     painter = painterResource(id = trailingIcon),
                     contentDescription = null,
                     tint = Color.Unspecified,
-                    modifier = Modifier.clip(CircleShape).clickable { trailingIconOnClick() }
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .clickable { trailingIconOnClick() }
                 )
             }
         }

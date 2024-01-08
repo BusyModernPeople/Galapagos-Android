@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_main_animal_message">아직 등록된 대표 동물이 없어요.\n동물을 추가하고 대표 동물을 설정해보세요!</string>
+    <string name="add_animal">동물 추가하기</string>
+</resources>

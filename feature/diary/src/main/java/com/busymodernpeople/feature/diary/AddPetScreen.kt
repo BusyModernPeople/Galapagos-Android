@@ -86,10 +86,27 @@ private fun PetDetails(
     var name by remember { mutableStateOf("") }
     var selectedGender by remember { mutableIntStateOf(0) }
 
-    var selectedSpecies by remember { mutableStateOf("") }
+    var selectBreedDialogOpen by remember { mutableStateOf(false) }
+
+    var selectedBreed by remember { mutableStateOf("") }
     var selectedAdoptDate: LocalDate? by remember { mutableStateOf(null) }
     var selectedBirthDate: LocalDate? by remember { mutableStateOf(null) }
     var isBirthdateUnknown by remember { mutableStateOf(false) }
+
+    if (selectBreedDialogOpen) {
+        SelectBreedDialog(
+            majorClassList = listOf(
+                "파충류", "양서류", "포유류", "어류", "조류", "갑각류", "협각류", "육각류", "연체동물", "기타"
+            ),
+            subclassList = listOf(
+                "거북", "자라", "뱀", "게코도마뱀", "카멜레온", "이구아나"
+            ),
+            onSelect = {
+                selectedBreed = it
+                selectBreedDialogOpen = false
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -180,6 +197,25 @@ private fun PetDetails(
                     color = GalapagosTheme.colors.FontGray2
                 )
             )
+
+            if (selectedBreed.isNotEmpty()) {
+                Box(
+                    modifier = Modifier.background(
+                        color = GalapagosTheme.colors.PrimaryYellow,
+                        shape = RoundedCornerShape(100.dp)
+                    )
+                ) {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        text = selectedBreed,
+                        style = GalapagosTheme.typography.body2.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = GalapagosTheme.colors.FontGray1
+                        )
+                    )
+                }
+            }
+
             GButton(
                 modifier = Modifier.fillMaxWidth(),
                 buttonSize = ButtonSize.Height56,
@@ -192,7 +228,9 @@ private fun PetDetails(
                     width = 1.dp,
                     color = GalapagosTheme.colors.PrimaryGreen
                 ),
-                onClick = { /*TODO*/ }
+                onClick = {
+                    selectBreedDialogOpen = true
+                }
             )
         }
 
@@ -254,7 +292,7 @@ private fun PetDetails(
         GButton(
             modifier = Modifier.padding(bottom = 16.dp),
             buttonSize = ButtonSize.Height56,
-            enabled = name.isNotEmpty() && selectedSpecies.isNotEmpty() && selectedAdoptDate != null,
+            enabled = name.isNotEmpty() && selectedBreed.isNotEmpty() && selectedAdoptDate != null,
             content = "다음",
             onClick = {  }
         )
