@@ -26,6 +26,6 @@ enum class TopLevelDestination(
     MyPage(
         label = com.busymodernpeople.core.design.R.string.tab_my_page,
         icon = com.busymodernpeople.core.design.R.drawable.ic_my_page,
-        route = "mypageGraph"
+        route = MyPageDestinations.MYPAGE
     )
 }

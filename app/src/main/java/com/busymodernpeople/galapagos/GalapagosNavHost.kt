@@ -33,6 +33,7 @@ import com.busymodernpeople.feature.auth.authGraph
 import com.busymodernpeople.feature.community.communityGraph
 import com.busymodernpeople.feature.diary.diaryGraph
 import com.busymodernpeople.feature.home.homeGraph
+import com.busymodernpeople.feature.mypage.mypageGraph
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -112,6 +113,11 @@ fun GalapagosNavHost() {
                     hideBottomSheet = hideBottomSheet
                 )
                 communityGraph(
+                    appState = appState,
+                    showBottomSheet = showBottomSheet,
+                    hideBottomSheet = hideBottomSheet
+                )
+                mypageGraph(
                     appState = appState,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet

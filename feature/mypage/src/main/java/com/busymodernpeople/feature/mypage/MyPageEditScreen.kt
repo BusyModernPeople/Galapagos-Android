@@ -24,21 +24,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.GButton
 import com.busymodernpeople.core.design.ui.component.GTextField
 import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
+import com.busymodernpeople.core.design.ui.theme.LocalColors
 import com.busymodernpeople.feature.mypage.component.ProfileBasicData
 
 @Preview
 @Composable
-fun MyPageUpdateScreen(
-//    appState: GalapagosAppState = rememberGalapagosAppState(),
-//    showBottomSheet: (SheetContent) -> Unit = { },
-//    hideBottomSheet: () -> Unit = { }
+fun MyPageEditScreen(
+    appState: GalapagosAppState = rememberGalapagosAppState(),
+    showBottomSheet: (SheetContent) -> Unit = { },
+    hideBottomSheet: () -> Unit = { }
 ) {
-    var editMode by remember { mutableStateOf(true) }
+    var editMode by remember { mutableStateOf(false) }
     var nickname by remember { mutableStateOf("") }
     var star = if (editMode) "*" else ""
 
@@ -59,16 +63,16 @@ fun MyPageUpdateScreen(
             if (editMode) {
                 TopBar(
                     leadingIcon = null,
-                    leadingIconOnClick = { /* TODO */ },
                     content = "내 프로필 수정",
-                    trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_write,
-                    trailingIconOnClick = { /* TODO */ }
+                    trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_cancel,
+                    trailingIconOnClick = { editMode = false }
                 )
             } else {
                 TopBar(
-                    leadingIconOnClick = { /* TODO */ }, content = "내 프로필",
+                    leadingIconOnClick = { appState.navigateUp() }, content = "내 프로필",
                     trailingIcon = com.busymodernpeople.core.design.R.drawable.ic_write,
-                    trailingIconOnClick = { /* TODO */ }
+                    trailingIconTint = GalapagosTheme.colors.IconBlack,
+                    trailingIconOnClick = { editMode = true }
                 )
             }
             Spacer(modifier = Modifier.height(40.dp))
@@ -94,7 +98,9 @@ fun MyPageUpdateScreen(
             Spacer(modifier = Modifier.height(16.dp))
             GTextField(
                 value = "도랭이애비", onValueChange = { nickname = it }, modifier = Modifier.padding(horizontal = 24.dp),
-                textFieldSize = TextFieldSize.Height56, enabled = editMode
+                textFieldSize = TextFieldSize.Height56, enabled = editMode,
+                disabledBackgroundColor = LocalColors.current.FontWhite,
+                disabledTextColor = LocalColors.current.FontGray1
             )
             Spacer(modifier = Modifier.height(40.dp))
             Text(
@@ -110,7 +116,9 @@ fun MyPageUpdateScreen(
             var email by remember { mutableStateOf("") }
             GTextField(
                 value = "AAA@naver.com", onValueChange = { email = it }, modifier = Modifier.padding(horizontal = 24.dp),
-                textFieldSize = TextFieldSize.Height56, enabled = editMode
+                textFieldSize = TextFieldSize.Height56, enabled = editMode,
+                disabledBackgroundColor = LocalColors.current.FontWhite,
+                disabledTextColor = LocalColors.current.FontGray1
             )
         }
         Column(

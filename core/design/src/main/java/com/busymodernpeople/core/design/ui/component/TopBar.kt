@@ -29,6 +29,8 @@ fun TopBar(
     content: String = "",
     @DrawableRes leadingIcon: Int? = R.drawable.ic_app_bar_prev,
     @DrawableRes trailingIcon: Int? = null,
+    leadingIconTint: Color? = null,
+    trailingIconTint: Color? = null,
     leadingIconOnClick: () -> Unit = {},
     trailingIconOnClick: () -> Unit = {},
 ) {
@@ -45,10 +47,11 @@ fun TopBar(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             if (leadingIcon != null) {
+                var iconColor = leadingIconTint ?: Color.Unspecified
                 Icon(
                     painter = painterResource(id = R.drawable.ic_app_bar_prev),
                     contentDescription = null,
-                    tint = Color.Unspecified,
+                    tint = iconColor,
                     modifier = Modifier
                         .size(24.dp)
                         .clip(CircleShape)
@@ -59,10 +62,11 @@ fun TopBar(
             }
 
             if (trailingIcon != null) {
+                var iconColor = trailingIconTint ?: Color.Unspecified
                 Icon(
                     painter = painterResource(id = trailingIcon),
                     contentDescription = null,
-                    tint = Color.Unspecified,
+                    tint = iconColor,
                     modifier = Modifier
                         .clip(CircleShape)
                         .clickable { trailingIconOnClick() }

@@ -52,3 +52,18 @@ object CommunityDestinations {
     const val REPORT_MENU = "reportMenu"
     const val REPORT_FORM = "reportForm"
 }
+
+object MyPageDestinations {
+    const val ROUTE = "mypageRoute"
+
+    const val MYPAGE = "mypage"
+
+    const val MYPAGE_EDIT = "mypageEdit"
+    const val PET_COLLECTION = "petCollection"
+    const val WRITE_POST = "writePost"
+    const val LIKE_POST = "likePost"
+    const val PET_DETAIL_DATA = "petDetailData"
+    const val EVENT_INFORM = "eventInform"
+    const val ASK_MAIL = "askMail"
+    const val EDIT_SETTING = "EditSetting"
+}

@@ -77,6 +77,8 @@ fun GTextField(
     placeholderText: String = "",
     isError: Boolean = false,
     enabled: Boolean = true,
+    disabledTextColor: Color = LocalColors.current.BgGray1,
+    disabledBackgroundColor: Color = LocalColors.current.BgGray3,
     readOnly: Boolean = false,
     focusRequester: FocusRequester = FocusRequester(),
     keyboardOptions: KeyboardOptions? = null,
@@ -118,7 +120,7 @@ fun GTextField(
                 }
             )
             .background(
-                color = if (enabled) localColors.FontWhite else localColors.BgGray3,
+                color = if (enabled) localColors.FontWhite else disabledBackgroundColor,
                 shape = when (textFieldSize) {
                     is TextFieldSize.Height68 -> RoundedCornerShape(8.dp)
                     is TextFieldSize.Height56 -> RoundedCornerShape(6.dp)
@@ -132,7 +134,7 @@ fun GTextField(
         readOnly = readOnly,
         enabled = enabled,
         textStyle = localTypography.title4.copy(
-            color = if (enabled) localColors.FontGray1 else localColors.BgGray1
+            color = if (enabled) localColors.FontGray1 else disabledTextColor
         ),
         keyboardOptions = keyboardOptions ?: KeyboardOptions(),
         keyboardActions = keyboardActions ?: KeyboardActions(),

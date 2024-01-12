@@ -34,7 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.busymodernpeople.core.common.base.AuthDestinations
+import com.busymodernpeople.core.common.base.CommunityDestinations
 import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.MyPageDestinations
 import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.auth.R
@@ -115,7 +117,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(134.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
             SocialLoginButton(icon = R.drawable.ic_kakao_login) {
-                viewModel.processEvent(LoginContract.Event.KaKaoLoginButtonClicked(context))
+                appState.navigate(MyPageDestinations.MYPAGE)
+                // viewModel.processEvent(LoginContract.Event.KaKaoLoginButtonClicked(context))
             }
             SocialLoginButton(icon = R.drawable.ic_naver_login) {
                 viewModel.processEvent(LoginContract.Event.NaverLoginButtonClicked(context))

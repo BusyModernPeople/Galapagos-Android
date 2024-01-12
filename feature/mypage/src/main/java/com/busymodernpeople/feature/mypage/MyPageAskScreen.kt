@@ -25,6 +25,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
@@ -33,9 +36,9 @@ import com.busymodernpeople.feature.mypage.component.MenuListItem
 @Preview
 @Composable
 fun MyPageAskScreen(
-//    appState: GalapagosAppState = rememberGalapagosAppState(),
-//    showBottomSheet: (SheetContent) -> Unit = { },
-//    hideBottomSheet: () -> Unit = { }
+    appState: GalapagosAppState = rememberGalapagosAppState(),
+    showBottomSheet: (SheetContent) -> Unit = { },
+    hideBottomSheet: () -> Unit = { }
 ) {
     Column(
         modifier = Modifier
@@ -45,8 +48,8 @@ fun MyPageAskScreen(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        TopBar(leadingIconOnClick = { /* TODO */ }, content = "문의하기")
-
+        TopBar(leadingIconOnClick = { appState.navigateUp() }, content = "문의하기")
+        Spacer(modifier = Modifier.height(40.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -55,7 +58,8 @@ fun MyPageAskScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
-                modifier = Modifier
+                modifier = Modifier,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_mail),

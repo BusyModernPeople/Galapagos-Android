@@ -19,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.ui.component.TopBar
 import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 import com.busymodernpeople.feature.mypage.component.MenuListItem
@@ -26,9 +29,9 @@ import com.busymodernpeople.feature.mypage.component.MenuListItem
 @Preview
 @Composable
 fun MyPageSettingScreen(
-//    appState: GalapagosAppState = rememberGalapagosAppState(),
-//    showBottomSheet: (SheetContent) -> Unit = { },
-//    hideBottomSheet: () -> Unit = { }
+    appState: GalapagosAppState = rememberGalapagosAppState(),
+    showBottomSheet: (SheetContent) -> Unit = { },
+    hideBottomSheet: () -> Unit = { }
 ) {
     Column(
         modifier = Modifier
@@ -39,11 +42,12 @@ fun MyPageSettingScreen(
             .imePadding()
     ) {
         TopBar(leadingIconOnClick = { /* TODO */ }, content = "설정")
-
+        Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "계정",
             style = GalapagosTheme.typography.body3,
-            color = GalapagosTheme.colors.FontGray2
+            color = GalapagosTheme.colors.FontGray2,
+            modifier = Modifier.padding(start = 36.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
         MenuListItem("로그아웃")
@@ -61,7 +65,8 @@ fun MyPageSettingScreen(
         Text(
             text = "앱",
             style = GalapagosTheme.typography.body3,
-            color = GalapagosTheme.colors.FontGray2
+            color = GalapagosTheme.colors.FontGray2,
+            modifier = Modifier.padding(start = 36.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
         MenuListItem("이용약관")

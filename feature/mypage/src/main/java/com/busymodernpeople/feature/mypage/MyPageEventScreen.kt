@@ -46,6 +46,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.busymodernpeople.core.common.base.GalapagosAppState
+import com.busymodernpeople.core.common.base.SheetContent
+import com.busymodernpeople.core.common.base.rememberGalapagosAppState
 import com.busymodernpeople.core.design.R
 import com.busymodernpeople.core.design.ui.component.TextFieldSize
 import com.busymodernpeople.core.design.ui.component.TopBar
@@ -57,9 +60,9 @@ import com.busymodernpeople.feature.mypage.component.MenuListItem
 @Preview
 @Composable
 fun MyPageEventScreen(
-//    appState: GalapagosAppState = rememberGalapagosAppState(),
-//    showBottomSheet: (SheetContent) -> Unit = { },
-//    hideBottomSheet: () -> Unit = { }
+    appState: GalapagosAppState = rememberGalapagosAppState(),
+    showBottomSheet: (SheetContent) -> Unit = { },
+    hideBottomSheet: () -> Unit = { }
 ) {
     Column(
         modifier = Modifier
@@ -71,9 +74,10 @@ fun MyPageEventScreen(
     ) {
         var searchText by remember { mutableStateOf("") }
 
-        TopBar(leadingIconOnClick = { /* TODO */ }, content = "이벤트 및 공지사항")
+        TopBar(leadingIconOnClick = { appState.navigateUp() }, content = "이벤트 및 공지사항")
         Spacer(modifier = Modifier.height(20.dp))
         MyPageSearchBar(modifier = Modifier.padding(horizontal = 24.dp), value = searchText, onValueChange = { searchText = it })
+        Spacer(modifier = Modifier.height(40.dp))
         InformMenu()
         Spacer(modifier = Modifier.height(26.dp))
         Box(
@@ -221,7 +225,8 @@ fun InformMenu() {
     ) {
         Text(
             text = "일반공지",
-            style = GalapagosTheme.typography.title3.copy(fontWeight = FontWeight.Bold, color = Color(0xFF111111))
+            style = GalapagosTheme.typography.title3.copy(fontWeight = FontWeight.Bold, color = Color(0xFF111111)),
+            modifier = Modifier.padding(start = 24.dp)
         )
         Spacer(modifier = Modifier.height(14.dp))
         MyPageInformList("[공지] 질문금지, 상품판매 금지")
@@ -238,7 +243,8 @@ fun EventMenu() {
     ) {
         Text(
             text = "이벤트",
-            style = GalapagosTheme.typography.title3.copy(fontWeight = FontWeight.Bold, color = Color(0xFF111111))
+            style = GalapagosTheme.typography.title3.copy(fontWeight = FontWeight.Bold, color = Color(0xFF111111)),
+            modifier = Modifier.padding(start = 24.dp)
         )
         Spacer(modifier = Modifier.height(14.dp))
         MyPageInformList("[공지] 질문금지, 상품판매 금지")

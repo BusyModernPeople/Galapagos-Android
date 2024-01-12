@@ -1,5 +1,7 @@
 package com.busymodernpeople.feature.mypage.component
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -31,10 +34,11 @@ import com.busymodernpeople.core.design.ui.theme.GalapagosTheme
 @Preview
 @Composable
 fun ProfileBasicData(
-    nickname: String = "",
+    nickname: String = "도랭이애비",
     arrowFlag: Boolean = true,
     isEdit: Boolean = false,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier,
@@ -59,7 +63,8 @@ fun ProfileBasicData(
         Spacer(modifier = Modifier.height(10.dp))
         Row(
             modifier = Modifier,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 text = nickname,
@@ -70,7 +75,9 @@ fun ProfileBasicData(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_right_black),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp).clickable {
+                        onClick()
+                    }
                 )
             }
         }
@@ -78,7 +85,9 @@ fun ProfileBasicData(
 
     if (isEdit) {
         Box(
-            modifier = Modifier.width(116.dp).padding(top = 84.dp, start = 84.dp)
+            modifier = Modifier
+                .width(116.dp)
+                .padding(top = 84.dp, start = 84.dp)
         ) {
             Surface(
                 shape = RoundedCornerShape(32.dp),

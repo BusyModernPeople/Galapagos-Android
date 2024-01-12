@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "785218990545",
+    "project_id": "galapagosapp",
+    "storage_bucket": "galapagosapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:785218990545:android:852a6c491dfcf8e6de30f0",
+        "android_client_info": {
+          "package_name": "com.busymodernpeople.galapagos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "785218990545-0vameeicd6c5n5cu0vcgrn8qstg1dolu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.busymodernpeople.galapagos",
+            "certificate_hash": "9c09d8c5e6b3a1776877e31d424f0abca5e010c5"
+          }
+        },
+        {
+          "client_id": "785218990545-qpl8lmo1tf5etku1qqb1qvvj9ng83a40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_V-8xknbRlEPXgYKBq3PrrPHA9_gaeEA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "785218990545-qpl8lmo1tf5etku1qqb1qvvj9ng83a40.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "785218990545-f6eh18bsp2ej759a7etufpohr86vpju5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.busyModernPeople.Galapagos"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
